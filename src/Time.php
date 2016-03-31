@@ -5,7 +5,7 @@ namespace Speicher210\BusinessHours;
 /**
  * Represents a time.
  */
-class Time
+class Time implements \JsonSerializable
 {
     /**
      * The hours part of the time.
@@ -142,6 +142,18 @@ class Time
     public function getSeconds()
     {
         return $this->seconds;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function jsonSerialize()
+    {
+        return array(
+            'hours' => $this->hours,
+            'minutes' => $this->minutes,
+            'seconds' => $this->seconds,
+        );
     }
 
     /**

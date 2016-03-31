@@ -5,7 +5,7 @@ namespace Speicher210\BusinessHours;
 /**
  * Represents a time interval.
  */
-class TimeInterval
+class TimeInterval implements \JsonSerializable
 {
     /**
      * The start time.
@@ -66,6 +66,16 @@ class TimeInterval
     }
 
     /**
+     * Get the start time.
+     *
+     * @return Time
+     */
+    public function getStart()
+    {
+        return $this->start;
+    }
+
+    /**
      * Get the end time.
      *
      * @return Time
@@ -76,12 +86,13 @@ class TimeInterval
     }
 
     /**
-     * Get the start time.
-     *
-     * @return Time
+     * {@inheritdoc}
      */
-    public function getStart()
+    public function jsonSerialize()
     {
-        return $this->start;
+        return array(
+            'start' => $this->start,
+            'end' => $this->end,
+        );
     }
 }

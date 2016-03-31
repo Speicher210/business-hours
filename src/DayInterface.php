@@ -5,7 +5,7 @@ namespace Speicher210\BusinessHours;
 /**
  * Day interface.
  */
-interface DayInterface
+interface DayInterface extends \JsonSerializable
 {
     const WEEK_DAY_MONDAY = 1;
     const WEEK_DAY_TUESDAY = 2;

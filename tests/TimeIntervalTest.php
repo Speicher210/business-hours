@@ -61,4 +61,14 @@ class TimeIntervalTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals($interval->contains(new Time($hours, $minutes)), $expected);
     }
+
+    public function testJsonSerialize()
+    {
+        $interval = TimeInterval::fromString('08:00:01', '18:30:02');
+
+        $this->assertJsonStringEqualsJsonFile(
+            __DIR__.'/Expected/TimeInterval/testJsonSerialize.json',
+            json_encode($interval)
+        );
+    }
 }

@@ -5,7 +5,7 @@ namespace Speicher210\BusinessHours;
 /**
  * Business interface.
  */
-interface BusinessInterface
+interface BusinessInterface extends \JsonSerializable
 {
     /**
      * Tells if a given date is within business hours.

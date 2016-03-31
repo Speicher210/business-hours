@@ -3,6 +3,7 @@
 namespace Speicher210\BusinessHours\Test;
 
 use Speicher210\BusinessHours\Day;
+use Speicher210\BusinessHours\DayInterface;
 use Speicher210\BusinessHours\Time;
 
 /**
@@ -81,5 +82,15 @@ class DayTest extends \PHPUnit_Framework_TestCase
     public function testGetDayOfWeekName()
     {
         $this->markTestIncomplete();
+    }
+
+    public function testJsonSerialize()
+    {
+        $day = new Day(DayInterface::WEEK_DAY_MONDAY, [['12:00', '2 pm'], ['14:30', '18:30'], ['09:00', '10 AM']]);
+
+        $this->assertJsonStringEqualsJsonFile(
+            __DIR__.'/Expected/Day/testJsonSerialize.json',
+            json_encode($day)
+        );
     }
 }

@@ -7,4 +7,14 @@ namespace Speicher210\BusinessHours;
  */
 class Day extends AbstractDay
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function jsonSerialize()
+    {
+        return array(
+            'dayOfWeek' => $this->dayOfWeek,
+            'openingIntervals' => $this->openingHoursIntervals,
+        );
+    }
 }

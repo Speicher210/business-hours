@@ -121,4 +121,22 @@ class BusinessTest extends \PHPUnit_Framework_TestCase
         $date = $business->getNextChangeDateTime($context);
         $this->assertEquals($expectedDateTime, $date);
     }
+
+    public function testJsonSerialize()
+    {
+        $business = new Business(
+            [
+                new Day(DayInterface::WEEK_DAY_MONDAY, [['09:00', '13:00'], ['14:00', '17:00']]),
+                new Day(
+                    DayInterface::WEEK_DAY_FRIDAY, [['10:00', '13:00'], ['14:00', '17:00']]
+                ),
+            ],
+            new \DateTimeZone('Europe/London')
+        );
+
+        $this->assertJsonStringEqualsJsonFile(
+            __DIR__ . '/Expected/Business/testJsonSerialize.json',
+            json_encode($business)
+        );
+    }
 }

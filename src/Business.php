@@ -78,6 +78,17 @@ class Business implements BusinessInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function jsonSerialize()
+    {
+        return array(
+            'days' => $this->days,
+            'timezone' => $this->timezone->getName(),
+        );
+    }
+
+    /**
      * Gets the closest business date interval after the given date.
      *
      * @param \DateTime $date
