@@ -51,12 +51,16 @@ class Business implements BusinessInterface
     /**
      * {@inheritdoc}
      */
-    public function getNextChangeDateTime(\DateTime $date)
+    public function getNextChangeDateTime(\DateTime $date = null)
     {
+        if ($date === null) {
+            $date = new \DateTime('now', $this->timezone);
+        }
+
         $dateInterval = $this->closestDateInterval($date);
 
         if ($this->within($date)) {
-            return $dateInterval[1];
+            return ($date == $dateInterval[0]) ? $dateInterval[0] : $dateInterval[1];
         } else {
             return $dateInterval[0];
         }
@@ -133,7 +137,6 @@ class Business implements BusinessInterface
      * Gets the business date after the given date (excluding holidays).
      *
      * @param \DateTime $date
-     *
      * @return \DateTime
      */
     private function getDateAfter(\DateTime $date)
