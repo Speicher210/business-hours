@@ -5,7 +5,7 @@ namespace Speicher210\BusinessHours;
 /**
  * Represents a time.
  */
-class Time implements \JsonSerializable
+class Time
 {
     /**
      * The hours part of the time.
@@ -109,7 +109,7 @@ class Time implements \JsonSerializable
      *
      * @return integer
      */
-    protected function toInteger()
+    public function toInteger()
     {
         return (int)sprintf('%d%02d%02d', $this->hours, $this->minutes, $this->seconds);
     }
@@ -152,17 +152,5 @@ class Time implements \JsonSerializable
     public function __toString()
     {
         return sprintf('%02d:%02d:%02d', $this->hours, $this->minutes, $this->seconds);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function jsonSerialize()
-    {
-        return array(
-            'hours' => $this->hours,
-            'minutes' => $this->minutes,
-            'seconds' => $this->seconds,
-        );
     }
 }

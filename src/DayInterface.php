@@ -29,6 +29,15 @@ interface DayInterface
     public function getClosingTime();
 
     /**
+     * Get the closest opening hours interval for the given time (including it).
+     *
+     * @param Time $time The time.
+     *
+     * @return TimeInterval|null
+     */
+    public function getClosestOpeningHoursInterval(Time $time);
+
+    /**
      * Checks if the given time is within opening hours of the day.
      *
      * @param Time $time The time

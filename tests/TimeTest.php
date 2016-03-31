@@ -57,4 +57,122 @@ class TimeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedHours, $time->getHours());
         $this->assertEquals($expectedSeconds, $time->getMinutes());
     }
+
+    public static function dataProviderTestFromDate()
+    {
+        return array(
+            array(new \DateTime('2 AM'), 2, 0),
+            array(new \DateTime('3:20 PM'), 15, 20),
+        );
+    }
+
+    /**
+     * @dataProvider dataProviderTestFromDate
+     *
+     * @param \DateTime $date The date and time to test.
+     * @param integer $expectedHours The expected hours.
+     * @param integer $expectedSeconds The expected seconds.
+     */
+    public function testFromDate(\DateTime $date, $expectedHours, $expectedSeconds)
+    {
+        $time = Time::fromDate($date);
+        $this->assertEquals($expectedHours, $time->getHours());
+        $this->assertEquals($expectedSeconds, $time->getMinutes());
+    }
+
+    public static function dataProviderTestIsAfterOrEqual()
+    {
+        $time = new Time(20, 00);
+
+        return array(
+            array($time, 18, 00, true),
+            array($time, 22, 15, false),
+            array($time, 20, 00, true),
+        );
+    }
+
+    /**
+     * @dataProvider dataProviderTestIsAfterOrEqual
+     *
+     * @param Time $time The date and time to test.
+     * @param integer $hours The hours to test.
+     * @param integer $minutes The minutes to test.
+     * @param boolean $expected The expected value.
+     */
+    public function testIsAfterOrEqual(Time $time, $hours, $minutes, $expected)
+    {
+        $this->assertEquals($time->isAfterOrEqual(new Time($hours, $minutes)), $expected);
+    }
+
+    public static function dataProviderTestIsBeforeOrEqual()
+    {
+        $time = new Time(20, 00);
+
+        return array(
+            array($time, 18, 00, false),
+            array($time, 22, 15, true),
+            array($time, 20, 00, true),
+        );
+    }
+
+    /**
+     * @dataProvider dataProviderTestIsBeforeOrEqual
+     *
+     * @param Time $time The date and time to test.
+     * @param integer $hours The hours to test.
+     * @param integer $minutes The minutes to test.
+     * @param boolean $expected The expected value.
+     */
+    public function testIsBeforeOrEqual(Time $time, $hours, $minutes, $expected)
+    {
+        $this->assertEquals($time->isBeforeOrEqual(new Time($hours, $minutes)), $expected);
+    }
+
+    public static function dataProviderTestIsEqual()
+    {
+        $time = new Time(20, 00);
+
+        return array(
+            array($time, 18, 00, false),
+            array($time, 22, 15, false),
+            array($time, 20, 00, true),
+        );
+    }
+
+    /**
+     * @dataProvider dataProviderTestIsEqual
+     *
+     * @param Time $time The date and time to test.
+     * @param integer $hours The hours to test.
+     * @param integer $minutes The minutes to test.
+     * @param boolean $expected The expected value.
+     */
+    public function testIsEqual(Time $time, $hours, $minutes, $expected)
+    {
+        $this->assertEquals($time->isEqual(new Time($hours, $minutes)), $expected);
+    }
+
+
+    public static function dataProviderTestToInteger()
+    {
+        return array(
+            array(200000, 20, 00),
+            array(93000, 9, 30),
+            array(123456, 12, 34, 56)
+        );
+    }
+
+    /**
+     * @dataProvider dataProviderTestToInteger
+     *
+     * @param integer $expectedIntegerRepresentation The expected integer representation of time.
+     * @param integer $hours The hours to test.
+     * @param integer $minutes The minutes to test.
+     * @param integer $seconds The seconds to test.
+     */
+    public function testToInteger($expectedIntegerRepresentation, $hours, $minutes, $seconds = 0)
+    {
+        $time = new Time($hours, $minutes, $seconds);
+        $this->assertEquals($expectedIntegerRepresentation, $time->toInteger());
+    }
 }
