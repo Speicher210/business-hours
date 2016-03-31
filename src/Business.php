@@ -12,14 +12,14 @@ class Business implements BusinessInterface
      *
      * @var DayInterface[]
      */
-    private $days;
+    protected $days;
 
     /**
      * The time zone.
      *
      * @var \DateTimeZone
      */
-    private $timezone;
+    protected $timezone;
 
     /**
      * Creates a new business.
@@ -51,7 +51,7 @@ class Business implements BusinessInterface
     /**
      * {@inheritdoc}
      */
-    public function closest(\DateTime $date)
+    public function getNextChangeDateTime(\DateTime $date)
     {
         $dateInterval = $this->closestDateInterval($date);
 
@@ -77,7 +77,6 @@ class Business implements BusinessInterface
      * Gets the closest business date interval after the given date.
      *
      * @param \DateTime $date
-     *
      * @return \DateTime[]
      */
     private function getClosestDateIntervalAfter(\DateTime $date)
@@ -146,7 +145,7 @@ class Business implements BusinessInterface
         $closestDay = $this->getClosestDayAfter($dayOfWeek);
 
         if ($closestDay->getDayOfWeek() !== $dayOfWeek) {
-            $tmpDate->modify(sprintf('next %s', Days::toString($closestDay->getDayOfWeek())));
+            $tmpDate->modify(sprintf('next %s', $closestDay->getDayOfWeekName()));
         }
 
         return $tmpDate;
@@ -156,7 +155,6 @@ class Business implements BusinessInterface
      * Gets the closest interval endpoint after the given date.
      *
      * @param \DateTime $date
-     *
      * @return \DateTime[]
      */
     private function getClosestInterval(\DateTime $date)
@@ -191,8 +189,7 @@ class Business implements BusinessInterface
     /**
      * Gets the closest business day before a given day number (including it).
      *
-     * @param int $dayNumber
-     *
+     * @param integer $dayNumber
      * @return DayInterface|null
      */
     private function getClosestDayBefore($dayNumber)
@@ -207,8 +204,7 @@ class Business implements BusinessInterface
     /**
      * Gets the closest business day after a given day number (including it).
      *
-     * @param int $dayNumber
-     *
+     * @param integer $dayNumber
      * @return DayInterface|null
      */
     private function getClosestDayAfter($dayNumber)
@@ -223,8 +219,7 @@ class Business implements BusinessInterface
     /**
      * Gets the business day before the day number.
      *
-     * @param int $dayNumber
-     *
+     * @param integer $dayNumber
      * @return DayInterface|null
      */
     private function getDayBefore($dayNumber)
@@ -232,7 +227,7 @@ class Business implements BusinessInterface
         $tmpDayNumber = $dayNumber;
 
         for ($i = 0; $i < 6; $i++) {
-            $tmpDayNumber = (Days::MONDAY === $tmpDayNumber) ? Days::SUNDAY : --$tmpDayNumber;
+            $tmpDayNumber = (DayInterface::WEEK_DAY_MONDAY === $tmpDayNumber) ? DayInterface::WEEK_DAY_SUNDAY : --$tmpDayNumber;
 
             if (null !== $day = $this->getDay($tmpDayNumber)) {
                 return $day;
@@ -245,8 +240,7 @@ class Business implements BusinessInterface
     /**
      * Gets the business day after the day number.
      *
-     * @param int $dayNumber
-     *
+     * @param integer $dayNumber
      * @return DayInterface|null
      */
     private function getDayAfter($dayNumber)
@@ -254,7 +248,7 @@ class Business implements BusinessInterface
         $tmpDayNumber = $dayNumber;
 
         for ($i = 0; $i < 6; $i++) {
-            $tmpDayNumber = (Days::SUNDAY === $tmpDayNumber) ? Days::MONDAY : ++$tmpDayNumber;
+            $tmpDayNumber = (DayInterface::WEEK_DAY_SUNDAY === $tmpDayNumber) ? DayInterface::WEEK_DAY_MONDAY : ++$tmpDayNumber;
 
             if (null !== $day = $this->getDay($tmpDayNumber)) {
                 return $day;
@@ -267,8 +261,7 @@ class Business implements BusinessInterface
     /**
      * Get the day corresponding to the day number.
      *
-     * @param int $dayNumber
-     *
+     * @param integer $dayNumber
      * @return DayInterface|null
      */
     private function getDay($dayNumber)
@@ -290,7 +283,6 @@ class Business implements BusinessInterface
      * Add a set of days.
      *
      * @param DayInterface[] $days The days.
-     *
      * @throws \InvalidArgumentException If no days are passed.
      */
     private function setDays(array $days)

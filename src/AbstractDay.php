@@ -3,11 +3,32 @@
 namespace Speicher210\BusinessHours;
 
 /**
- * Base day class.
- *
+ * Abstract day class.
  */
 abstract class AbstractDay implements DayInterface
 {
+    /**
+     * The days of the week.
+     *
+     * @var array
+     */
+    private $daysOfWeek = array(
+        DayInterface::WEEK_DAY_MONDAY => 'Monday',
+        DayInterface::WEEK_DAY_TUESDAY => 'Tuesday',
+        DayInterface::WEEK_DAY_WEDNESDAY => 'Wednesday',
+        DayInterface::WEEK_DAY_THURSDAY => 'Thursday',
+        DayInterface::WEEK_DAY_FRIDAY => 'Friday',
+        DayInterface::WEEK_DAY_SATURDAY => 'Saturday',
+        DayInterface::WEEK_DAY_SUNDAY => 'Sunday',
+    );
+
+    /**
+     * The day of week.
+     *
+     * @var integer
+     */
+    protected $dayOfWeek;
+
     /**
      * The time intervals.
      *
@@ -16,17 +37,10 @@ abstract class AbstractDay implements DayInterface
     protected $openingHoursIntervals;
 
     /**
-     *  The day of week.
-     *
-     * @var integer
-     */
-    protected $dayOfWeek;
-
-    /**
      * Constructor.
      *
      * @param integer $dayOfWeek The day of week.
-     * @param array $openingHoursIntervals The opening hours intervals.
+     * @param TimeInterval[]|array $openingHoursIntervals The opening hours intervals.
      */
     public function __construct($dayOfWeek, array $openingHoursIntervals)
     {
@@ -45,6 +59,18 @@ abstract class AbstractDay implements DayInterface
     /**
      * {@inheritdoc}
      */
+    public function getDayOfWeekName()
+    {
+        if (isset($this->daysOfWeek[$this->dayOfWeek])) {
+            return $this->daysOfWeek[$this->dayOfWeek];
+        }
+
+        throw new \OutOfBoundsException('Invalid day of week.');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getClosestOpeningHoursInterval(Time $time)
     {
         foreach ($this->openingHoursIntervals as $openingHoursInterval) {
@@ -53,6 +79,14 @@ abstract class AbstractDay implements DayInterface
             }
         }
 
+        return $this->getNextOpeningHoursInterval($time);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getNextOpeningHoursInterval(Time $time)
+    {
         $closestTime = null;
         $closestInterval = null;
 
@@ -75,31 +109,6 @@ abstract class AbstractDay implements DayInterface
         }
 
         return $closestInterval;
-    }
-
-    /**
-     * @todo
-     * @return TimeInterval
-     */
-    public function getNextOpeningHoursInterval()
-    {
-
-    }
-
-    /**
-     * @todo
-     */
-    public function getNextOpeningTime()
-    {
-        $this->getNextOpeningHoursInterval()->getStart();
-    }
-
-    /**
-     * @todo
-     */
-    public function getNextClosingTime()
-    {
-        $this->getNextOpeningHoursInterval()->getEnd();
     }
 
     /**
@@ -136,13 +145,12 @@ abstract class AbstractDay implements DayInterface
      * Set the day of week.
      *
      * @param int $dayOfWeek
-     *
-     * @throws \InvalidArgumentException If the given day is invalid.
+     * @throws \OutOfBoundsException If the given day is invalid.
      */
     protected function setDayOfWeek($dayOfWeek)
     {
-        if (!in_array($dayOfWeek, Days::toArray())) {
-            throw new \InvalidArgumentException(sprintf('Invalid day of week "%s".', $dayOfWeek));
+        if (!isset($this->daysOfWeek[$dayOfWeek])) {
+            throw new \OutOfBoundsException(sprintf('Invalid day of week "%s".', $dayOfWeek));
         }
 
         $this->dayOfWeek = $dayOfWeek;
@@ -151,8 +159,7 @@ abstract class AbstractDay implements DayInterface
     /**
      * Set the opening hours intervals.
      *
-     * @param array $openingHoursIntervals The opening hours intervals.
-     *
+     * @param TimeInterval[]|array $openingHoursIntervals The opening hours intervals.
      * @throws \InvalidArgumentException If no days are passed or invalid interval is passed.
      */
     protected function setOpeningHoursIntervals(array $openingHoursIntervals)
@@ -161,20 +168,38 @@ abstract class AbstractDay implements DayInterface
             throw new \InvalidArgumentException('The day must have at least one opening interval.');
         }
 
-        $this->openingHoursIntervals = [];
+        $intervals = array();
 
         foreach ($openingHoursIntervals as $interval) {
-            if (!is_array($interval) || !isset($interval[0]) || !isset($interval[1])) {
-                throw new \InvalidArgumentException(
-                    'Each interval must be an array containing opening and closing times.'
-                );
+            if (is_array($interval) && isset($interval[0]) && isset($interval[1])) {
+                $interval = TimeInterval::fromString($interval[0], $interval[1]);
+            } elseif (!$interval instanceof TimeInterval) {
+                throw new \InvalidArgumentException(sprintf('Interval must be a %s', TimeInterval::class));
             }
 
-            $this->openingHoursIntervals[] = TimeInterval::fromString($interval[0], $interval[1]);
+            $intervals[] = $interval;
         }
 
-        usort($this->openingHoursIntervals, function (TimeInterval $a, TimeInterval $b) {
-            return ($a->getStart() > $b->getStart()) ? 1 : -1;
-        });
+        $this->openingHoursIntervals = $this->flattenOpeningHoursIntervals($intervals);
+    }
+
+    /**
+     * Flatten the intervals that overlap.
+     *
+     * @param TimeInterval[] $openingHoursIntervals
+     * @return TimeInterval[]
+     */
+    protected function flattenOpeningHoursIntervals(array $openingHoursIntervals)
+    {
+        usort(
+            $openingHoursIntervals,
+            function (TimeInterval $a, TimeInterval $b) {
+                return ($a->getStart() > $b->getStart()) ? 1 : -1;
+            }
+        );
+
+        // TODO finalize implementation.
+
+        return $openingHoursIntervals;
     }
 }

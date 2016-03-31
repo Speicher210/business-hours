@@ -26,7 +26,6 @@ class TimeInterval
      *
      * @param Time $start
      * @param Time $end
-     *
      * @throws \InvalidArgumentException If the opening time is not earlier than closing time
      */
     public function __construct(Time $start, Time $end)
@@ -46,14 +45,12 @@ class TimeInterval
      *
      * @param string $startTime The start time
      * @param string $endTime The end time
-     *
      * @return TimeInterval
-     *
      * @throws \InvalidArgumentException
      */
     public static function fromString($startTime, $endTime)
     {
-        return new self(Time::fromString($startTime), Time::fromString($endTime));
+        return new static(Time::fromString($startTime), Time::fromString($endTime));
     }
 
     /**

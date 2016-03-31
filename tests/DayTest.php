@@ -3,7 +3,6 @@
 namespace Speicher210\BusinessHours\Test;
 
 use Speicher210\BusinessHours\Day;
-use Speicher210\BusinessHours\Days;
 use Speicher210\BusinessHours\Time;
 
 /**
@@ -12,7 +11,7 @@ use Speicher210\BusinessHours\Time;
 class DayTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException \OutOfBoundsException
      * @expectedExceptionMessage Invalid day of week "152".
      */
     public function testExceptionInvalidDayOfWeek()
@@ -26,12 +25,12 @@ class DayTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionEmptyOpeningInterval()
     {
-        new Day(Days::MONDAY, []);
+        new Day(Day::WEEK_DAY_MONDAY, []);
     }
 
     public function testGetClosestOpeningHoursIntervalWhileInsideInterval()
     {
-        $day = new Day(Days::MONDAY, [['09:00', '10 AM'], ['12:15', '2 pm'], ['14:30', '18:30']]);
+        $day = new Day(Day::WEEK_DAY_MONDAY, [['09:00', '10 AM'], ['12:15', '2 pm'], ['14:30', '18:30']]);
         $closestInterval = $day->getClosestOpeningHoursInterval(new Time('13', '00'));
 
         $this->assertSame(12, $closestInterval->getStart()->getHours());
@@ -42,7 +41,7 @@ class DayTest extends \PHPUnit_Framework_TestCase
 
     public function testGetClosestOpeningHoursIntervalWhileBetweenIntervals()
     {
-        $day = new Day(Days::MONDAY, [['09:00', '10 AM'], ['12:00', '2 pm'], ['14:30', '18:25']]);
+        $day = new Day(Day::WEEK_DAY_MONDAY, [['09:00', '10 AM'], ['12:00', '2 pm'], ['14:30', '18:25']]);
         $closestInterval = $day->getClosestOpeningHoursInterval(new Time('14', '20'));
 
         $this->assertSame(14, $closestInterval->getStart()->getHours());
@@ -53,31 +52,33 @@ class DayTest extends \PHPUnit_Framework_TestCase
 
     public function testGetClosestOpeningHoursIntervalWhileOutsideIntervals()
     {
-        $day = new Day(Days::MONDAY, [['09:00', '10 AM'], ['12:00', '2 pm'], ['14:30', '18:30']]);
+        $day = new Day(Day::WEEK_DAY_MONDAY, [['09:00', '10 AM'], ['12:00', '2 pm'], ['14:30', '18:30']]);
         $closestInterval = $day->getClosestOpeningHoursInterval(new Time('19', '00'));
 
         $this->assertNull($closestInterval);
     }
 
-
-    public function testGetNextClosingTime()
+    public function testGetNextOpeningHoursInterval()
     {
         $this->markTestIncomplete();
     }
-
 
     public function testGetOpeningTime()
     {
         $this->markTestIncomplete();
     }
 
-
     public function testGetClosingTime()
     {
-
+        $this->markTestIncomplete();
     }
 
     public function testIsWithinOpeningHours()
+    {
+        $this->markTestIncomplete();
+    }
+
+    public function testGetDayOfWeekName()
     {
         $this->markTestIncomplete();
     }

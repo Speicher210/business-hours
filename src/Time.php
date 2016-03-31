@@ -57,7 +57,7 @@ class Time
             throw new \InvalidArgumentException(sprintf('Invalid time "%s".', $time));
         }
 
-        return self::fromDate($date);
+        return static::fromDate($date);
     }
 
     /**
@@ -68,7 +68,7 @@ class Time
      */
     public static function fromDate(\DateTime $date)
     {
-        return new self($date->format('H'), $date->format('i'), $date->format('s'));
+        return new static($date->format('H'), $date->format('i'), $date->format('s'));
     }
 
     /**

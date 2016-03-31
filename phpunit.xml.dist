@@ -10,7 +10,7 @@
          processIsolation="false"
          stopOnFailure="false">
     <testsuites>
-        <testsuite name="Speicher210 Fastbill API Test Suite">
+        <testsuite name="Business hours Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>
