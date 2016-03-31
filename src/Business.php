@@ -60,9 +60,9 @@ class Business implements BusinessInterface
         $dateInterval = $this->closestDateInterval($date);
 
         if ($this->within($date)) {
-            return ($date == $dateInterval[0]) ? $dateInterval[0] : $dateInterval[1];
+            return ($date == $dateInterval->getStart()) ? $dateInterval->getStart() : $dateInterval->getEnd();
         } else {
-            return $dateInterval[0];
+            return $dateInterval->getStart();
         }
     }
 
@@ -81,7 +81,7 @@ class Business implements BusinessInterface
      * Gets the closest business date interval after the given date.
      *
      * @param \DateTime $date
-     * @return \DateTime[]
+     * @return DateTimeInterval
      */
     private function getClosestDateIntervalAfter(\DateTime $date)
     {
@@ -105,7 +105,7 @@ class Business implements BusinessInterface
                     $closestTime->getEnd()->getSeconds()
                 );
 
-                return array($intervalStart, $intervalEnd);
+                return new DateTimeInterval($intervalStart, $intervalEnd);
             }
         }
 
@@ -130,7 +130,7 @@ class Business implements BusinessInterface
             $closestTime->getEnd()->getSeconds()
         );
 
-        return array($intervalStart, $intervalEnd);
+        return new DateTimeInterval($intervalStart, $intervalEnd);
     }
 
     /**
@@ -158,7 +158,7 @@ class Business implements BusinessInterface
      * Gets the closest interval endpoint after the given date.
      *
      * @param \DateTime $date
-     * @return \DateTime[]
+     * @return DateTimeInterval
      */
     private function getClosestInterval(\DateTime $date)
     {
@@ -182,7 +182,7 @@ class Business implements BusinessInterface
                     $closestTime->getEnd()->getSeconds()
                 );
 
-                return array($intervalStart, $intervalEnd);
+                return new DateTimeInterval($intervalStart, $intervalEnd);
             }
         }
 

@@ -27,7 +27,7 @@ interface BusinessInterface
      * Returns the closest business opening hours interval for the given date.
      *
      * @param \DateTime $date The date.
-     * @return \DateTime[]
+     * @return DateTimeInterval
      */
     public function closestDateInterval(\DateTime $date);
 }

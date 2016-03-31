@@ -60,20 +60,20 @@ class BusinessTest extends \PHPUnit_Framework_TestCase
         // Withing working hours
         $target = new \DateTime('2015-05-11 10:00:00'); // Monday
         $dateInterval = $business->closestDateInterval($target);
-        $this->assertEquals('2015-05-11 09:00:00', $dateInterval[0]->format('Y-m-d H:i:s')); // Monday
-        $this->assertEquals('2015-05-11 13:00:00', $dateInterval[1]->format('Y-m-d H:i:s')); // Monday
+        $this->assertEquals('2015-05-11 09:00:00', $dateInterval->getStart()->format('Y-m-d H:i:s')); // Monday
+        $this->assertEquals('2015-05-11 13:00:00', $dateInterval->getEnd()->format('Y-m-d H:i:s')); // Monday
 
         // The next day
         $target = new \DateTime('2015-05-12 17:30:00'); // Tuesday
         $dateInterval = $business->closestDateInterval($target);
-        $this->assertEquals('2015-05-15 10:00:00', $dateInterval[0]->format('Y-m-d H:i:s')); // Friday
-        $this->assertEquals('2015-05-15 13:00:00', $dateInterval[1]->format('Y-m-d H:i:s')); // Friday
+        $this->assertEquals('2015-05-15 10:00:00', $dateInterval->getStart()->format('Y-m-d H:i:s')); // Friday
+        $this->assertEquals('2015-05-15 13:00:00', $dateInterval->getEnd()->format('Y-m-d H:i:s')); // Friday
 
         // Next week
         $target = new \DateTime('2015-05-15 17:30:00'); // Friday
         $dateInterval = $business->closestDateInterval($target);
-        $this->assertEquals('2015-05-18 09:00:00', $dateInterval[0]->format('Y-m-d H:i:s')); // Next Monday
-        $this->assertEquals('2015-05-18 13:00:00', $dateInterval[1]->format('Y-m-d H:i:s')); // Next Monday
+        $this->assertEquals('2015-05-18 09:00:00', $dateInterval->getStart()->format('Y-m-d H:i:s')); // Next Monday
+        $this->assertEquals('2015-05-18 13:00:00', $dateInterval->getEnd()->format('Y-m-d H:i:s')); // Next Monday
     }
 
     public static function dataProviderTestGetNextChangeDateTime()
