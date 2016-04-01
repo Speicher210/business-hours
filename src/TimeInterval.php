@@ -5,28 +5,28 @@ namespace Speicher210\BusinessHours;
 /**
  * Represents a time interval.
  */
-class TimeInterval implements \JsonSerializable
+class TimeInterval implements TimeIntervalInterface
 {
     /**
      * The start time.
      *
      * @var Time
      */
-    private $start;
+    protected $start;
 
     /**
      * The end time.
      *
      * @var Time
      */
-    private $end;
+    protected $end;
 
     /**
-     * Creates a time interval.
+     * Constructor.
      *
-     * @param Time $start
-     * @param Time $end
-     * @throws \InvalidArgumentException If the opening time is not earlier than closing time
+     * @param Time $start The start time.
+     * @param Time $end The end time.
+     * @throws \InvalidArgumentException If the opening time is not earlier than closing time.
      */
     public function __construct(Time $start, Time $end)
     {
@@ -54,11 +54,7 @@ class TimeInterval implements \JsonSerializable
     }
 
     /**
-     * Checks if the interval contains the given time.
-     *
-     * @param Time $time
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function contains(Time $time)
     {
@@ -66,9 +62,7 @@ class TimeInterval implements \JsonSerializable
     }
 
     /**
-     * Get the start time.
-     *
-     * @return Time
+     * {@inheritdoc}
      */
     public function getStart()
     {
@@ -76,9 +70,7 @@ class TimeInterval implements \JsonSerializable
     }
 
     /**
-     * Get the end time.
-     *
-     * @return Time
+     * {@inheritdoc}
      */
     public function getEnd()
     {

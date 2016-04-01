@@ -32,7 +32,7 @@ abstract class AbstractDay implements DayInterface
     /**
      * The time intervals.
      *
-     * @var TimeInterval[]
+     * @var TimeIntervalInterface[]
      */
     protected $openingHoursIntervals;
 
@@ -40,7 +40,7 @@ abstract class AbstractDay implements DayInterface
      * Constructor.
      *
      * @param integer $dayOfWeek The day of week.
-     * @param TimeInterval[]|array $openingHoursIntervals The opening hours intervals.
+     * @param TimeIntervalInterface[]|array $openingHoursIntervals The opening hours intervals.
      */
     public function __construct($dayOfWeek, array $openingHoursIntervals)
     {
@@ -132,7 +132,7 @@ abstract class AbstractDay implements DayInterface
      */
     public function getClosingTime()
     {
-        /** @var TimeInterval $interval */
+        /** @var TimeIntervalInterface $interval */
         $interval = end($this->openingHoursIntervals);
 
         return $interval->getEnd();
@@ -170,7 +170,7 @@ abstract class AbstractDay implements DayInterface
     /**
      * Set the opening hours intervals.
      *
-     * @param TimeInterval[]|array $openingHoursIntervals The opening hours intervals.
+     * @param TimeIntervalInterface[]|array $openingHoursIntervals The opening hours intervals.
      * @throws \InvalidArgumentException If no days are passed or invalid interval is passed.
      */
     protected function setOpeningHoursIntervals(array $openingHoursIntervals)
@@ -184,8 +184,8 @@ abstract class AbstractDay implements DayInterface
         foreach ($openingHoursIntervals as $interval) {
             if (is_array($interval) && isset($interval[0]) && isset($interval[1])) {
                 $interval = TimeInterval::fromString($interval[0], $interval[1]);
-            } elseif (!$interval instanceof TimeInterval) {
-                throw new \InvalidArgumentException(sprintf('Interval must be a %s', TimeInterval::class));
+            } elseif (!$interval instanceof TimeIntervalInterface) {
+                throw new \InvalidArgumentException(sprintf('Interval must be a %s', TimeIntervalInterface::class));
             }
 
             $intervals[] = $interval;
@@ -197,14 +197,14 @@ abstract class AbstractDay implements DayInterface
     /**
      * Flatten the intervals that overlap.
      *
-     * @param TimeInterval[] $openingHoursIntervals
-     * @return TimeInterval[]
+     * @param TimeIntervalInterface[] $openingHoursIntervals
+     * @return TimeIntervalInterface[]
      */
     protected function flattenOpeningHoursIntervals(array $openingHoursIntervals)
     {
         usort(
             $openingHoursIntervals,
-            function (TimeInterval $a, TimeInterval $b) {
+            function (TimeIntervalInterface $a, TimeIntervalInterface $b) {
                 return ($a->getStart() > $b->getStart()) ? 1 : -1;
             }
         );

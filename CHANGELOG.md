@@ -4,7 +4,7 @@ All Notable changes to `speicher210/business-hours` will be documented in this f
 
 Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
-## [1.0.0] - 2016-xx-xx
+## [1.0.0] - 2016-04-xx
 
 ### Added
 - Initial release.

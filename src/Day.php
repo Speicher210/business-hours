@@ -10,7 +10,7 @@ class Day extends AbstractDay
     /**
      * Get the days of week.
      *
-     * @return int[]
+     * @return integer[]
      */
     public static function getDaysOfWeek()
     {

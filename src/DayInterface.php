@@ -32,7 +32,7 @@ interface DayInterface extends \JsonSerializable
     /**
      * Get the opening hours intervals.
      *
-     * @return TimeInterval[]
+     * @return TimeIntervalInterface[]
      */
     public function getOpeningHoursIntervals();
 
@@ -54,7 +54,7 @@ interface DayInterface extends \JsonSerializable
      * Get the closest opening hours interval for the given time (including it or in the future).
      *
      * @param Time $time The time.
-     * @return TimeInterval|null
+     * @return TimeIntervalInterface|null
      */
     public function getClosestOpeningHoursInterval(Time $time);
 
@@ -62,7 +62,7 @@ interface DayInterface extends \JsonSerializable
      * Get the next opening hours interval excluding current (if inside of given time).
      *
      * @param Time $time The time.
-     * @return TimeInterval|null
+     * @return TimeIntervalInterface|null
      */
     public function getNextOpeningHoursInterval(Time $time);
 
