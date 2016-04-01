@@ -11,6 +11,16 @@ use Speicher210\BusinessHours\Time;
  */
 class DayTest extends \PHPUnit_Framework_TestCase
 {
+    public function testConstructorOverlappingIntervals()
+    {
+        $day = new Day(Day::WEEK_DAY_MONDAY, [['09:00', '10:00'], ['9:15', '12:00'], ['14:30', '18:30'], ['11:00', '11:30'], ['12:45', '15:00'], ['18:30', '19:00']]);
+
+        $this->assertJsonStringEqualsJsonFile(
+            __DIR__ . '/Expected/Day/testConstructorOverlappingIntervals.json',
+            json_encode($day)
+        );
+    }
+
     /**
      * @expectedException \OutOfBoundsException
      * @expectedExceptionMessage Invalid day of week "152".
@@ -59,29 +69,82 @@ class DayTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($closestInterval);
     }
 
-    public function testGetNextOpeningHoursInterval()
+    public function testGetNextOpeningHoursIntervalWhileInsideInterval()
     {
-        $this->markTestIncomplete();
+        $day = new Day(Day::WEEK_DAY_MONDAY, [['09:00', '10 AM'], ['12:15', '2 pm'], ['14:30', '18:20']]);
+        $nextInterval = $day->getNextOpeningHoursInterval(new Time('13', '00'));
+
+        $this->assertSame(14, $nextInterval->getStart()->getHours());
+        $this->assertSame(30, $nextInterval->getStart()->getMinutes());
+        $this->assertSame(18, $nextInterval->getEnd()->getHours());
+        $this->assertSame(20, $nextInterval->getEnd()->getMinutes());
+    }
+
+    public function testGetNextOpeningHoursIntervalWhileBetweenIntervals()
+    {
+        $day = new Day(Day::WEEK_DAY_MONDAY, [['09:00', '10 AM'], ['12:00', '2 pm'], ['14:30', '18:25']]);
+        $nextInterval = $day->getNextOpeningHoursInterval(new Time('14', '20'));
+
+        $this->assertSame(14, $nextInterval->getStart()->getHours());
+        $this->assertSame(30, $nextInterval->getStart()->getMinutes());
+        $this->assertSame(18, $nextInterval->getEnd()->getHours());
+        $this->assertSame(25, $nextInterval->getEnd()->getMinutes());
+    }
+
+    public function testGetNextOpeningHoursIntervalWhileOutsideIntervals()
+    {
+        $day = new Day(Day::WEEK_DAY_MONDAY, [['09:00', '10 AM'], ['12:00', '2 pm'], ['14:30', '18:30']]);
+        $nextInterval = $day->getNextOpeningHoursInterval(new Time('19', '00'));
+
+        $this->assertNull($nextInterval);
     }
 
     public function testGetOpeningTime()
     {
-        $this->markTestIncomplete();
+        $day = new Day(Day::WEEK_DAY_MONDAY, [['12:00', '2 pm'], ['14:30', '18:30'], ['09:00', '10 AM']]);
+        $this->assertEquals(9, $day->getOpeningTime()->getHours());
+        $this->assertEquals(0, $day->getOpeningTime()->getMinutes());
     }
 
     public function testGetClosingTime()
     {
-        $this->markTestIncomplete();
+        $day = new Day(Day::WEEK_DAY_MONDAY, [['12:00', '2 pm'], ['14:30', '18:30'], ['09:00', '10 AM']]);
+        $this->assertEquals(18, $day->getClosingTime()->getHours());
+        $this->assertEquals(30, $day->getClosingTime()->getMinutes());
     }
 
-    public function testIsWithinOpeningHours()
+    public static function dataProviderTestIsWithinOpeningHours()
     {
-        $this->markTestIncomplete();
+        $day = new Day(Day::WEEK_DAY_MONDAY, [['12:00', '2 pm'], ['14:30', '18:30'], ['09:00', '10 AM']]);
+        
+        return array(
+            array($day, '14', '00', true),
+            array($day, '13', '00', true),
+            array($day, '18', '30', true),
+            array($day, '15', '00', true),
+            array($day, '09', '30', true),
+            array($day, '08', '00', false),
+            array($day, '20', '00', false)
+        );
+    }
+
+    /**
+     * @dataProvider dataProviderTestIsWithinOpeningHours
+     *
+     * @param Day $day The day to test.
+     * @param integer $hours The hours to test.
+     * @param integer $minutes The minutes to test.
+     * @param boolean $expected The expected value.
+     */
+    public function testIsWithinOpeningHours(Day $day, $hours, $minutes, $expected)
+    {
+        $this->assertEquals($expected, $day->isWithinOpeningHours(new Time($hours, $minutes)));
     }
 
     public function testGetDayOfWeekName()
     {
-        $this->markTestIncomplete();
+        $day = new Day(Day::WEEK_DAY_MONDAY, [['14:30', '18:30']]);
+        $this->assertSame('Monday', $day->getDayOfWeekName());
     }
 
     public function testJsonSerialize()
@@ -89,7 +152,7 @@ class DayTest extends \PHPUnit_Framework_TestCase
         $day = new Day(DayInterface::WEEK_DAY_MONDAY, [['12:00', '2 pm'], ['14:30', '18:30'], ['09:00', '10 AM']]);
 
         $this->assertJsonStringEqualsJsonFile(
-            __DIR__.'/Expected/Day/testJsonSerialize.json',
+            __DIR__ . '/Expected/Day/testJsonSerialize.json',
             json_encode($day)
         );
     }

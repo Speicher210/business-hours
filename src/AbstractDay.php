@@ -124,7 +124,10 @@ abstract class AbstractDay implements DayInterface
      */
     public function getClosingTime()
     {
-        return end($this->openingHoursIntervals)->getEnd();
+        /** @var TimeInterval $interval */
+        $interval = end($this->openingHoursIntervals);
+
+        return $interval->getEnd();
     }
 
     /**
@@ -198,8 +201,25 @@ abstract class AbstractDay implements DayInterface
             }
         );
 
-        // TODO finalize implementation.
+        $intervals = array();
+        $tmpInterval = null;
+        foreach ($openingHoursIntervals as $interval) {
+            if ($tmpInterval === null) {
+                $tmpInterval = $interval;
+                continue;
+            }
+            /** @var TimeInterval $tmpInterval */
+            if ($interval->getStart() <= $tmpInterval->getEnd()) {
+                $tmpInterval = new TimeInterval($tmpInterval->getStart(), max($tmpInterval->getEnd(), $interval->getEnd()));
+            } else {
+                $intervals[] = $tmpInterval;
+                $tmpInterval = $interval;
+            }
+        }
+        if ($tmpInterval !== null) {
+            $intervals[] = $tmpInterval;
+        }
 
-        return $openingHoursIntervals;
+        return $intervals;
     }
 }
