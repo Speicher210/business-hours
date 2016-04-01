@@ -210,12 +210,8 @@ abstract class AbstractDay implements DayInterface
         );
 
         $intervals = array();
-        $tmpInterval = null;
+        $tmpInterval = reset($openingHoursIntervals);
         foreach ($openingHoursIntervals as $interval) {
-            if ($tmpInterval === null) {
-                $tmpInterval = $interval;
-                continue;
-            }
             /** @var TimeInterval $tmpInterval */
             if ($interval->getStart() <= $tmpInterval->getEnd()) {
                 $tmpInterval = new TimeInterval(
@@ -227,9 +223,8 @@ abstract class AbstractDay implements DayInterface
                 $tmpInterval = $interval;
             }
         }
-        if ($tmpInterval !== null) {
-            $intervals[] = $tmpInterval;
-        }
+
+        $intervals[] = $tmpInterval;
 
         return $intervals;
     }
