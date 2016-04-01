@@ -15,6 +15,8 @@ class TimeTest extends \PHPUnit_Framework_TestCase
             array('invalid'),
             array('25:00'),
             array(20),
+            array(''),
+            array(null),
         );
     }
 
@@ -40,7 +42,7 @@ class TimeTest extends \PHPUnit_Framework_TestCase
             array('11:00:00', 11, 0),
             array('23:15', 23, 15),
             array('24:00', 0, 0),
-            array('+20 hours', (20 + (int)$now->format('H')) % 24, (int)$now->format('i'))
+            array('+20 hours', (20 + (int)$now->format('H')) % 24, (int)$now->format('i')),
         );
     }
 
@@ -158,7 +160,7 @@ class TimeTest extends \PHPUnit_Framework_TestCase
         return array(
             array(200000, 20, 00),
             array(93000, 9, 30),
-            array(123456, 12, 34, 56)
+            array(123456, 12, 34, 56),
         );
     }
 

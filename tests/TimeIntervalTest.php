@@ -35,7 +35,7 @@ class TimeIntervalTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(18, $interval->getEnd()->getHours());
         $this->assertEquals(30, $interval->getEnd()->getMinutes());
     }
-    
+
     public static function dataProviderTestContains()
     {
         $interval = TimeInterval::fromString('08:00', '18:30');

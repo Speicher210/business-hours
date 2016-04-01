@@ -30,6 +30,13 @@ interface DayInterface extends \JsonSerializable
     public function getDayOfWeekName();
 
     /**
+     * Get the opening hours intervals.
+     *
+     * @return TimeInterval[]
+     */
+    public function getOpeningHoursIntervals();
+
+    /**
      * Gets the opening time of the day.
      *
      * @return Time

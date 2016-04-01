@@ -71,6 +71,14 @@ abstract class AbstractDay implements DayInterface
     /**
      * {@inheritdoc}
      */
+    public function getOpeningHoursIntervals()
+    {
+        return $this->openingHoursIntervals;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getClosestOpeningHoursInterval(Time $time)
     {
         foreach ($this->openingHoursIntervals as $openingHoursInterval) {
@@ -210,7 +218,10 @@ abstract class AbstractDay implements DayInterface
             }
             /** @var TimeInterval $tmpInterval */
             if ($interval->getStart() <= $tmpInterval->getEnd()) {
-                $tmpInterval = new TimeInterval($tmpInterval->getStart(), max($tmpInterval->getEnd(), $interval->getEnd()));
+                $tmpInterval = new TimeInterval(
+                    $tmpInterval->getStart(),
+                    max($tmpInterval->getEnd(), $interval->getEnd())
+                );
             } else {
                 $intervals[] = $tmpInterval;
                 $tmpInterval = $interval;

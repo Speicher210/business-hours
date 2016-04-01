@@ -47,14 +47,18 @@ class Time implements \JsonSerializable
      *
      * @param string $time
      * @return Time
-     * @throws \InvalidArgumentException If the passed time is invalid
+     * @throws \InvalidArgumentException If the passed time is invalid.
      */
     public static function fromString($time)
     {
+        if (empty($time)) {
+            throw new \InvalidArgumentException('Invalid time "".');
+        }
+
         try {
             $date = new \DateTime($time);
         } catch (\Exception $e) {
-            throw new \InvalidArgumentException(sprintf('Invalid time "%s".', $time));
+            throw new \InvalidArgumentException(sprintf('Invalid time "%s".', $time), 0, $e);
         }
 
         return static::fromDate($date);

@@ -21,7 +21,7 @@ class Day extends AbstractDay
             self::WEEK_DAY_THURSDAY,
             self::WEEK_DAY_FRIDAY,
             self::WEEK_DAY_SATURDAY,
-            self::WEEK_DAY_SUNDAY
+            self::WEEK_DAY_SUNDAY,
         );
     }
 

@@ -5,6 +5,7 @@ namespace Speicher210\BusinessHours\Test;
 use Speicher210\BusinessHours\Day;
 use Speicher210\BusinessHours\DayInterface;
 use Speicher210\BusinessHours\Time;
+use Speicher210\BusinessHours\TimeInterval;
 
 /**
  * Test class for Day.
@@ -13,11 +14,25 @@ class DayTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstructorOverlappingIntervals()
     {
-        $day = new Day(Day::WEEK_DAY_MONDAY, [['09:00', '10:00'], ['9:15', '12:00'], ['14:30', '18:30'], ['11:00', '11:30'], ['12:45', '15:00'], ['18:30', '19:00']]);
+        $day = new Day(
+            Day::WEEK_DAY_MONDAY,
+            [
+                ['09:00', '10:00'],
+                ['09:15', '12:00'],
+                ['14:30', '18:30'],
+                ['11:00', '11:30'],
+                ['12:45', '15:00'],
+                ['18:30', '19:00'],
+            ]
+        );
 
-        $this->assertJsonStringEqualsJsonFile(
-            __DIR__ . '/Expected/Day/testConstructorOverlappingIntervals.json',
-            json_encode($day)
+        $expected = array(
+            TimeInterval::fromString('09:00', '12:00'),
+            TimeInterval::fromString('12:45', '19:00'),
+        );
+        $this->assertEquals(
+            $expected,
+            $day->getOpeningHoursIntervals()
         );
     }
 
@@ -116,7 +131,7 @@ class DayTest extends \PHPUnit_Framework_TestCase
     public static function dataProviderTestIsWithinOpeningHours()
     {
         $day = new Day(Day::WEEK_DAY_MONDAY, [['12:00', '2 pm'], ['14:30', '18:30'], ['09:00', '10 AM']]);
-        
+
         return array(
             array($day, '14', '00', true),
             array($day, '13', '00', true),
@@ -124,7 +139,7 @@ class DayTest extends \PHPUnit_Framework_TestCase
             array($day, '15', '00', true),
             array($day, '09', '30', true),
             array($day, '08', '00', false),
-            array($day, '20', '00', false)
+            array($day, '20', '00', false),
         );
     }
 
@@ -152,7 +167,7 @@ class DayTest extends \PHPUnit_Framework_TestCase
         $day = new Day(DayInterface::WEEK_DAY_MONDAY, [['12:00', '2 pm'], ['14:30', '18:30'], ['09:00', '10 AM']]);
 
         $this->assertJsonStringEqualsJsonFile(
-            __DIR__ . '/Expected/Day/testJsonSerialize.json',
+            __DIR__.'/Expected/Day/testJsonSerialize.json',
             json_encode($day)
         );
     }
