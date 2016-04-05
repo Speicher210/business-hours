@@ -62,15 +62,12 @@ class TimeTest extends \PHPUnit_Framework_TestCase
 
     public static function dataProviderTestFromString()
     {
-        $now = new \DateTime('now');
-
         return array(
             array('2pm', 14, 0, 0),
             array('11:00', 11, 0, 0),
             array('11:00:11', 11, 0, 11),
             array('23:15', 23, 15, 0),
-            array('24:00', 24, 0, 0),
-            array('+20 hours', (20 + (int)$now->format('H')) % 24, (int)$now->format('i'), (int)$now->format('s')),
+            array('24:00', 24, 0, 0)
         );
     }
 

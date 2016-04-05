@@ -34,6 +34,35 @@ class Business implements BusinessInterface
     }
 
     /**
+     * Get the days.
+     *
+     * @return DayInterface[]
+     */
+    public function getDays()
+    {
+        return array_values($this->days);
+    }
+
+    /**
+     * Add a set of days.
+     *
+     * @param DayInterface[] $days The days.
+     * @throws \InvalidArgumentException If no days are passed.
+     */
+    public function setDays(array $days)
+    {
+        if (empty($days)) {
+            throw new \InvalidArgumentException('At least one day must be added.');
+        }
+
+        $this->days = [];
+
+        foreach ($days as $day) {
+            $this->addDay($day);
+        }
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function within(\DateTime $date)
@@ -291,24 +320,5 @@ class Business implements BusinessInterface
     private function addDay(DayInterface $day)
     {
         $this->days[$day->getDayOfWeek()] = $day;
-    }
-
-    /**
-     * Add a set of days.
-     *
-     * @param DayInterface[] $days The days.
-     * @throws \InvalidArgumentException If no days are passed.
-     */
-    private function setDays(array $days)
-    {
-        if (empty($days)) {
-            throw new \InvalidArgumentException('At least one day must be added.');
-        }
-
-        $this->days = [];
-
-        foreach ($days as $day) {
-            $this->addDay($day);
-        }
     }
 }
