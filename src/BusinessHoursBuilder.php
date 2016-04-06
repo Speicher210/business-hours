@@ -28,4 +28,22 @@ class BusinessHoursBuilder
 
         return new BusinessHours($days, new \DateTimeZone($data['timezone']));
     }
+
+    /**
+     * Create a new BusinessHours with a different timezone from an existing BusinessHours.
+     *
+     * @param BusinessHours $businessHours The original business hours.
+     * @param \DateTimeZone $newTimezone The new timezone.
+     * @return BusinessHours
+     */
+    public static function shiftToTimezone(BusinessHours $businessHours, \DateTimeZone $newTimezone)
+    {
+        if ($businessHours->getTimezone()->getName() === $newTimezone->getName()) {
+            return clone $businessHours;
+        }
+
+        $days = array();
+        // TODO implement
+        return new BusinessHours($days, $newTimezone);
+    }
 }
