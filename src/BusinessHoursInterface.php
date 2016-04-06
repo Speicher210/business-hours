@@ -1,12 +1,27 @@
 <?php
 
 namespace Speicher210\BusinessHours;
+use Speicher210\BusinessHours\Day\DayInterface;
 
 /**
  * BusinessHours interface.
  */
 interface BusinessHoursInterface extends \JsonSerializable
 {
+    /**
+     * Get the timezone for this business hours.
+     *
+     * @return \DateTimeZone
+     */
+    public function getTimezone();
+
+    /**
+     * Get the days.
+     *
+     * @return DayInterface[]
+     */
+    public function getDays();
+
     /**
      * Check if a given date is within business hours.
      *

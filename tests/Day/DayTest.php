@@ -173,4 +173,19 @@ class DayTest extends \PHPUnit_Framework_TestCase
             json_encode($day)
         );
     }
+
+    public function testCloning()
+    {
+        $original = $day = DayBuilder::fromArray(DayInterface::WEEK_DAY_MONDAY, [['12:00', '2 pm']]);
+        $clone = clone $original;
+
+        $this->assertEquals($original, $clone);
+        $this->assertNotSame($original, $clone);
+
+        $originalOpeningHours = $original->getOpeningHoursIntervals();
+        $cloneOpeningHours = $clone->getOpeningHoursIntervals();
+        $this->assertEquals($originalOpeningHours, $cloneOpeningHours);
+
+        $this->assertNotSame($originalOpeningHours[0], $cloneOpeningHours[0]);
+    }
 }

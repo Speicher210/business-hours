@@ -37,6 +37,14 @@ class BusinessHours implements BusinessHoursInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getTimezone()
+    {
+        return $this->timezone;
+    }
+
+    /**
      * Get the days.
      *
      * @return DayInterface[]
@@ -323,5 +331,18 @@ class BusinessHours implements BusinessHoursInterface
     private function addDay(DayInterface $day)
     {
         $this->days[$day->getDayOfWeek()] = $day;
+    }
+
+    /**
+     * Clone.
+     */
+    public function __clone()
+    {
+        $days = array();
+        foreach ($this->days as $key => $day) {
+            $days[$key] = clone $day;
+        }
+
+        $this->days = $days;
     }
 }

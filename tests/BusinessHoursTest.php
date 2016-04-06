@@ -137,4 +137,22 @@ class BusinessHoursTest extends \PHPUnit_Framework_TestCase
             json_encode($business)
         );
     }
+
+    public function testCloning()
+    {
+        $original = new BusinessHours(
+            [
+                DayBuilder::fromArray(DayInterface::WEEK_DAY_MONDAY, [['09:00', '13:00'], ['14:00', '17:00']]),
+                DayBuilder::fromArray(DayInterface::WEEK_DAY_FRIDAY, [['10:00', '13:00'], ['14:00', '17:00']])
+            ],
+            new \DateTimeZone('Europe/London')
+        );
+
+        $clone = clone $original;
+
+        $this->assertEquals($original, $clone);
+        $this->assertNotSame($original, $clone);
+
+        $this->assertNotSame($original->getDays()[0], $clone->getDays()[0]);
+    }
 }

@@ -230,4 +230,18 @@ abstract class AbstractDay implements DayInterface
 
         return $intervals;
     }
+
+    /**
+     * Handle cloning.
+     */
+    public function __clone()
+    {
+        $openingHoursIntervals = array();
+
+        foreach ($this->openingHoursIntervals as $openingHoursInterval) {
+            $openingHoursIntervals[] = clone $openingHoursInterval;
+        }
+
+        $this->openingHoursIntervals = $openingHoursIntervals;
+    }
 }

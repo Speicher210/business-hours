@@ -87,4 +87,13 @@ class TimeInterval implements TimeIntervalInterface
             'end' => $this->end,
         );
     }
+
+    /**
+     * Clone.
+     */
+    public function __clone()
+    {
+        $this->start = clone $this->start;
+        $this->end = clone $this->end;
+    }
 }

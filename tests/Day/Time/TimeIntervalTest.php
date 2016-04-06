@@ -71,4 +71,16 @@ class TimeIntervalTest extends \PHPUnit_Framework_TestCase
             json_encode($interval)
         );
     }
+
+    public function testCloning()
+    {
+        $original = TimeInterval::fromString('08:00', '18:30');
+        $clone = clone $original;
+
+        $this->assertEquals($original, $clone);
+        $this->assertNotSame($original, $clone);
+
+        $this->assertNotSame($original->getStart(), $clone->getStart());
+        $this->assertNotSame($original->getEnd(), $clone->getEnd());
+    }
 }
