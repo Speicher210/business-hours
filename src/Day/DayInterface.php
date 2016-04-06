@@ -1,6 +1,9 @@
 <?php
 
-namespace Speicher210\BusinessHours;
+namespace Speicher210\BusinessHours\Day;
+
+use Speicher210\BusinessHours\Day\Time\Time;
+use Speicher210\BusinessHours\Day\Time\TimeIntervalInterface;
 
 /**
  * Day interface.

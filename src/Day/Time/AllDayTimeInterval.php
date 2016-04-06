@@ -1,6 +1,6 @@
 <?php
 
-namespace Speicher210\BusinessHours;
+namespace Speicher210\BusinessHours\Day\Time;
 
 /**
  * Time interval that spans covering the day completely.

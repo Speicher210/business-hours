@@ -2,8 +2,8 @@
 
 namespace Speicher210\BusinessHours\Test;
 
-use Speicher210\BusinessHours\AllDayTimeInterval;
-use Speicher210\BusinessHours\Time;
+use Speicher210\BusinessHours\Day\Time\AllDayTimeInterval;
+use Speicher210\BusinessHours\Day\Time\Time;
 
 /**
  * Test case for AllDayTimeInterval.

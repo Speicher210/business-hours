@@ -1,6 +1,6 @@
 <?php
 
-namespace Speicher210\BusinessHours;
+namespace Speicher210\BusinessHours\Day\Time;
 
 /**
  * Represents a time interval.
@@ -41,7 +41,7 @@ class TimeInterval implements TimeIntervalInterface
     }
 
     /**
-     * Creates a new interval from time strings.
+     * Create a new interval from time strings.
      *
      * @param string $startTime The start time
      * @param string $endTime The end time
@@ -50,7 +50,7 @@ class TimeInterval implements TimeIntervalInterface
      */
     public static function fromString($startTime, $endTime)
     {
-        return new static(Time::fromString($startTime), Time::fromString($endTime));
+        return new static(TimeBuilder::fromString($startTime), TimeBuilder::fromString($endTime));
     }
 
     /**

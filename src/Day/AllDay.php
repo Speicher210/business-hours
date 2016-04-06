@@ -1,6 +1,8 @@
 <?php
 
-namespace Speicher210\BusinessHours;
+namespace Speicher210\BusinessHours\Day;
+
+use Speicher210\BusinessHours\Day\Time\AllDayTimeInterval;
 
 /**
  * A day with an all day open interval.

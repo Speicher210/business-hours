@@ -1,6 +1,6 @@
 <?php
 
-namespace Speicher210\BusinessHours;
+namespace Speicher210\BusinessHours\Day\Time;
 
 /**
  * Interface for time interval.
@@ -8,7 +8,7 @@ namespace Speicher210\BusinessHours;
 interface TimeIntervalInterface extends \JsonSerializable
 {
     /**
-     * Checks if the interval contains the given time.
+     * Check if the interval contains the given time.
      *
      * @param Time $time The time to check.
      * @return boolean

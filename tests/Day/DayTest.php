@@ -1,11 +1,12 @@
 <?php
 
-namespace Speicher210\BusinessHours\Test;
+namespace Speicher210\BusinessHours\Test\Day;
 
-use Speicher210\BusinessHours\Day;
-use Speicher210\BusinessHours\DayInterface;
-use Speicher210\BusinessHours\Time;
-use Speicher210\BusinessHours\TimeInterval;
+use Speicher210\BusinessHours\Day\Day;
+use Speicher210\BusinessHours\Day\DayBuilder;
+use Speicher210\BusinessHours\Day\DayInterface;
+use Speicher210\BusinessHours\Day\Time\Time;
+use Speicher210\BusinessHours\Day\Time\TimeInterval;
 
 /**
  * Test class for Day.
@@ -14,7 +15,7 @@ class DayTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstructorOverlappingIntervals()
     {
-        $day = new Day(
+        $day = DayBuilder::fromArray(
             Day::WEEK_DAY_MONDAY,
             [
                 ['09:00', '10:00'],
@@ -57,7 +58,7 @@ class DayTest extends \PHPUnit_Framework_TestCase
 
     public function testGetClosestOpeningHoursIntervalWhileInsideInterval()
     {
-        $day = new Day(Day::WEEK_DAY_MONDAY, [['09:00', '10 AM'], ['12:15', '2 pm'], ['14:30', '18:30']]);
+        $day = DayBuilder::fromArray(Day::WEEK_DAY_MONDAY, [['09:00', '10 AM'], ['12:15', '2 pm'], ['14:30', '18:30']]);
         $closestInterval = $day->getClosestOpeningHoursInterval(new Time('13', '00'));
 
         $this->assertSame(12, $closestInterval->getStart()->getHours());
@@ -68,7 +69,7 @@ class DayTest extends \PHPUnit_Framework_TestCase
 
     public function testGetClosestOpeningHoursIntervalWhileBetweenIntervals()
     {
-        $day = new Day(Day::WEEK_DAY_MONDAY, [['09:00', '10 AM'], ['12:00', '2 pm'], ['14:30', '18:25']]);
+        $day = DayBuilder::fromArray(Day::WEEK_DAY_MONDAY, [['09:00', '10 AM'], ['12:00', '2 pm'], ['14:30', '18:25']]);
         $closestInterval = $day->getClosestOpeningHoursInterval(new Time('14', '20'));
 
         $this->assertSame(14, $closestInterval->getStart()->getHours());
@@ -79,7 +80,7 @@ class DayTest extends \PHPUnit_Framework_TestCase
 
     public function testGetClosestOpeningHoursIntervalWhileOutsideIntervals()
     {
-        $day = new Day(Day::WEEK_DAY_MONDAY, [['09:00', '10 AM'], ['12:00', '2 pm'], ['14:30', '18:30']]);
+        $day = DayBuilder::fromArray(Day::WEEK_DAY_MONDAY, [['09:00', '10 AM'], ['12:00', '2 pm'], ['14:30', '18:30']]);
         $closestInterval = $day->getClosestOpeningHoursInterval(new Time('19', '00'));
 
         $this->assertNull($closestInterval);
@@ -87,7 +88,7 @@ class DayTest extends \PHPUnit_Framework_TestCase
 
     public function testGetNextOpeningHoursIntervalWhileInsideInterval()
     {
-        $day = new Day(Day::WEEK_DAY_MONDAY, [['09:00', '10 AM'], ['12:15', '2 pm'], ['14:30', '18:20']]);
+        $day = DayBuilder::fromArray(Day::WEEK_DAY_MONDAY, [['09:00', '10 AM'], ['12:15', '2 pm'], ['14:30', '18:20']]);
         $nextInterval = $day->getNextOpeningHoursInterval(new Time('13', '00'));
 
         $this->assertSame(14, $nextInterval->getStart()->getHours());
@@ -98,7 +99,7 @@ class DayTest extends \PHPUnit_Framework_TestCase
 
     public function testGetNextOpeningHoursIntervalWhileBetweenIntervals()
     {
-        $day = new Day(Day::WEEK_DAY_MONDAY, [['09:00', '10 AM'], ['12:00', '2 pm'], ['14:30', '18:25']]);
+        $day = DayBuilder::fromArray(Day::WEEK_DAY_MONDAY, [['09:00', '10 AM'], ['12:00', '2 pm'], ['14:30', '18:25']]);
         $nextInterval = $day->getNextOpeningHoursInterval(new Time('14', '20'));
 
         $this->assertSame(14, $nextInterval->getStart()->getHours());
@@ -109,7 +110,7 @@ class DayTest extends \PHPUnit_Framework_TestCase
 
     public function testGetNextOpeningHoursIntervalWhileOutsideIntervals()
     {
-        $day = new Day(Day::WEEK_DAY_MONDAY, [['09:00', '10 AM'], ['12:00', '2 pm'], ['14:30', '18:30']]);
+        $day = DayBuilder::fromArray(Day::WEEK_DAY_MONDAY, [['09:00', '10 AM'], ['12:00', '2 pm'], ['14:30', '18:30']]);
         $nextInterval = $day->getNextOpeningHoursInterval(new Time('19', '00'));
 
         $this->assertNull($nextInterval);
@@ -117,21 +118,21 @@ class DayTest extends \PHPUnit_Framework_TestCase
 
     public function testGetOpeningTime()
     {
-        $day = new Day(Day::WEEK_DAY_MONDAY, [['12:00', '2 pm'], ['14:30', '18:30'], ['09:00', '10 AM']]);
+        $day = DayBuilder::fromArray(Day::WEEK_DAY_MONDAY, [['12:00', '2 pm'], ['14:30', '18:30'], ['09:00', '10 AM']]);
         $this->assertEquals(9, $day->getOpeningTime()->getHours());
         $this->assertEquals(0, $day->getOpeningTime()->getMinutes());
     }
 
     public function testGetClosingTime()
     {
-        $day = new Day(Day::WEEK_DAY_MONDAY, [['12:00', '2 pm'], ['14:30', '18:30'], ['09:00', '10 AM']]);
+        $day = DayBuilder::fromArray(Day::WEEK_DAY_MONDAY, [['12:00', '2 pm'], ['14:30', '18:30'], ['09:00', '10 AM']]);
         $this->assertEquals(18, $day->getClosingTime()->getHours());
         $this->assertEquals(30, $day->getClosingTime()->getMinutes());
     }
 
     public static function dataProviderTestIsWithinOpeningHours()
     {
-        $day = new Day(Day::WEEK_DAY_MONDAY, [['12:00', '2 pm'], ['14:30', '18:30'], ['09:00', '10 AM']]);
+        $day = DayBuilder::fromArray(Day::WEEK_DAY_MONDAY, [['12:00', '2 pm'], ['14:30', '18:30'], ['09:00', '10 AM']]);
 
         return array(
             array($day, '14', '00', true),
@@ -159,16 +160,16 @@ class DayTest extends \PHPUnit_Framework_TestCase
 
     public function testGetDayOfWeekName()
     {
-        $day = new Day(Day::WEEK_DAY_MONDAY, [['14:30', '18:30']]);
+        $day = DayBuilder::fromArray(Day::WEEK_DAY_MONDAY, [['14:30', '18:30']]);
         $this->assertSame('Monday', $day->getDayOfWeekName());
     }
 
     public function testJsonSerialize()
     {
-        $day = new Day(DayInterface::WEEK_DAY_MONDAY, [['12:00', '2 pm'], ['14:30', '18:30'], ['09:00', '10 AM']]);
+        $day = DayBuilder::fromArray(DayInterface::WEEK_DAY_MONDAY, [['12:00', '2 pm'], ['14:30', '18:30'], ['09:00', '10 AM']]);
 
         $this->assertJsonStringEqualsJsonFile(
-            __DIR__.'/Expected/Day/testJsonSerialize.json',
+            __DIR__ . '/Expected/Day/testJsonSerialize.json',
             json_encode($day)
         );
     }

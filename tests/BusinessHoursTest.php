@@ -2,20 +2,20 @@
 
 namespace Speicher210\BusinessHours\Test;
 
-use Speicher210\BusinessHours\Business;
-use Speicher210\BusinessHours\Day;
-use Speicher210\BusinessHours\DayInterface;
+use Speicher210\BusinessHours\BusinessHours;
+use Speicher210\BusinessHours\Day\DayBuilder;
+use Speicher210\BusinessHours\Day\DayInterface;
 
 /**
  * Test class for Business.
  */
-class BusinessTest extends \PHPUnit_Framework_TestCase
+class BusinessHoursTest extends \PHPUnit_Framework_TestCase
 {
     public function testWithin()
     {
-        $business = new Business(
+        $business = new BusinessHours(
             [
-                new Day(DayInterface::WEEK_DAY_MONDAY, [['09:00', '13:00'], ['14:00', '17:00']]),
+                DayBuilder::fromArray(DayInterface::WEEK_DAY_MONDAY, [['09:00', '13:00'], ['14:00', '17:00']]),
             ]
         );
 
@@ -34,9 +34,9 @@ class BusinessTest extends \PHPUnit_Framework_TestCase
         $tz = date_default_timezone_get();
         date_default_timezone_set('Europe/Paris');
 
-        $business = new Business(
+        $business = new BusinessHours(
             [
-                new Day(DayInterface::WEEK_DAY_FRIDAY, [['10:00', '13:00'], ['14:00', '17:00']]),
+                DayBuilder::fromArray(DayInterface::WEEK_DAY_FRIDAY, [['10:00', '13:00'], ['14:00', '17:00']]),
             ]
         );
 
@@ -50,10 +50,10 @@ class BusinessTest extends \PHPUnit_Framework_TestCase
 
     public function testClosestDateInterval()
     {
-        $business = new Business(
+        $business = new BusinessHours(
             [
-                new Day(DayInterface::WEEK_DAY_MONDAY, [['09:00', '13:00'], ['14:00', '17:00']]),
-                new Day(DayInterface::WEEK_DAY_FRIDAY, [['10:00', '13:00'], ['14:00', '17:00']]),
+                DayBuilder::fromArray(DayInterface::WEEK_DAY_MONDAY, [['09:00', '13:00'], ['14:00', '17:00']]),
+                DayBuilder::fromArray(DayInterface::WEEK_DAY_FRIDAY, [['10:00', '13:00'], ['14:00', '17:00']]),
             ]
         );
 
@@ -79,11 +79,11 @@ class BusinessTest extends \PHPUnit_Framework_TestCase
     public static function dataProviderTestGetNextChangeDateTime()
     {
         $utcTimeZone = new \DateTimeZone('UTC');
-        $business = new Business(
+        $business = new BusinessHours(
             [
-                new Day(DayInterface::WEEK_DAY_MONDAY, [['09:00', '13:00'], ['14:00', '17:00']]),
-                new Day(DayInterface::WEEK_DAY_WEDNESDAY, [['09:00', '12:00'], ['12:30', '13:30'], ['14:00', '17:00']]),
-                new Day(DayInterface::WEEK_DAY_FRIDAY, [['10:00', '13:00'], ['14:00', '17:00']]),
+                DayBuilder::fromArray(DayInterface::WEEK_DAY_MONDAY, [['09:00', '13:00'], ['14:00', '17:00']]),
+                DayBuilder::fromArray(DayInterface::WEEK_DAY_WEDNESDAY, [['09:00', '12:00'], ['12:30', '13:30'], ['14:00', '17:00']]),
+                DayBuilder::fromArray(DayInterface::WEEK_DAY_FRIDAY, [['10:00', '13:00'], ['14:00', '17:00']]),
             ],
             $utcTimeZone
         );
@@ -111,11 +111,11 @@ class BusinessTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider dataProviderTestGetNextChangeDateTime
      *
-     * @param Business $business
+     * @param BusinessHours $business
      * @param \DateTime $expectedDateTime
      * @param \DateTime $context
      */
-    public function testGetNextChangeDateTime(Business $business, \DateTime $expectedDateTime, \DateTime $context)
+    public function testGetNextChangeDateTime(BusinessHours $business, \DateTime $expectedDateTime, \DateTime $context)
     {
         // Withing working hours
         $date = $business->getNextChangeDateTime($context);
@@ -124,12 +124,10 @@ class BusinessTest extends \PHPUnit_Framework_TestCase
 
     public function testJsonSerialize()
     {
-        $business = new Business(
+        $business = new BusinessHours(
             [
-                new Day(DayInterface::WEEK_DAY_MONDAY, [['09:00', '13:00'], ['14:00', '17:00']]),
-                new Day(
-                    DayInterface::WEEK_DAY_FRIDAY, [['10:00', '13:00'], ['14:00', '17:00']]
-                ),
+                DayBuilder::fromArray(DayInterface::WEEK_DAY_MONDAY, [['09:00', '13:00'], ['14:00', '17:00']]),
+                DayBuilder::fromArray(DayInterface::WEEK_DAY_FRIDAY, [['10:00', '13:00'], ['14:00', '17:00']])
             ],
             new \DateTimeZone('Europe/London')
         );

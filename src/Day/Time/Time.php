@@ -1,6 +1,6 @@
 <?php
 
-namespace Speicher210\BusinessHours;
+namespace Speicher210\BusinessHours\Day\Time;
 
 /**
  * Represents a time.
@@ -40,44 +40,6 @@ class Time implements \JsonSerializable
         $this->setHours($hours);
         $this->setMinutes($minutes);
         $this->setSeconds($seconds);
-    }
-
-    /**
-     * Creates a new time from a string.
-     *
-     * @param string $time
-     * @return Time
-     * @throws \InvalidArgumentException If the passed time is invalid.
-     */
-    public static function fromString($time)
-    {
-        if (empty($time)) {
-            throw new \InvalidArgumentException('Invalid time "".');
-        }
-
-        try {
-            $date = new \DateTime($time);
-        } catch (\Exception $e) {
-            throw new \InvalidArgumentException(sprintf('Invalid time "%s".', $time), 0, $e);
-        }
-
-        $return = static::fromDate($date);
-        if (strpos($time, '24') === 0) {
-            $return->setHours(24);
-        }
-
-        return $return;
-    }
-
-    /**
-     * Creates a new time from a date.
-     *
-     * @param \DateTime $date
-     * @return Time
-     */
-    public static function fromDate(\DateTime $date)
-    {
-        return new static($date->format('H'), $date->format('i'), $date->format('s'));
     }
 
     /**

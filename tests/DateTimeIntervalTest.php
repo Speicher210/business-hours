@@ -29,7 +29,7 @@ class DateTimeIntervalTest extends \PHPUnit_Framework_TestCase
         $interval = new DateTimeInterval(new \DateTime('2016-03-07 11:20:50'), new \DateTime('2016-03-07 13:33:50'));
 
         $this->assertJsonStringEqualsJsonFile(
-            __DIR__.'/Expected/DateTimeInterval/testJsonSerialize.json',
+            __DIR__ . '/Expected/DateTimeInterval/testJsonSerialize.json',
             json_encode($interval)
         );
     }

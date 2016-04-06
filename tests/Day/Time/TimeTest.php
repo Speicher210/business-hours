@@ -1,8 +1,8 @@
 <?php
 
-namespace Speicher210\BusinessHours\Test;
+namespace Speicher210\BusinessHours\Test\Day\Time;
 
-use Speicher210\BusinessHours\Time;
+use Speicher210\BusinessHours\Day\Time\Time;
 
 /**
  * Test class for Time.
@@ -34,81 +34,6 @@ class TimeTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('\InvalidArgumentException', 'Invalid time');
 
         new Time($hours, $minutes, $seconds);
-    }
-
-    public static function dataProviderTestFromStringInvalid()
-    {
-        return array(
-            array('invalid'),
-            array('24:00:01'),
-            array('25:00'),
-            array(20),
-            array(''),
-            array(null),
-        );
-    }
-
-    /**
-     * @dataProvider dataProviderTestFromStringInvalid
-     *
-     * @param mixed $string The string to test.
-     */
-    public function testFromStringInvalid($string)
-    {
-        $this->setExpectedException('\InvalidArgumentException', sprintf('Invalid time "%s".', $string));
-
-        Time::fromString($string);
-    }
-
-    public static function dataProviderTestFromString()
-    {
-        return array(
-            array('2pm', 14, 0, 0),
-            array('11:00', 11, 0, 0),
-            array('11:00:11', 11, 0, 11),
-            array('23:15', 23, 15, 0),
-            array('24:00', 24, 0, 0)
-        );
-    }
-
-    /**
-     * @dataProvider dataProviderTestFromString
-     *
-     * @param string $string The time string to test.
-     * @param integer $expectedHours The expected hours.
-     * @param integer $expectedMinutes The expected minutes.
-     * @param integer $expectedSeconds The expected seconds.
-     */
-    public function testFromString($string, $expectedHours, $expectedMinutes, $expectedSeconds)
-    {
-        $time = Time::fromString($string);
-        $this->assertEquals($expectedHours, $time->getHours());
-        $this->assertEquals($expectedMinutes, $time->getMinutes());
-        $this->assertEquals($expectedSeconds, $time->getSeconds());
-    }
-
-    public static function dataProviderTestFromDate()
-    {
-        return array(
-            array(new \DateTime('2 AM'), 2, 0, 0),
-            array(new \DateTime('3:20:15 PM'), 15, 20, 15),
-        );
-    }
-
-    /**
-     * @dataProvider dataProviderTestFromDate
-     *
-     * @param \DateTime $date The date and time to test.
-     * @param integer $expectedHours The expected hours.
-     * @param integer $expectedMinutes The expected minutes.
-     * @param integer $expectedSeconds The expected seconds.
-     */
-    public function testFromDate(\DateTime $date, $expectedHours, $expectedMinutes, $expectedSeconds)
-    {
-        $time = Time::fromDate($date);
-        $this->assertEquals($expectedHours, $time->getHours());
-        $this->assertEquals($expectedMinutes, $time->getMinutes());
-        $this->assertEquals($expectedSeconds, $time->getSeconds());
     }
 
     public static function dataProviderTestIsAfterOrEqual()
@@ -212,7 +137,7 @@ class TimeTest extends \PHPUnit_Framework_TestCase
         $time = new Time('20', '30', '15');
 
         $this->assertJsonStringEqualsJsonFile(
-            __DIR__.'/Expected/Time/testJsonSerialize.json',
+            __DIR__ . '/Expected/Time/testJsonSerialize.json',
             json_encode($time)
         );
     }

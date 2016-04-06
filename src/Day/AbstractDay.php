@@ -1,6 +1,10 @@
 <?php
 
-namespace Speicher210\BusinessHours;
+namespace Speicher210\BusinessHours\Day;
+
+use Speicher210\BusinessHours\Day\Time\Time;
+use Speicher210\BusinessHours\Day\Time\TimeInterval;
+use Speicher210\BusinessHours\Day\Time\TimeIntervalInterface;
 
 /**
  * Abstract day class.
@@ -40,7 +44,7 @@ abstract class AbstractDay implements DayInterface
      * Constructor.
      *
      * @param integer $dayOfWeek The day of week.
-     * @param TimeIntervalInterface[]|array $openingHoursIntervals The opening hours intervals.
+     * @param TimeIntervalInterface[] $openingHoursIntervals The opening hours intervals.
      */
     public function __construct($dayOfWeek, array $openingHoursIntervals)
     {
@@ -170,7 +174,7 @@ abstract class AbstractDay implements DayInterface
     /**
      * Set the opening hours intervals.
      *
-     * @param TimeIntervalInterface[]|array $openingHoursIntervals The opening hours intervals.
+     * @param TimeIntervalInterface[] $openingHoursIntervals The opening hours intervals.
      * @throws \InvalidArgumentException If no days are passed or invalid interval is passed.
      */
     protected function setOpeningHoursIntervals(array $openingHoursIntervals)
@@ -182,9 +186,7 @@ abstract class AbstractDay implements DayInterface
         $intervals = array();
 
         foreach ($openingHoursIntervals as $interval) {
-            if (is_array($interval) && isset($interval[0]) && isset($interval[1])) {
-                $interval = TimeInterval::fromString($interval[0], $interval[1]);
-            } elseif (!$interval instanceof TimeIntervalInterface) {
+            if (!$interval instanceof TimeIntervalInterface) {
                 throw new \InvalidArgumentException(sprintf('Interval must be a %s', TimeIntervalInterface::class));
             }
 

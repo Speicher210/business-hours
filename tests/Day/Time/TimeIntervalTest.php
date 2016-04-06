@@ -1,9 +1,9 @@
 <?php
 
-namespace Speicher210\BusinessHours\Test;
+namespace Speicher210\BusinessHours\Test\Day\Time;
 
-use Speicher210\BusinessHours\Time;
-use Speicher210\BusinessHours\TimeInterval;
+use Speicher210\BusinessHours\Day\Time\Time;
+use Speicher210\BusinessHours\Day\Time\TimeInterval;
 
 class TimeIntervalTest extends \PHPUnit_Framework_TestCase
 {
@@ -67,7 +67,7 @@ class TimeIntervalTest extends \PHPUnit_Framework_TestCase
         $interval = TimeInterval::fromString('08:00:01', '18:30:02');
 
         $this->assertJsonStringEqualsJsonFile(
-            __DIR__.'/Expected/TimeInterval/testJsonSerialize.json',
+            __DIR__ . '/Expected/TimeInterval/testJsonSerialize.json',
             json_encode($interval)
         );
     }

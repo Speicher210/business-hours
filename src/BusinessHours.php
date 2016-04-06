@@ -2,10 +2,13 @@
 
 namespace Speicher210\BusinessHours;
 
+use Speicher210\BusinessHours\Day\DayInterface;
+use Speicher210\BusinessHours\Day\Time\TimeBuilder;
+
 /**
- * Default implementation of BusinessInterface.
+ * Default implementation of BusinessHoursInterface.
  */
-class Business implements BusinessInterface
+class BusinessHours implements BusinessHoursInterface
 {
     /**
      * The days.
@@ -22,7 +25,7 @@ class Business implements BusinessInterface
     protected $timezone;
 
     /**
-     * Creates a new business.
+     * Constructor.
      *
      * @param DayInterface[] $days
      * @param \DateTimeZone|null $timezone
@@ -71,7 +74,7 @@ class Business implements BusinessInterface
         $tmpDate->setTimezone($this->timezone);
 
         if (null !== $day = $this->getDay((int)$tmpDate->format('N'))) {
-            return $day->isWithinOpeningHours(Time::fromDate($tmpDate));
+            return $day->isWithinOpeningHours(TimeBuilder::fromDate($tmpDate));
         }
 
         return false;
@@ -118,7 +121,7 @@ class Business implements BusinessInterface
     }
 
     /**
-     * Gets the closest business date interval after the given date.
+     * Get the closest business hours date interval after the given date.
      *
      * @param \DateTime $date
      * @return DateTimeInterval
@@ -127,7 +130,7 @@ class Business implements BusinessInterface
     {
         $tmpDate = clone $date;
         $dayOfWeek = (int)$tmpDate->format('N');
-        $time = Time::fromDate($tmpDate);
+        $time = TimeBuilder::fromDate($tmpDate);
 
         if (null !== $day = $this->getDay($dayOfWeek)) {
             if (null !== $closestTime = $day->getClosestOpeningHoursInterval($time)) {
@@ -174,7 +177,7 @@ class Business implements BusinessInterface
     }
 
     /**
-     * Gets the business date after the given date (excluding holidays).
+     * Get the business hours date after the given date (excluding holidays).
      *
      * @param \DateTime $date
      * @return \DateTime
@@ -195,7 +198,7 @@ class Business implements BusinessInterface
     }
 
     /**
-     * Gets the closest interval endpoint after the given date.
+     * Get the closest interval endpoint after the given date.
      *
      * @param \DateTime $date
      * @return DateTimeInterval
@@ -204,7 +207,7 @@ class Business implements BusinessInterface
     {
         $tmpDate = clone $date;
         $dayOfWeek = (int)$tmpDate->format('N');
-        $time = Time::fromDate($tmpDate);
+        $time = TimeBuilder::fromDate($tmpDate);
 
         if (null !== $day = $this->getDay($dayOfWeek)) {
             if (null !== $closestTime = $day->getClosestOpeningHoursInterval($time)) {
@@ -230,7 +233,7 @@ class Business implements BusinessInterface
     }
 
     /**
-     * Gets the closest business day before a given day number (including it).
+     * Get the closest business hours day before a given day number (including it).
      *
      * @param integer $dayNumber
      * @return DayInterface|null
@@ -245,7 +248,7 @@ class Business implements BusinessInterface
     }
 
     /**
-     * Gets the closest business day after a given day number (including it).
+     * Get the closest business hours day after a given day number (including it).
      *
      * @param integer $dayNumber
      * @return DayInterface|null
@@ -260,7 +263,7 @@ class Business implements BusinessInterface
     }
 
     /**
-     * Gets the business day before the day number.
+     * Get the business hours day before the day number.
      *
      * @param integer $dayNumber
      * @return DayInterface|null
@@ -281,7 +284,7 @@ class Business implements BusinessInterface
     }
 
     /**
-     * Gets the business day after the day number.
+     * Get the business hours day after the day number.
      *
      * @param integer $dayNumber
      * @return DayInterface|null
