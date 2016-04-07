@@ -11,6 +11,15 @@ use Speicher210\BusinessHours\Day\DayInterface;
  */
 class BusinessHoursTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage At least one day must be added.
+     */
+    public function testExceptionIsThrownIfNoDaysAreSet()
+    {
+        new BusinessHours(array());
+    }
+
     public function testWithin()
     {
         $business = new BusinessHours(
@@ -46,34 +55,6 @@ class BusinessHoursTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($business->within($date));
 
         date_default_timezone_set($tz);
-    }
-
-    public function testClosestDateInterval()
-    {
-        $business = new BusinessHours(
-            [
-                DayBuilder::fromArray(DayInterface::WEEK_DAY_MONDAY, [['09:00', '13:00'], ['14:00', '17:00']]),
-                DayBuilder::fromArray(DayInterface::WEEK_DAY_FRIDAY, [['10:00', '13:00'], ['14:00', '17:00']]),
-            ]
-        );
-
-        // Withing working hours
-        $target = new \DateTime('2015-05-11 10:00:00'); // Monday
-        $dateInterval = $business->closestDateInterval($target);
-        $this->assertEquals('2015-05-11 09:00:00', $dateInterval->getStart()->format('Y-m-d H:i:s')); // Monday
-        $this->assertEquals('2015-05-11 13:00:00', $dateInterval->getEnd()->format('Y-m-d H:i:s')); // Monday
-
-        // The next day
-        $target = new \DateTime('2015-05-12 17:30:00'); // Tuesday
-        $dateInterval = $business->closestDateInterval($target);
-        $this->assertEquals('2015-05-15 10:00:00', $dateInterval->getStart()->format('Y-m-d H:i:s')); // Friday
-        $this->assertEquals('2015-05-15 13:00:00', $dateInterval->getEnd()->format('Y-m-d H:i:s')); // Friday
-
-        // Next week
-        $target = new \DateTime('2015-05-15 17:30:00'); // Friday
-        $dateInterval = $business->closestDateInterval($target);
-        $this->assertEquals('2015-05-18 09:00:00', $dateInterval->getStart()->format('Y-m-d H:i:s')); // Next Monday
-        $this->assertEquals('2015-05-18 13:00:00', $dateInterval->getEnd()->format('Y-m-d H:i:s')); // Next Monday
     }
 
     public static function dataProviderTestGetNextChangeDateTime()
@@ -117,8 +98,53 @@ class BusinessHoursTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetNextChangeDateTime(BusinessHours $business, \DateTime $expectedDateTime, \DateTime $context)
     {
-        // Withing working hours
         $date = $business->getNextChangeDateTime($context);
+        $this->assertEquals($expectedDateTime, $date);
+    }
+
+    public static function dataProviderTestGetPreviousChangeDateTime()
+    {
+        $utcTimeZone = new \DateTimeZone('UTC');
+        $business = new BusinessHours(
+            [
+                DayBuilder::fromArray(DayInterface::WEEK_DAY_MONDAY, [['09:00', '13:00'], ['14:00', '17:00']]),
+                DayBuilder::fromArray(DayInterface::WEEK_DAY_WEDNESDAY, [['09:00', '12:00'], ['12:30', '13:30'], ['14:00', '17:00']]),
+                DayBuilder::fromArray(DayInterface::WEEK_DAY_FRIDAY, [['10:00', '13:00'], ['14:00', '17:00']]),
+            ],
+            $utcTimeZone
+        );
+
+        return array(
+            // Monday
+            array($business, new \DateTime('2016-03-07 09:00:00'), new \DateTime('2016-03-07 10:00:00', $utcTimeZone)),
+            // Friday / Thursday
+            array($business, new \DateTime('2016-03-09 17:00:00'), new \DateTime('2016-03-10 17:30:00', $utcTimeZone)),
+            // Monday / Friday
+            array($business, new \DateTime('2016-03-25 17:00:00'), new \DateTime('2016-03-25 17:30:00', $utcTimeZone)),
+            // Wednesday
+            array($business, new \DateTime('2016-03-30 12:00:00'), new \DateTime('2016-03-30 12:15:00', $utcTimeZone)),
+            // Monday
+            array(
+                $business,
+                new \DateTime('2016-03-25 17:00:00'),
+                new \DateTime('2016-03-28 10:00:00', new \DateTimeZone('Europe/Bucharest')),
+            ),
+            array($business, new \DateTime('2016-03-28 09:00:00'), new \DateTime('2016-03-28 09:00:00', $utcTimeZone)),
+            array($business, new \DateTime('2016-03-28 17:00:00'), new \DateTime('2016-03-28 17:00:00', $utcTimeZone)),
+        );
+    }
+
+    /**
+     * @dataProvider dataProviderTestGetPreviousChangeDateTime
+     * @group ttt
+     *
+     * @param BusinessHours $business
+     * @param \DateTime $expectedDateTime
+     * @param \DateTime $context
+     */
+    public function testGetPreviousChangeDateTime(BusinessHours $business, \DateTime $expectedDateTime, \DateTime $context)
+    {
+        $date = $business->getPreviousChangeDateTime($context);
         $this->assertEquals($expectedDateTime, $date);
     }
 

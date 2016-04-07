@@ -2,13 +2,11 @@
 
 namespace Speicher210\BusinessHours;
 
-use Speicher210\BusinessHours\Day\AllDay;
 use Speicher210\BusinessHours\Day\Day;
 use Speicher210\BusinessHours\Day\DayBuilder;
 use Speicher210\BusinessHours\Day\DayInterface;
 use Speicher210\BusinessHours\Day\Time\TimeBuilder;
 use Speicher210\BusinessHours\Day\Time\TimeInterval;
-use Speicher210\BusinessHours\Day\Time\TimeIntervalInterface;
 
 /**
  * Build a BusinessHours concrete implementation.
@@ -44,16 +42,16 @@ class BusinessHoursBuilder
      */
     public static function shiftToTimezone(BusinessHours $businessHours, \DateTimeZone $newTimezone)
     {
+        $now = new \DateTime('now');
         $oldTimezone = $businessHours->getTimezone();
-        $offset = $newTimezone->getOffset(new \DateTime('now', $newTimezone)) - $oldTimezone->getOffset(new \DateTime('now', $oldTimezone));
+        $offset = $newTimezone->getOffset($now) - $oldTimezone->getOffset($now);
 
         if ($offset === 0) {
             return clone $businessHours;
         }
 
-        $tmpDays = array();
+        $tmpDays = array_fill_keys(Day::getDaysOfWeek(), array());
         foreach ($businessHours->getDays() as $day) {
-            $currentDayIntervals = array();
             foreach ($day->getOpeningHoursIntervals() as $interval) {
                 $start = $interval->getStart()->toSeconds() + $offset;
                 $end = $interval->getEnd()->toSeconds() + $offset;
@@ -63,68 +61,55 @@ class BusinessHoursBuilder
                     $startForCurrentDay = max($start, 0);
                     $endForCurrentDay = min($end, 86400);
 
-                    $currentDayIntervals[] = new TimeInterval(TimeBuilder::fromSeconds($startForCurrentDay), TimeBuilder::fromSeconds($endForCurrentDay));
+                    $dayOfWeek = $day->getDayOfWeek();
+                    $interval = new TimeInterval(TimeBuilder::fromSeconds($startForCurrentDay), TimeBuilder::fromSeconds($endForCurrentDay));
+                    array_push($tmpDays[$dayOfWeek], $interval);
                 }
 
                 // Previous day.
                 if ($start < 0) {
                     $startForPreviousDay = 86400 + $start;
                     $endForPreviousDay = min(86400, 86400 + $end);
-                    $previousDayInterval = new TimeInterval(TimeBuilder::fromSeconds($startForPreviousDay), TimeBuilder::fromSeconds($endForPreviousDay));
-                    $previousDayOfWeek = self::getPreviousDayOfWeek($day->getDayOfWeek());
 
-                    if (isset($tmpDays[$previousDayOfWeek])) {
-                        $tmpDays[$previousDayOfWeek] = array_merge($tmpDays[$previousDayOfWeek], array($previousDayInterval));
-                    } else {
-                        $tmpDays[$previousDayOfWeek] = array($previousDayInterval);
-                    }
-
+                    $dayOfWeek = self::getPreviousDayOfWeek($day->getDayOfWeek());
+                    $interval = new TimeInterval(TimeBuilder::fromSeconds($startForPreviousDay), TimeBuilder::fromSeconds($endForPreviousDay));
+                    array_push($tmpDays[$dayOfWeek], $interval);
                 }
 
                 // Next day.
                 if ($end > 86400) {
                     $startForNextDay = max(0, $start - 86400);
                     $endForNextDay = $end - 86400;
-                    $nextDayInterval = new TimeInterval(TimeBuilder::fromSeconds($startForNextDay), TimeBuilder::fromSeconds($endForNextDay));
-                    $nextDayOfWeek = self::getNextDayOfWeek($day->getDayOfWeek());
-                    if (isset($tmpDays[$nextDayOfWeek])) {
-                        $tmpDays[$nextDayOfWeek] = array_merge($tmpDays[$nextDayOfWeek], array($nextDayInterval));
-                    } else {
-                        $tmpDays[$nextDayOfWeek] = array($nextDayInterval);
-                    }
+
+                    $dayOfWeek = self::getNextDayOfWeek($day->getDayOfWeek());
+                    $interval = new TimeInterval(TimeBuilder::fromSeconds($startForNextDay), TimeBuilder::fromSeconds($endForNextDay));
+                    array_push($tmpDays[$dayOfWeek], $interval);
                 }
             };
-
-            if (count($currentDayIntervals)) {
-                if (isset($tmpDays[$day->getDayOfWeek()])) {
-                    $tmpDays[$day->getDayOfWeek()] = array_merge($tmpDays[$day->getDayOfWeek()], $currentDayIntervals);
-                } else {
-                    $tmpDays[$day->getDayOfWeek()] = $currentDayIntervals;
-                };
-            }
         }
 
-        ksort($tmpDays);
-
-        $days = array();
-        foreach ($tmpDays as $dayOfWeek => $intervals) {
-            $day = new Day($dayOfWeek, $intervals);
-            $tmpIntervals = $day->getOpeningHoursIntervals();
-
-            /** @var TimeIntervalInterface $interval */
-            $interval = reset($tmpIntervals);
-
-            if (count($tmpIntervals) === 1
-                && $interval->getStart()->getHours() === 0 && $interval->getStart()->getMinutes() === 0
-                && $interval->getEnd()->getHours() === 24 && $interval->getEnd()->getMinutes() === 0
-            ) {
-                $day = new AllDay($dayOfWeek);
-            }
-
-            $days[] = $day;
-        }
+        $tmpDays = array_filter($tmpDays);
+        $days = self::flattenDaysIntervals($tmpDays);
 
         return new BusinessHours($days, $newTimezone);
+    }
+
+    /**
+     * Flatten days intervals.
+     *
+     * @param array $days The days to flatten.
+     * @return DayInterface[]
+     */
+    private static function flattenDaysIntervals(array $days)
+    {
+        ksort($days);
+
+        $flattenDays = array();
+        foreach ($days as $dayOfWeek => $intervals) {
+            $flattenDays[] = DayBuilder::fromArray($dayOfWeek, $intervals);;
+        }
+
+        return $flattenDays;
     }
 
     /**

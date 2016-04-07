@@ -65,11 +65,7 @@ abstract class AbstractDay implements DayInterface
      */
     public function getDayOfWeekName()
     {
-        if (isset($this->daysOfWeek[$this->dayOfWeek])) {
-            return $this->daysOfWeek[$this->dayOfWeek];
-        }
-
-        throw new \OutOfBoundsException('Invalid day of week.');
+        return $this->daysOfWeek[$this->dayOfWeek];
     }
 
     /**
@@ -83,7 +79,21 @@ abstract class AbstractDay implements DayInterface
     /**
      * {@inheritdoc}
      */
-    public function getClosestOpeningHoursInterval(Time $time)
+    public function getClosestPreviousOpeningHoursInterval(Time $time)
+    {
+        foreach ($this->openingHoursIntervals as $openingHoursInterval) {
+            if ($openingHoursInterval->contains($time)) {
+                return $openingHoursInterval;
+            }
+        }
+
+        return $this->getPreviousOpeningHoursInterval($time);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getClosestNextOpeningHoursInterval(Time $time)
     {
         foreach ($this->openingHoursIntervals as $openingHoursInterval) {
             if ($openingHoursInterval->contains($time)) {
@@ -92,6 +102,36 @@ abstract class AbstractDay implements DayInterface
         }
 
         return $this->getNextOpeningHoursInterval($time);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPreviousOpeningHoursInterval(Time $time)
+    {
+        $closestTime = null;
+        $closestInterval = null;
+
+        /** @var TimeIntervalInterface $interval */
+        foreach (array_reverse($this->openingHoursIntervals) as $interval) {
+            $distance = $time->toSeconds() - $interval->getEnd()->toSeconds();
+
+            if ($distance < 0) {
+                continue;
+            }
+
+            if (null === $closestTime) {
+                $closestTime = $interval->getEnd();
+                $closestInterval = $interval;
+            }
+
+            if ($distance < ($time->toSeconds() - $closestTime->toSeconds())) {
+                $closestTime = $interval->getEnd();
+                $closestInterval = $interval;
+            }
+        }
+
+        return $closestInterval;
     }
 
     /**
@@ -114,7 +154,7 @@ abstract class AbstractDay implements DayInterface
                 $closestInterval = $interval;
             }
 
-            if ($distance < $closestTime->toSeconds() - $time->toSeconds()) {
+            if ($distance < ($closestTime->toSeconds() - $time->toSeconds())) {
                 $closestTime = $interval->getStart();
                 $closestInterval = $interval;
             }

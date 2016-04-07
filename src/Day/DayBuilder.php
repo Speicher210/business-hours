@@ -5,6 +5,7 @@ namespace Speicher210\BusinessHours\Day;
 use Speicher210\BusinessHours\Day\Time\Time;
 use Speicher210\BusinessHours\Day\Time\TimeBuilder;
 use Speicher210\BusinessHours\Day\Time\TimeInterval;
+use Speicher210\BusinessHours\Day\Time\TimeIntervalInterface;
 
 /**
  * Build a DayInterface concrete implementation.
@@ -22,13 +23,25 @@ class DayBuilder
     {
         $intervals = array();
         foreach ($openingIntervals as $interval) {
-            $intervals[] = new TimeInterval(
-                TimeBuilder::fromString($interval[0]),
-                TimeBuilder::fromString($interval[1])
-            );
+            if ($interval instanceof TimeIntervalInterface) {
+                $intervals[] = $interval;
+            } elseif (is_array($intervals)) {
+                $intervals[] = new TimeInterval(
+                    TimeBuilder::fromString($interval[0]),
+                    TimeBuilder::fromString($interval[1])
+                );
+            }
         }
 
-        return new Day($dayOfWeek, $intervals);
+        $day = new Day($dayOfWeek, $intervals);
+        $dayIntervals = $day->getOpeningHoursIntervals();
+        /** @var TimeIntervalInterface $dayInterval */
+        $dayInterval = reset($dayIntervals);
+        if (self::isIntervalAllDay($dayInterval->getStart(), $dayInterval->getEnd())) {
+            return new AllDay($dayOfWeek);
+        }
+
+        return $day;
     }
 
     /**

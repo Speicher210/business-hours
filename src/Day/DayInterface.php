@@ -54,12 +54,28 @@ interface DayInterface extends \JsonSerializable
     public function getClosingTime();
 
     /**
+     * Get the closest opening hours interval for the given time (including it or in the past).
+     *
+     * @param Time $time The time.
+     * @return TimeIntervalInterface|null
+     */
+    public function getClosestPreviousOpeningHoursInterval(Time $time);
+
+    /**
      * Get the closest opening hours interval for the given time (including it or in the future).
      *
      * @param Time $time The time.
      * @return TimeIntervalInterface|null
      */
-    public function getClosestOpeningHoursInterval(Time $time);
+    public function getClosestNextOpeningHoursInterval(Time $time);
+
+    /**
+     * Get the previous opening hours interval excluding current (if inside of given time).
+     *
+     * @param Time $time The time.
+     * @return TimeIntervalInterface|null
+     */
+    public function getPreviousOpeningHoursInterval(Time $time);
 
     /**
      * Get the next opening hours interval excluding current (if inside of given time).

@@ -4,6 +4,7 @@ namespace Speicher210\BusinessHours;
 
 use Speicher210\BusinessHours\Day\DayInterface;
 use Speicher210\BusinessHours\Day\Time\TimeBuilder;
+use Speicher210\BusinessHours\Day\Time\TimeIntervalInterface;
 
 /**
  * Default implementation of BusinessHoursInterface.
@@ -60,7 +61,7 @@ class BusinessHours implements BusinessHoursInterface
      * @param DayInterface[] $days The days.
      * @throws \InvalidArgumentException If no days are passed.
      */
-    public function setDays(array $days)
+    protected function setDays(array $days)
     {
         if (empty($days)) {
             throw new \InvalidArgumentException('At least one day must be added.');
@@ -91,13 +92,11 @@ class BusinessHours implements BusinessHoursInterface
     /**
      * {@inheritdoc}
      */
-    public function getNextChangeDateTime(\DateTime $date = null)
+    public function getNextChangeDateTime(\DateTime $date)
     {
-        if ($date === null) {
-            $date = new \DateTime('now', $this->timezone);
-        }
-
-        $dateInterval = $this->closestDateInterval($date);
+        $tmpDate = clone $date;
+        $tmpDate->setTimezone($this->timezone);
+        $dateInterval = $this->getNextClosestInterval($tmpDate);
 
         if ($this->within($date)) {
             return ($date == $dateInterval->getStart()) ? $dateInterval->getStart() : $dateInterval->getEnd();
@@ -109,12 +108,17 @@ class BusinessHours implements BusinessHoursInterface
     /**
      * {@inheritdoc}
      */
-    public function closestDateInterval(\DateTime $date)
+    public function getPreviousChangeDateTime(\DateTime $date)
     {
         $tmpDate = clone $date;
         $tmpDate->setTimezone($this->timezone);
+        $dateInterval = $this->getPreviousClosestInterval($tmpDate);
 
-        return $this->getClosestInterval($tmpDate);
+        if ($this->within($date)) {
+            return ($date == $dateInterval->getEnd()) ? $dateInterval->getEnd() : $dateInterval->getStart();
+        } else {
+            return $dateInterval->getEnd();
+        }
     }
 
     /**
@@ -129,9 +133,37 @@ class BusinessHours implements BusinessHoursInterface
     }
 
     /**
+     * Get the closest business hours date interval before the given date.
+     *
+     * @param \DateTime $date The given date.
+     * @return DateTimeInterval
+     */
+    private function getClosestDateIntervalBefore(\DateTime $date)
+    {
+        $tmpDate = clone $date;
+        $dayOfWeek = (int)$tmpDate->format('N');
+        $time = TimeBuilder::fromDate($tmpDate);
+
+        if (null !== $day = $this->getDay($dayOfWeek)) {
+            if (null !== $closestTime = $day->getClosestPreviousOpeningHoursInterval($time)) {
+                return $this->buildDateTimeInterval($tmpDate, $closestTime);
+            }
+        }
+
+        $tmpDate = $this->getDateBefore($tmpDate);
+
+        $closestDay = $this->getClosestDayBefore((int)$tmpDate->format('N'));
+
+        $closingTime = $closestDay->getClosingTime();
+        $closestTime = $closestDay->getClosestPreviousOpeningHoursInterval($closingTime);
+
+        return $this->buildDateTimeInterval($tmpDate, $closestTime);
+    }
+
+    /**
      * Get the closest business hours date interval after the given date.
      *
-     * @param \DateTime $date
+     * @param \DateTime $date The given date.
      * @return DateTimeInterval
      */
     private function getClosestDateIntervalAfter(\DateTime $date)
@@ -141,22 +173,8 @@ class BusinessHours implements BusinessHoursInterface
         $time = TimeBuilder::fromDate($tmpDate);
 
         if (null !== $day = $this->getDay($dayOfWeek)) {
-            if (null !== $closestTime = $day->getClosestOpeningHoursInterval($time)) {
-                $intervalStart = clone $tmpDate;
-                $intervalEnd = clone $tmpDate;
-
-                $intervalStart->setTime(
-                    $closestTime->getStart()->getHours(),
-                    $closestTime->getStart()->getMinutes(),
-                    $closestTime->getStart()->getSeconds()
-                );
-                $intervalEnd->setTime(
-                    $closestTime->getEnd()->getHours(),
-                    $closestTime->getEnd()->getMinutes(),
-                    $closestTime->getEnd()->getSeconds()
-                );
-
-                return new DateTimeInterval($intervalStart, $intervalEnd);
+            if (null !== $closestTime = $day->getClosestNextOpeningHoursInterval($time)) {
+                return $this->buildDateTimeInterval($tmpDate, $closestTime);
             }
         }
 
@@ -165,27 +183,58 @@ class BusinessHours implements BusinessHoursInterface
         $closestDay = $this->getClosestDayBefore((int)$tmpDate->format('N'));
 
         $openingTime = $closestDay->getOpeningTime();
-        $closestTime = $closestDay->getClosestOpeningHoursInterval($openingTime);
+        $closestTime = $closestDay->getClosestNextOpeningHoursInterval($openingTime);
 
-        $intervalStart = clone $tmpDate;
-        $intervalEnd = clone $tmpDate;
+        return $this->buildDateTimeInterval($tmpDate, $closestTime);
+    }
+
+    /**
+     * Build a new date time interval for a date.
+     *
+     * @param \DateTime $date The date.
+     * @param TimeIntervalInterface $timeInterval
+     * @return DateTimeInterval
+     */
+    private function buildDateTimeInterval(\DateTime $date, TimeIntervalInterface $timeInterval)
+    {
+        $intervalStart = clone $date;
+        $intervalEnd = clone $date;
 
         $intervalStart->setTime(
-            $closestTime->getStart()->getHours(),
-            $closestTime->getStart()->getMinutes(),
-            $closestTime->getStart()->getSeconds()
+            $timeInterval->getStart()->getHours(),
+            $timeInterval->getStart()->getMinutes(),
+            $timeInterval->getStart()->getSeconds()
         );
         $intervalEnd->setTime(
-            $closestTime->getEnd()->getHours(),
-            $closestTime->getEnd()->getMinutes(),
-            $closestTime->getEnd()->getSeconds()
+            $timeInterval->getEnd()->getHours(),
+            $timeInterval->getEnd()->getMinutes(),
+            $timeInterval->getEnd()->getSeconds()
         );
 
         return new DateTimeInterval($intervalStart, $intervalEnd);
     }
 
     /**
-     * Get the business hours date after the given date (excluding holidays).
+     * Get the business hours date before the given date.
+     *
+     * @param \DateTime $date
+     * @return \DateTime
+     */
+    private function getDateBefore(\DateTime $date)
+    {
+        $tmpDate = clone $date;
+        $tmpDate->modify('-1 day');
+
+        $dayOfWeek = (int)$tmpDate->format('N');
+        $closestDay = $this->getClosestDayBefore($dayOfWeek);
+        if ($closestDay->getDayOfWeek() !== $dayOfWeek) {
+            $tmpDate->modify(sprintf('last %s', $closestDay->getDayOfWeekName()));
+        }
+        return $tmpDate;
+    }
+
+    /**
+     * Get the business hours date after the given date.
      *
      * @param \DateTime $date
      * @return \DateTime
@@ -211,29 +260,36 @@ class BusinessHours implements BusinessHoursInterface
      * @param \DateTime $date
      * @return DateTimeInterval
      */
-    private function getClosestInterval(\DateTime $date)
+    private function getPreviousClosestInterval(\DateTime $date)
     {
         $tmpDate = clone $date;
         $dayOfWeek = (int)$tmpDate->format('N');
         $time = TimeBuilder::fromDate($tmpDate);
 
         if (null !== $day = $this->getDay($dayOfWeek)) {
-            if (null !== $closestTime = $day->getClosestOpeningHoursInterval($time)) {
-                $intervalStart = clone $tmpDate;
-                $intervalEnd = clone $tmpDate;
+            if (null !== $closestTime = $day->getClosestPreviousOpeningHoursInterval($time)) {
+                return $this->buildDateTimeInterval($tmpDate, $closestTime);
+            }
+        }
 
-                $intervalStart->setTime(
-                    $closestTime->getStart()->getHours(),
-                    $closestTime->getStart()->getMinutes(),
-                    $closestTime->getStart()->getSeconds()
-                );
-                $intervalEnd->setTime(
-                    $closestTime->getEnd()->getHours(),
-                    $closestTime->getEnd()->getMinutes(),
-                    $closestTime->getEnd()->getSeconds()
-                );
+        return $this->getClosestDateIntervalBefore($date);
+    }
 
-                return new DateTimeInterval($intervalStart, $intervalEnd);
+    /**
+     * Get the closest interval endpoint after the given date.
+     *
+     * @param \DateTime $date
+     * @return DateTimeInterval
+     */
+    private function getNextClosestInterval(\DateTime $date)
+    {
+        $tmpDate = clone $date;
+        $dayOfWeek = (int)$tmpDate->format('N');
+        $time = TimeBuilder::fromDate($tmpDate);
+
+        if (null !== $day = $this->getDay($dayOfWeek)) {
+            if (null !== $closestTime = $day->getClosestNextOpeningHoursInterval($time)) {
+                return $this->buildDateTimeInterval($tmpDate, $closestTime);
             }
         }
 
@@ -313,14 +369,14 @@ class BusinessHours implements BusinessHoursInterface
     }
 
     /**
-     * Get the day corresponding to the day number.
+     * Get the day corresponding to the day of the week.
      *
-     * @param integer $dayNumber
+     * @param integer $dayOfWeek The day of the week.
      * @return DayInterface|null
      */
-    private function getDay($dayNumber)
+    private function getDay($dayOfWeek)
     {
-        return isset($this->days[$dayNumber]) ? $this->days[$dayNumber] : null;
+        return isset($this->days[$dayOfWeek]) ? $this->days[$dayOfWeek] : null;
     }
 
     /**
