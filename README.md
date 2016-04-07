@@ -19,6 +19,10 @@ $ composer require speicher210/business-hours
 
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
 
+## Usage
+
+Please see [USAGE](USAGE.md) for information on how to use this library.
+
 ## Testing
 
 ``` bash
