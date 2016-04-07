@@ -108,28 +108,27 @@ class TimeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($time->isEqual(new Time($hours, $minutes)), $expected);
     }
 
-
-    public static function dataProviderTestToInteger()
+    public static function dataProviderTestToSeconds()
     {
         return array(
-            array(200000, 20, 0, 0),
-            array(93000, 9, 30, 0),
-            array(123456, 12, 34, 56),
+            array(72000, 20, 0, 0),
+            array(34200, 9, 30, 0),
+            array(45296, 12, 34, 56),
         );
     }
 
     /**
-     * @dataProvider dataProviderTestToInteger
+     * @dataProvider dataProviderTestToSeconds
      *
-     * @param integer $expectedIntegerRepresentation The expected integer representation of time.
+     * @param integer $expectedTimeRepresentationInSeconds The expected representation of time in seconds.
      * @param integer $hours The hours to test.
      * @param integer $minutes The minutes to test.
      * @param integer $seconds The seconds to test.
      */
-    public function testToInteger($expectedIntegerRepresentation, $hours, $minutes, $seconds)
+    public function testToSeconds($expectedTimeRepresentationInSeconds, $hours, $minutes, $seconds)
     {
         $time = new Time($hours, $minutes, $seconds);
-        $this->assertEquals($expectedIntegerRepresentation, $time->toInteger());
+        $this->assertEquals($expectedTimeRepresentationInSeconds, $time->toSeconds());
     }
 
     public function testJsonSerialize()

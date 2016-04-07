@@ -64,4 +64,27 @@ class TimeBuilder
     {
         return new Time($date->format('H'), $date->format('i'), $date->format('s'));
     }
+
+    /**
+     * Create a new time from seconds.
+     *
+     * @param integer $seconds The seconds.
+     * @return Time
+     */
+    public static function fromSeconds($seconds)
+    {
+        $seconds = (int)$seconds;
+
+        if ($seconds < 0 || $seconds > 86400) {
+            throw new \InvalidArgumentException(sprintf('Invalid time "%s".', $seconds));
+        }
+
+        $data = array(
+            'hours' => $seconds / 3600,
+            'minutes' => $seconds / 60 % 60,
+            'seconds' => $seconds % 60
+        );
+
+        return self::fromArray($data);
+    }
 }

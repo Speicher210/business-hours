@@ -101,8 +101,6 @@ class BusinessHoursBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testShiftToTimezoneWhenTimezoneShiftIsBackwards()
     {
-        $this->markTestSkipped();
-
         $originalDays = array(
             new Day(
                 Day::WEEK_DAY_MONDAY,
@@ -123,7 +121,14 @@ class BusinessHoursBuilderTest extends \PHPUnit_Framework_TestCase
                     TimeInterval::fromString('00:00', '03:00')
                 )
             ),
-            new AllDay(Day::WEEK_DAY_FRIDAY)
+            new AllDay(Day::WEEK_DAY_FRIDAY),
+            new Day(
+                Day::WEEK_DAY_SATURDAY,
+                array(
+                    TimeInterval::fromString('00:30', '00:45'),
+                    TimeInterval::fromString('00:50', '00:55')
+                )
+            ),
         );
         $originalTimezone = new \DateTimeZone('Europe/Bucharest');
         $original = new BusinessHours($originalDays, $originalTimezone);
@@ -154,7 +159,9 @@ class BusinessHoursBuilderTest extends \PHPUnit_Framework_TestCase
             new Day(
                 Day::WEEK_DAY_FRIDAY,
                 array(
-                    TimeInterval::fromString('00:00', '23:00')
+                    TimeInterval::fromString('00:00', '23:00'),
+                    TimeInterval::fromString('23:30', '23:45'),
+                    TimeInterval::fromString('23:50', '23:55')
                 )
             ),
             new Day(
@@ -174,8 +181,6 @@ class BusinessHoursBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testShiftToTimezoneWhenTimezoneShiftIsForward()
     {
-        $this->markTestSkipped();
-
         $originalDays = array(
             new Day(
                 Day::WEEK_DAY_MONDAY,
@@ -202,7 +207,9 @@ class BusinessHoursBuilderTest extends \PHPUnit_Framework_TestCase
             new Day(
                 Day::WEEK_DAY_FRIDAY,
                 array(
-                    TimeInterval::fromString('00:00', '23:00')
+                    TimeInterval::fromString('00:00', '23:00'),
+                    TimeInterval::fromString('23:30', '23:45'),
+                    TimeInterval::fromString('23:50', '23:55')
                 )
             ),
             new Day(
@@ -235,12 +242,19 @@ class BusinessHoursBuilderTest extends \PHPUnit_Framework_TestCase
                     TimeInterval::fromString('00:00', '03:00')
                 )
             ),
-            new AllDay(Day::WEEK_DAY_FRIDAY)
+            new AllDay(Day::WEEK_DAY_FRIDAY),
+            new Day(
+                Day::WEEK_DAY_SATURDAY,
+                array(
+                    TimeInterval::fromString('00:30', '00:45'),
+                    TimeInterval::fromString('00:50', '00:55')
+                )
+            )
         );
         $expectedTimezone = new \DateTimeZone('Europe/Bucharest');
         $expected = new BusinessHours($expectedDays, $expectedTimezone);
 
-        $actual = BusinessHoursBuilder::shiftToTimezone($original, new \DateTimeZone('Europe/Berlin'));
+        $actual = BusinessHoursBuilder::shiftToTimezone($original, new \DateTimeZone('Europe/Bucharest'));
 
         $this->assertEquals($expected, $actual);
     }

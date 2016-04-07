@@ -50,7 +50,7 @@ class Time implements \JsonSerializable
      */
     public function isBeforeOrEqual(Time $other)
     {
-        return $this->toInteger() <= $other->toInteger();
+        return $this->toSeconds() <= $other->toSeconds();
     }
 
     /**
@@ -61,7 +61,7 @@ class Time implements \JsonSerializable
      */
     public function isAfterOrEqual(Time $other)
     {
-        return $this->toInteger() >= $other->toInteger();
+        return $this->toSeconds() >= $other->toSeconds();
     }
 
     /**
@@ -72,17 +72,17 @@ class Time implements \JsonSerializable
      */
     public function isEqual(Time $other)
     {
-        return $this->toInteger() === $other->toInteger();
+        return $this->toSeconds() === $other->toSeconds();
     }
 
     /**
-     * Get the integer representation of the time.
+     * Get the time representation in seconds.
      *
      * @return integer
      */
-    public function toInteger()
+    public function toSeconds()
     {
-        return (int)sprintf('%d%02d%02d', $this->hours, $this->minutes, $this->seconds);
+        return 3600 * $this->hours + 60 * $this->minutes + $this->seconds;
     }
 
     /**

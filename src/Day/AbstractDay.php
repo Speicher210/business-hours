@@ -103,7 +103,7 @@ abstract class AbstractDay implements DayInterface
         $closestInterval = null;
 
         foreach ($this->openingHoursIntervals as $interval) {
-            $distance = $interval->getStart()->toInteger() - $time->toInteger();
+            $distance = $interval->getStart()->toSeconds() - $time->toSeconds();
 
             if ($distance < 0) {
                 continue;
@@ -114,7 +114,7 @@ abstract class AbstractDay implements DayInterface
                 $closestInterval = $interval;
             }
 
-            if ($distance < $closestTime->toInteger() - $time->toInteger()) {
+            if ($distance < $closestTime->toSeconds() - $time->toSeconds()) {
                 $closestTime = $interval->getStart();
                 $closestInterval = $interval;
             }
@@ -159,7 +159,7 @@ abstract class AbstractDay implements DayInterface
     /**
      * Set the day of week.
      *
-     * @param int $dayOfWeek
+     * @param integer $dayOfWeek
      * @throws \OutOfBoundsException If the given day is invalid.
      */
     protected function setDayOfWeek($dayOfWeek)

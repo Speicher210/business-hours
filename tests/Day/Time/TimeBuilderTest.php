@@ -89,4 +89,52 @@ class TimeBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedMinutes, $time->getMinutes());
         $this->assertEquals($expectedSeconds, $time->getSeconds());
     }
+
+    public static function dataProviderTestFromSecondsInvalid()
+    {
+        return array(
+            array(-1),
+            array(86401)
+        );
+    }
+
+    /**
+     * @dataProvider dataProviderTestFromSecondsInvalid
+     *
+     * @param mixed $seconds The seconds to test.
+     */
+    public function testFromSecondsInvalid($seconds)
+    {
+        $this->setExpectedException('\InvalidArgumentException', sprintf('Invalid time "%s".', $seconds));
+
+        TimeBuilder::fromSeconds($seconds);
+    }
+
+    public static function dataProviderTestFromSeconds()
+    {
+        return array(
+            array(0, 0, 0, 0),
+            array(40, 0, 0, 40),
+            array(60, 0, 1, 0),
+            array(3600, 1, 0, 0),
+            array(86400, 24, 0, 0),
+            array(45296, 12, 34, 56),
+        );
+    }
+
+    /**
+     * @dataProvider dataProviderTestFromSeconds
+     *
+     * @param integer $seconds The seconds integer to test.
+     * @param integer $expectedHours The expected hours.
+     * @param integer $expectedMinutes The expected minutes.
+     * @param integer $expectedSeconds The expected seconds.
+     */
+    public function testFromSeconds($seconds, $expectedHours, $expectedMinutes, $expectedSeconds)
+    {
+        $time = TimeBuilder::fromSeconds($seconds);
+        $this->assertEquals($expectedHours, $time->getHours());
+        $this->assertEquals($expectedMinutes, $time->getMinutes());
+        $this->assertEquals($expectedSeconds, $time->getSeconds());
+    }
 }
