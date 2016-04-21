@@ -41,6 +41,8 @@ If you discover any security related issues, please email instead of using the i
 
 - [All Contributors][link-contributors]
 
+Original idea from https://github.com/florianv/business
+
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
