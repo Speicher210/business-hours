@@ -5,9 +5,9 @@ for the following files :
 - BusinessHours.php
 - Day/DayInterface.php
 - Day/AbstractDay.php
+
 Original code: Florian Voutzinos <florian@voutzinos.com 
 Additions and changes: Speicher 210 GmbH
-
 
 > Permission is hereby granted, free of charge, to any person obtaining a copy
 > of this software and associated documentation files (the "Software"), to deal
