@@ -1,4 +1,12 @@
 <?php
+/* 
+
+* This file is part of Business-hours. 
+* Copyright (c) 2015 - 2016 original code: Florian Voutzinos <florian@voutzinos.com
+* Copyright (c) 2015 - 2016 additions and changes: Speicher 210 GmbH
+* For the full copyright and license information, please view the LICENSE * file that was distributed with this source code. 
+
+*/
 
 namespace Speicher210\BusinessHours\Day;
 
