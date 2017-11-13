@@ -12,8 +12,9 @@ before_script:
   - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-dist
 
 script:
-#  - vendor/bin/phpcs --standard=psr2 src/
   - vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover
+  - composer phpstan
+  - composer cs-check
 
 after_script:
-  - if [[ $TRAVIS_PHP_VERSION != '7.1' ]]; then php vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover; fi
+  - if [[ $TRAVIS_PHP_VERSION == '7.1' ]]; then php vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover; fi
