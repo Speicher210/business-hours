@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Speicher210\BusinessHours\Test;
 
+use PHPUnit\Framework\TestCase;
 use Speicher210\BusinessHours\DateTimeInterval;
 
-class DateTimeIntervalTest extends \PHPUnit_Framework_TestCase
+class DateTimeIntervalTest extends TestCase
 {
     /**
      * @expectedException \InvalidArgumentException
@@ -30,7 +33,7 @@ class DateTimeIntervalTest extends \PHPUnit_Framework_TestCase
 
         $this->assertJsonStringEqualsJsonFile(
             __DIR__ . '/Expected/DateTimeInterval/testJsonSerialize.json',
-            json_encode($interval)
+            \json_encode($interval)
         );
     }
 }

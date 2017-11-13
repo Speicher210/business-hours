@@ -1,25 +1,25 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Speicher210\BusinessHours\Test\Day\Time;
 
+use PHPUnit\Framework\TestCase;
 use Speicher210\BusinessHours\Day\Time\Time;
 
-/**
- * Test class for Time.
- */
-class TimeTest extends \PHPUnit_Framework_TestCase
+class TimeTest extends TestCase
 {
     public static function dataProviderTestCreateTimeWithInvalidData()
     {
-        return array(
-            array(-1, 0, 0),
-            array(0, -1, 0),
-            array(0, 0, -1),
-            array(24, 0, 1),
-            array(24, 1, 0),
-            array(0, 65, 0),
-            array(0, 0, 75),
-        );
+        return [
+            [-1, 0, 0],
+            [0, -1, 0],
+            [0, 0, -1],
+            [24, 0, 1],
+            [24, 1, 0],
+            [0, 65, 0],
+            [0, 0, 75],
+        ];
     }
 
     /**
@@ -31,7 +31,8 @@ class TimeTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateTimeWithInvalidData($hours, $minutes, $seconds)
     {
-        $this->setExpectedException('\InvalidArgumentException', 'Invalid time');
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid time');
 
         new Time($hours, $minutes, $seconds);
     }
@@ -40,11 +41,11 @@ class TimeTest extends \PHPUnit_Framework_TestCase
     {
         $time = new Time(20, 00);
 
-        return array(
-            array($time, 18, 00, true),
-            array($time, 22, 15, false),
-            array($time, 20, 00, true),
-        );
+        return [
+            [$time, 18, 00, true],
+            [$time, 22, 15, false],
+            [$time, 20, 00, true],
+        ];
     }
 
     /**
@@ -64,11 +65,11 @@ class TimeTest extends \PHPUnit_Framework_TestCase
     {
         $time = new Time(20, 00);
 
-        return array(
-            array($time, 18, 00, false),
-            array($time, 22, 15, true),
-            array($time, 20, 00, true),
-        );
+        return [
+            [$time, 18, 00, false],
+            [$time, 22, 15, true],
+            [$time, 20, 00, true],
+        ];
     }
 
     /**
@@ -88,11 +89,11 @@ class TimeTest extends \PHPUnit_Framework_TestCase
     {
         $time = new Time(20, 00);
 
-        return array(
-            array($time, 18, 00, false),
-            array($time, 22, 15, false),
-            array($time, 20, 00, true),
-        );
+        return [
+            [$time, 18, 00, false],
+            [$time, 22, 15, false],
+            [$time, 20, 00, true],
+        ];
     }
 
     /**
@@ -110,11 +111,11 @@ class TimeTest extends \PHPUnit_Framework_TestCase
 
     public static function dataProviderTestToSeconds()
     {
-        return array(
-            array(72000, 20, 0, 0),
-            array(34200, 9, 30, 0),
-            array(45296, 12, 34, 56),
-        );
+        return [
+            [72000, 20, 0, 0],
+            [34200, 9, 30, 0],
+            [45296, 12, 34, 56],
+        ];
     }
 
     /**
@@ -133,11 +134,11 @@ class TimeTest extends \PHPUnit_Framework_TestCase
 
     public function testJsonSerialize()
     {
-        $time = new Time('20', '30', '15');
+        $time = new Time(20, 30, 15);
 
         $this->assertJsonStringEqualsJsonFile(
             __DIR__ . '/Expected/Time/testJsonSerialize.json',
-            json_encode($time)
+            \json_encode($time)
         );
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Speicher210\BusinessHours\Day;
 
 use Speicher210\BusinessHours\Day\Time\Time;
@@ -19,13 +21,13 @@ class DayBuilder
      * @param array $openingIntervals The opening intervals.
      * @return Day
      */
-    public static function fromArray($dayOfWeek, array $openingIntervals)
+    public static function fromArray($dayOfWeek, array $openingIntervals): Day
     {
-        $intervals = array();
+        $intervals = [];
         foreach ($openingIntervals as $interval) {
             if ($interval instanceof TimeIntervalInterface) {
                 $intervals[] = $interval;
-            } elseif (is_array($intervals)) {
+            } elseif (\is_array($intervals)) {
                 $intervals[] = new TimeInterval(
                     TimeBuilder::fromString($interval[0]),
                     TimeBuilder::fromString($interval[1])
@@ -36,7 +38,7 @@ class DayBuilder
         $day = new Day($dayOfWeek, $intervals);
         $dayIntervals = $day->getOpeningHoursIntervals();
         /** @var TimeIntervalInterface $dayInterval */
-        $dayInterval = reset($dayIntervals);
+        $dayInterval = \reset($dayIntervals);
         if (self::isIntervalAllDay($dayInterval->getStart(), $dayInterval->getEnd())) {
             return new AllDay($dayOfWeek);
         }
@@ -50,13 +52,13 @@ class DayBuilder
      * @param array $data The day data.
      * @return DayInterface
      */
-    public static function fromAssociativeArray(array $data)
+    public static function fromAssociativeArray(array $data): DayInterface
     {
-        if (!isset($data['openingIntervals']) || !is_array($data['openingIntervals']) || !isset($data['dayOfWeek'])) {
+        if (!isset($data['openingIntervals'], $data['dayOfWeek']) || !\is_array($data['openingIntervals'])) {
             throw new \InvalidArgumentException('Array is not valid.');
         }
 
-        $openingIntervals = array();
+        $openingIntervals = [];
         foreach ($data['openingIntervals'] as $openingInterval) {
             $start = TimeBuilder::fromArray($openingInterval['start']);
             $end = TimeBuilder::fromArray($openingInterval['end']);
@@ -77,7 +79,7 @@ class DayBuilder
      * @param Time $end The end time.
      * @return boolean
      */
-    private static function isIntervalAllDay(Time $start, Time $end)
+    private static function isIntervalAllDay(Time $start, Time $end): bool
     {
         if ($start->getHours() !== 0 || $start->getMinutes() !== 0 || $start->getSeconds() !== 0) {
             return false;

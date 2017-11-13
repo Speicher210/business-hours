@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Speicher210\BusinessHours;
 
 /**
@@ -35,7 +37,7 @@ class DateTimeInterval implements \JsonSerializable
 
         if ($end <= $start) {
             throw new \InvalidArgumentException(
-                sprintf(
+                \sprintf(
                     'The opening date and time "%s" must be before the closing date and time "%s".',
                     $start->format('Y-m-d H:i:s'),
                     $end->format('Y-m-d H:i:s')
@@ -49,7 +51,7 @@ class DateTimeInterval implements \JsonSerializable
      *
      * @return \DateTime
      */
-    public function getStart()
+    public function getStart(): \DateTime
     {
         return $this->start;
     }
@@ -59,7 +61,7 @@ class DateTimeInterval implements \JsonSerializable
      *
      * @return \DateTime
      */
-    public function getEnd()
+    public function getEnd(): \DateTime
     {
         return $this->end;
     }
@@ -69,9 +71,9 @@ class DateTimeInterval implements \JsonSerializable
      */
     public function jsonSerialize()
     {
-        return array(
+        return [
             'start' => $this->start,
             'end' => $this->end,
-        );
+        ];
     }
 }

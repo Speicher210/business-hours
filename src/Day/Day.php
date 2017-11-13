@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Speicher210\BusinessHours\Day;
 
 /**
@@ -12,9 +14,9 @@ class Day extends AbstractDay
      *
      * @return integer[]
      */
-    public static function getDaysOfWeek()
+    public static function getDaysOfWeek(): array
     {
-        return array(
+        return [
             self::WEEK_DAY_MONDAY,
             self::WEEK_DAY_TUESDAY,
             self::WEEK_DAY_WEDNESDAY,
@@ -22,7 +24,7 @@ class Day extends AbstractDay
             self::WEEK_DAY_FRIDAY,
             self::WEEK_DAY_SATURDAY,
             self::WEEK_DAY_SUNDAY,
-        );
+        ];
     }
 
     /**
@@ -30,9 +32,9 @@ class Day extends AbstractDay
      */
     public function jsonSerialize()
     {
-        return array(
+        return [
             'dayOfWeek' => $this->dayOfWeek,
             'openingIntervals' => $this->openingHoursIntervals,
-        );
+        ];
     }
 }

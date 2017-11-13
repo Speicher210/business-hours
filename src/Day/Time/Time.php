@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Speicher210\BusinessHours\Day\Time;
 
 /**
@@ -29,13 +31,11 @@ class Time implements \JsonSerializable
     protected $seconds = 0;
 
     /**
-     * Constructor.
-     *
      * @param integer $hours The hours.
      * @param integer $minutes The minutes.
      * @param integer $seconds The seconds.
      */
-    public function __construct($hours, $minutes = 0, $seconds = 0)
+    public function __construct(int $hours, int $minutes = 0, int $seconds = 0)
     {
         $this->setHours($hours);
         $this->setMinutes($minutes);
@@ -48,7 +48,7 @@ class Time implements \JsonSerializable
      * @param Time $other The time to compare it against.
      * @return boolean
      */
-    public function isBeforeOrEqual(Time $other)
+    public function isBeforeOrEqual(Time $other): bool
     {
         return $this->toSeconds() <= $other->toSeconds();
     }
@@ -59,7 +59,7 @@ class Time implements \JsonSerializable
      * @param Time $other The time to compare it against.
      * @return boolean
      */
-    public function isAfterOrEqual(Time $other)
+    public function isAfterOrEqual(Time $other): bool
     {
         return $this->toSeconds() >= $other->toSeconds();
     }
@@ -70,7 +70,7 @@ class Time implements \JsonSerializable
      * @param Time $other The time to compare it against.
      * @return boolean
      */
-    public function isEqual(Time $other)
+    public function isEqual(Time $other): bool
     {
         return $this->toSeconds() === $other->toSeconds();
     }
@@ -80,7 +80,7 @@ class Time implements \JsonSerializable
      *
      * @return integer
      */
-    public function toSeconds()
+    public function toSeconds(): int
     {
         return 3600 * $this->hours + 60 * $this->minutes + $this->seconds;
     }
@@ -89,17 +89,12 @@ class Time implements \JsonSerializable
      * Set the hours.
      *
      * @param integer $hours The hours.
-     * @return Time
      */
-    public function setHours($hours)
+    public function setHours(int $hours): void
     {
-        $hours = (int)$hours;
-
         $this->timeElementsAreValid($hours, $this->minutes, $this->seconds);
 
-        $this->hours = (int)$hours;
-
-        return $this;
+        $this->hours = $hours;
     }
 
     /**
@@ -107,7 +102,7 @@ class Time implements \JsonSerializable
      *
      * @return integer
      */
-    public function getHours()
+    public function getHours(): int
     {
         return $this->hours;
     }
@@ -116,17 +111,12 @@ class Time implements \JsonSerializable
      * Set the minutes.
      *
      * @param integer $minutes The minutes
-     * @return Time
      */
-    public function setMinutes($minutes)
+    public function setMinutes(int $minutes): void
     {
-        $minutes = (int)$minutes;
-
         $this->timeElementsAreValid($this->hours, $minutes, $this->seconds);
 
-        $this->minutes = (int)$minutes;
-
-        return $this;
+        $this->minutes = $minutes;
     }
 
     /**
@@ -134,7 +124,7 @@ class Time implements \JsonSerializable
      *
      * @return integer
      */
-    public function getMinutes()
+    public function getMinutes(): int
     {
         return $this->minutes;
     }
@@ -143,17 +133,12 @@ class Time implements \JsonSerializable
      * Set the seconds.
      *
      * @param integer $seconds The seconds.
-     * @return Time
      */
-    public function setSeconds($seconds)
+    public function setSeconds(int $seconds): void
     {
-        $seconds = (int)$seconds;
-
         $this->timeElementsAreValid($this->hours, $this->minutes, $seconds);
 
-        $this->seconds = (int)$seconds;
-
-        return $this;
+        $this->seconds = $seconds;
     }
 
     /**
@@ -161,7 +146,7 @@ class Time implements \JsonSerializable
      *
      * @return integer
      */
-    public function getSeconds()
+    public function getSeconds(): int
     {
         return $this->seconds;
     }
@@ -175,17 +160,19 @@ class Time implements \JsonSerializable
      * @return boolean
      * @throws \InvalidArgumentException If the elements are not valid.
      */
-    private function timeElementsAreValid($hours, $minutes, $seconds)
+    private function timeElementsAreValid($hours, $minutes, $seconds): bool
     {
         $exception = new \InvalidArgumentException(
-            sprintf('Invalid time "%02d:%02d:%02d".', $hours, $minutes, $seconds)
+            \sprintf('Invalid time "%02d:%02d:%02d".', $hours, $minutes, $seconds)
         );
 
-        if ((int)sprintf('%d%02d%02d', $hours, $minutes, $seconds) > 240000) {
+        if ((int)\sprintf('%d%02d%02d', $hours, $minutes, $seconds) > 240000) {
             throw $exception;
-        } elseif ($hours < 0 || $minutes < 0 || $seconds < 0) {
+        }
+        if ($hours < 0 || $minutes < 0 || $seconds < 0) {
             throw $exception;
-        } elseif ($hours <= 24 && $minutes <= 59 && $seconds <= 59) {
+        }
+        if ($hours <= 24 && $minutes <= 59 && $seconds <= 59) {
             return true;
         }
 
@@ -197,11 +184,11 @@ class Time implements \JsonSerializable
      */
     public function jsonSerialize()
     {
-        return array(
+        return [
             'hours' => $this->hours,
             'minutes' => $this->minutes,
             'seconds' => $this->seconds,
-        );
+        ];
     }
 
     /**
@@ -211,6 +198,6 @@ class Time implements \JsonSerializable
      */
     public function __toString()
     {
-        return sprintf('%02d:%02d:%02d', $this->hours, $this->minutes, $this->seconds);
+        return \sprintf('%02d:%02d:%02d', $this->hours, $this->minutes, $this->seconds);
     }
 }

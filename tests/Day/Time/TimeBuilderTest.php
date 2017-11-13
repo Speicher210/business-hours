@@ -1,21 +1,23 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Speicher210\BusinessHours\Test\Day\Time;
 
+use PHPUnit\Framework\TestCase;
 use Speicher210\BusinessHours\Day\Time\TimeBuilder;
 
-class TimeBuilderTest extends \PHPUnit_Framework_TestCase
+class TimeBuilderTest extends TestCase
 {
     public static function dataProviderTestFromStringInvalid()
     {
-        return array(
-            array('invalid'),
-            array('24:00:01'),
-            array('25:00'),
-            array(20),
-            array(''),
-            array(null),
-        );
+        return [
+            ['invalid'],
+            ['24:00:01'],
+            ['25:00'],
+            [''],
+            [null],
+        ];
     }
 
     /**
@@ -25,20 +27,21 @@ class TimeBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testFromStringInvalid($string)
     {
-        $this->setExpectedException('\InvalidArgumentException', sprintf('Invalid time "%s".', $string));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(\sprintf('Invalid time "%s".', $string));
 
         TimeBuilder::fromString($string);
     }
 
-    public static function dataProviderTestFromString()
+    public static function dataProviderTestFromString(): array
     {
-        return array(
-            array('2pm', 14, 0, 0),
-            array('11:00', 11, 0, 0),
-            array('11:00:11', 11, 0, 11),
-            array('23:15', 23, 15, 0),
-            array('24:00', 24, 0, 0)
-        );
+        return [
+            ['2pm', 14, 0, 0],
+            ['11:00', 11, 0, 0],
+            ['11:00:11', 11, 0, 11],
+            ['23:15', 23, 15, 0],
+            ['24:00', 24, 0, 0]
+        ];
     }
 
     /**
@@ -63,15 +66,15 @@ class TimeBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testFromArrayThrowsExceptionIfArrayStructureIsNotValid()
     {
-        TimeBuilder::fromArray(array(array()));
+        TimeBuilder::fromArray([[]]);
     }
 
-    public static function dataProviderTestFromDate()
+    public static function dataProviderTestFromDate(): array
     {
-        return array(
-            array(new \DateTime('2 AM'), 2, 0, 0),
-            array(new \DateTime('3:20:15 PM'), 15, 20, 15),
-        );
+        return [
+            [new \DateTime('2 AM'), 2, 0, 0],
+            [new \DateTime('3:20:15 PM'), 15, 20, 15],
+        ];
     }
 
     /**
@@ -92,10 +95,10 @@ class TimeBuilderTest extends \PHPUnit_Framework_TestCase
 
     public static function dataProviderTestFromSecondsInvalid()
     {
-        return array(
-            array(-1),
-            array(86401)
-        );
+        return [
+            [-1],
+            [86401]
+        ];
     }
 
     /**
@@ -105,21 +108,22 @@ class TimeBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testFromSecondsInvalid($seconds)
     {
-        $this->setExpectedException('\InvalidArgumentException', sprintf('Invalid time "%s".', $seconds));
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(\sprintf('Invalid time "%s".', $seconds));
 
         TimeBuilder::fromSeconds($seconds);
     }
 
-    public static function dataProviderTestFromSeconds()
+    public static function dataProviderTestFromSeconds(): array
     {
-        return array(
-            array(0, 0, 0, 0),
-            array(40, 0, 0, 40),
-            array(60, 0, 1, 0),
-            array(3600, 1, 0, 0),
-            array(86400, 24, 0, 0),
-            array(45296, 12, 34, 56),
-        );
+        return [
+            [0, 0, 0, 0],
+            [40, 0, 0, 40],
+            [60, 0, 1, 0],
+            [3600, 1, 0, 0],
+            [86400, 24, 0, 0],
+            [45296, 12, 34, 56],
+        ];
     }
 
     /**
@@ -130,7 +134,7 @@ class TimeBuilderTest extends \PHPUnit_Framework_TestCase
      * @param integer $expectedMinutes The expected minutes.
      * @param integer $expectedSeconds The expected seconds.
      */
-    public function testFromSeconds($seconds, $expectedHours, $expectedMinutes, $expectedSeconds)
+    public function testFromSeconds(int $seconds, int $expectedHours, int $expectedMinutes, int $expectedSeconds)
     {
         $time = TimeBuilder::fromSeconds($seconds);
         $this->assertEquals($expectedHours, $time->getHours());

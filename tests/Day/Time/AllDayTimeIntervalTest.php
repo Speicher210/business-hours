@@ -1,14 +1,14 @@
 <?php
 
-namespace Speicher210\BusinessHours\Test;
+declare(strict_types = 1);
 
+namespace Speicher210\BusinessHours\Test\Day\Time;
+
+use PHPUnit\Framework\TestCase;
 use Speicher210\BusinessHours\Day\Time\AllDayTimeInterval;
 use Speicher210\BusinessHours\Day\Time\Time;
 
-/**
- * Test case for AllDayTimeInterval.
- */
-class AllDayTimeIntervalTest extends \PHPUnit_Framework_TestCase
+class AllDayTimeIntervalTest extends TestCase
 {
     public function testCreateAllDayTimeInterval()
     {

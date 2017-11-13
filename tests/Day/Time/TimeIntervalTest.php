@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Speicher210\BusinessHours\Test\Day\Time;
 
+use PHPUnit\Framework\TestCase;
 use Speicher210\BusinessHours\Day\Time\Time;
 use Speicher210\BusinessHours\Day\Time\TimeInterval;
 
-class TimeIntervalTest extends \PHPUnit_Framework_TestCase
+class TimeIntervalTest extends TestCase
 {
     /**
      * @expectedException \InvalidArgumentException
@@ -13,7 +16,7 @@ class TimeIntervalTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructorOpeningEqualClosing()
     {
-        new TimeInterval(new Time('08', '00'), new Time('08', '00'));
+        new TimeInterval(new Time(8, 0), new Time(8, 0));
     }
 
     /**
@@ -22,7 +25,7 @@ class TimeIntervalTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructorOpeningAfterClosing()
     {
-        new TimeInterval(new Time('18', '00'), new Time('08', '00'));
+        new TimeInterval(new Time(18, 0), new Time(8, 0));
     }
 
     public function testFromString()
@@ -40,13 +43,13 @@ class TimeIntervalTest extends \PHPUnit_Framework_TestCase
     {
         $interval = TimeInterval::fromString('08:00', '18:30');
 
-        return array(
-            array($interval, '08', '00', true),
-            array($interval, '18', '30', true),
-            array($interval, '09', '00', true),
-            array($interval, '07', '59', false),
-            array($interval, '18', '31', false),
-        );
+        return [
+            [$interval, 8, 0, true],
+            [$interval, 18, 30, true],
+            [$interval, 9, 0, true],
+            [$interval, 7, 59, false],
+            [$interval, 18, 31, false],
+        ];
     }
 
     /**
@@ -68,7 +71,7 @@ class TimeIntervalTest extends \PHPUnit_Framework_TestCase
 
         $this->assertJsonStringEqualsJsonFile(
             __DIR__ . '/Expected/TimeInterval/testJsonSerialize.json',
-            json_encode($interval)
+            \json_encode($interval)
         );
     }
 

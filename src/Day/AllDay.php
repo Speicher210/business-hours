@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Speicher210\BusinessHours\Day;
 
 use Speicher210\BusinessHours\Day\Time\AllDayTimeInterval;
@@ -16,9 +18,9 @@ class AllDay extends Day
      */
     public function __construct($dayOfWeek)
     {
-        $openingHoursIntervals = array(
+        $openingHoursIntervals = [
             new AllDayTimeInterval(),
-        );
+        ];
 
         parent::__construct($dayOfWeek, $openingHoursIntervals);
     }

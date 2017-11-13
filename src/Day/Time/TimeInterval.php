@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Speicher210\BusinessHours\Day\Time;
 
 /**
@@ -35,7 +37,7 @@ class TimeInterval implements TimeIntervalInterface
 
         if ($start->isAfterOrEqual($end)) {
             throw new \InvalidArgumentException(
-                sprintf('The opening time "%s" must be before the closing time "%s".', $start, $end)
+                \sprintf('The opening time "%s" must be before the closing time "%s".', $start, $end)
             );
         }
     }
@@ -48,7 +50,7 @@ class TimeInterval implements TimeIntervalInterface
      * @return TimeInterval
      * @throws \InvalidArgumentException
      */
-    public static function fromString($startTime, $endTime)
+    public static function fromString($startTime, $endTime): self
     {
         return new static(TimeBuilder::fromString($startTime), TimeBuilder::fromString($endTime));
     }
@@ -56,7 +58,7 @@ class TimeInterval implements TimeIntervalInterface
     /**
      * {@inheritdoc}
      */
-    public function contains(Time $time)
+    public function contains(Time $time): bool
     {
         return $this->start->isBeforeOrEqual($time) && $this->end->isAfterOrEqual($time);
     }
@@ -64,7 +66,7 @@ class TimeInterval implements TimeIntervalInterface
     /**
      * {@inheritdoc}
      */
-    public function getStart()
+    public function getStart(): Time
     {
         return $this->start;
     }
@@ -72,7 +74,7 @@ class TimeInterval implements TimeIntervalInterface
     /**
      * {@inheritdoc}
      */
-    public function getEnd()
+    public function getEnd(): Time
     {
         return $this->end;
     }
@@ -82,15 +84,12 @@ class TimeInterval implements TimeIntervalInterface
      */
     public function jsonSerialize()
     {
-        return array(
+        return [
             'start' => $this->start,
             'end' => $this->end,
-        );
+        ];
     }
 
-    /**
-     * Clone.
-     */
     public function __clone()
     {
         $this->start = clone $this->start;

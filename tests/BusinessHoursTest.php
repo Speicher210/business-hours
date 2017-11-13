@@ -1,15 +1,15 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Speicher210\BusinessHours\Test;
 
+use PHPUnit\Framework\TestCase;
 use Speicher210\BusinessHours\BusinessHours;
 use Speicher210\BusinessHours\Day\DayBuilder;
 use Speicher210\BusinessHours\Day\DayInterface;
 
-/**
- * Test class for Business.
- */
-class BusinessHoursTest extends \PHPUnit_Framework_TestCase
+class BusinessHoursTest extends TestCase
 {
     /**
      * @expectedException \InvalidArgumentException
@@ -17,7 +17,7 @@ class BusinessHoursTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionIsThrownIfNoDaysAreSet()
     {
-        new BusinessHours(array());
+        new BusinessHours([]);
     }
 
     public function testWithin()
@@ -40,8 +40,8 @@ class BusinessHoursTest extends \PHPUnit_Framework_TestCase
 
     public function testWithinCustomTimezone()
     {
-        $tz = date_default_timezone_get();
-        date_default_timezone_set('Europe/Paris');
+        $tz = \date_default_timezone_get();
+        \date_default_timezone_set('Europe/Paris');
 
         $business = new BusinessHours(
             [
@@ -54,7 +54,7 @@ class BusinessHoursTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($business->within($date));
 
-        date_default_timezone_set($tz);
+        \date_default_timezone_set($tz);
     }
 
     public static function dataProviderTestGetNextChangeDateTime()
@@ -69,24 +69,24 @@ class BusinessHoursTest extends \PHPUnit_Framework_TestCase
             $utcTimeZone
         );
 
-        return array(
+        return [
             // Monday
-            array($business, new \DateTime('2016-03-07 13:00:00'), new \DateTime('2016-03-07 10:00:00', $utcTimeZone)),
+            [$business, new \DateTime('2016-03-07 13:00:00'), new \DateTime('2016-03-07 10:00:00', $utcTimeZone)],
             // Friday / Tuesday
-            array($business, new \DateTime('2016-03-11 10:00:00'), new \DateTime('2016-03-10 17:30:00', $utcTimeZone)),
+            [$business, new \DateTime('2016-03-11 10:00:00'), new \DateTime('2016-03-10 17:30:00', $utcTimeZone)],
             // Monday / Friday
-            array($business, new \DateTime('2016-03-28 09:00:00'), new \DateTime('2016-03-25 17:30:00', $utcTimeZone)),
+            [$business, new \DateTime('2016-03-28 09:00:00'), new \DateTime('2016-03-25 17:30:00', $utcTimeZone)],
             // Wednesday
-            array($business, new \DateTime('2016-03-30 12:30:00'), new \DateTime('2016-03-30 12:15:00', $utcTimeZone)),
+            [$business, new \DateTime('2016-03-30 12:30:00'), new \DateTime('2016-03-30 12:15:00', $utcTimeZone)],
             // Monday
-            array(
+            [
                 $business,
                 new \DateTime('2016-03-28 09:00:00'),
                 new \DateTime('2016-03-28 10:00:00', new \DateTimeZone('Europe/Bucharest')),
-            ),
-            array($business, new \DateTime('2016-03-28 09:00:00'), new \DateTime('2016-03-28 09:00:00', $utcTimeZone)),
-            array($business, new \DateTime('2016-03-28 17:00:00'), new \DateTime('2016-03-28 17:00:00', $utcTimeZone)),
-        );
+            ],
+            [$business, new \DateTime('2016-03-28 09:00:00'), new \DateTime('2016-03-28 09:00:00', $utcTimeZone)],
+            [$business, new \DateTime('2016-03-28 17:00:00'), new \DateTime('2016-03-28 17:00:00', $utcTimeZone)],
+        ];
     }
 
     /**
@@ -114,24 +114,24 @@ class BusinessHoursTest extends \PHPUnit_Framework_TestCase
             $utcTimeZone
         );
 
-        return array(
+        return [
             // Monday
-            array($business, new \DateTime('2016-03-07 09:00:00'), new \DateTime('2016-03-07 10:00:00', $utcTimeZone)),
+            [$business, new \DateTime('2016-03-07 09:00:00'), new \DateTime('2016-03-07 10:00:00', $utcTimeZone)],
             // Friday / Thursday
-            array($business, new \DateTime('2016-03-09 17:00:00'), new \DateTime('2016-03-10 17:30:00', $utcTimeZone)),
+            [$business, new \DateTime('2016-03-09 17:00:00'), new \DateTime('2016-03-10 17:30:00', $utcTimeZone)],
             // Monday / Friday
-            array($business, new \DateTime('2016-03-25 17:00:00'), new \DateTime('2016-03-25 17:30:00', $utcTimeZone)),
+            [$business, new \DateTime('2016-03-25 17:00:00'), new \DateTime('2016-03-25 17:30:00', $utcTimeZone)],
             // Wednesday
-            array($business, new \DateTime('2016-03-30 12:00:00'), new \DateTime('2016-03-30 12:15:00', $utcTimeZone)),
+            [$business, new \DateTime('2016-03-30 12:00:00'), new \DateTime('2016-03-30 12:15:00', $utcTimeZone)],
             // Monday
-            array(
+            [
                 $business,
                 new \DateTime('2016-03-25 17:00:00'),
                 new \DateTime('2016-03-28 10:00:00', new \DateTimeZone('Europe/Bucharest')),
-            ),
-            array($business, new \DateTime('2016-03-28 09:00:00'), new \DateTime('2016-03-28 09:00:00', $utcTimeZone)),
-            array($business, new \DateTime('2016-03-28 17:00:00'), new \DateTime('2016-03-28 17:00:00', $utcTimeZone)),
-        );
+            ],
+            [$business, new \DateTime('2016-03-28 09:00:00'), new \DateTime('2016-03-28 09:00:00', $utcTimeZone)],
+            [$business, new \DateTime('2016-03-28 17:00:00'), new \DateTime('2016-03-28 17:00:00', $utcTimeZone)],
+        ];
     }
 
     /**
@@ -160,7 +160,7 @@ class BusinessHoursTest extends \PHPUnit_Framework_TestCase
 
         $this->assertJsonStringEqualsJsonFile(
             __DIR__ . '/Expected/Business/testJsonSerialize.json',
-            json_encode($business)
+            \json_encode($business)
         );
     }
 

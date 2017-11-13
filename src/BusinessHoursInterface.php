@@ -1,12 +1,13 @@
 <?php
-/* 
 
-* This file is part of Business-hours. 
-* Copyright (c) 2015 - 2016 original code: Florian Voutzinos <florian@voutzinos.com
-* Copyright (c) 2015 - 2016 additions and changes: Speicher 210 GmbH
-* For the full copyright and license information, please view the LICENSE * file that was distributed with this source code. 
+/**
+ * This file is part of Business-hours.
+ * Copyright (c) 2015 - 2016 original code: Florian Voutzinos <florian@voutzinos.com
+ * Copyright (c) 2015 - 2017 additions and changes: Speicher 210 GmbH
+ * For the full copyright and license information, please view the LICENSE * file that was distributed with this source code.
+ */
 
-*/
+declare(strict_types = 1);
 
 namespace Speicher210\BusinessHours;
 
@@ -22,14 +23,14 @@ interface BusinessHoursInterface extends \JsonSerializable
      *
      * @return \DateTimeZone
      */
-    public function getTimezone();
+    public function getTimezone(): \DateTimeZone;
 
     /**
      * Get the days.
      *
      * @return DayInterface[]
      */
-    public function getDays();
+    public function getDays(): array;
 
     /**
      * Check if a given date is within business hours.
@@ -37,7 +38,7 @@ interface BusinessHoursInterface extends \JsonSerializable
      * @param \DateTime $date
      * @return boolean
      */
-    public function within(\DateTime $date);
+    public function within(\DateTime $date): bool;
 
     /**
      * Returns the next business hours date and time when it will enter the opening hours or closing hours.
@@ -45,7 +46,7 @@ interface BusinessHoursInterface extends \JsonSerializable
      * @param \DateTime $date The date.
      * @return \DateTime
      */
-    public function getNextChangeDateTime(\DateTime $date);
+    public function getNextChangeDateTime(\DateTime $date): \DateTime;
 
     /**
      * Returns the previous business hours date and time when it was in the opening hours or closing hours.
@@ -53,5 +54,5 @@ interface BusinessHoursInterface extends \JsonSerializable
      * @param \DateTime $date The date.
      * @return \DateTime
      */
-    public function getPreviousChangeDateTime(\DateTime $date);
+    public function getPreviousChangeDateTime(\DateTime $date): \DateTime;
 }
