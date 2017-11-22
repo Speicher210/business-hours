@@ -35,8 +35,6 @@ class BusinessHours implements BusinessHoursInterface
     protected $timezone;
 
     /**
-     * Constructor.
-     *
      * @param DayInterface[] $days
      * @param \DateTimeZone|null $timezone
      */

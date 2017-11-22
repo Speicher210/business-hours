@@ -53,7 +53,7 @@ abstract class AbstractDay implements DayInterface
      * @param integer $dayOfWeek The day of week.
      * @param TimeIntervalInterface[] $openingHoursIntervals The opening hours intervals.
      */
-    public function __construct($dayOfWeek, array $openingHoursIntervals)
+    public function __construct(int $dayOfWeek, array $openingHoursIntervals)
     {
         $this->setDayOfWeek($dayOfWeek);
         $this->setOpeningHoursIntervals($openingHoursIntervals);
@@ -209,7 +209,7 @@ abstract class AbstractDay implements DayInterface
      * @param integer $dayOfWeek
      * @throws \OutOfBoundsException If the given day is invalid.
      */
-    protected function setDayOfWeek($dayOfWeek)
+    protected function setDayOfWeek(int $dayOfWeek): void
     {
         if (!isset(self::DAYS_OF_WEEK[$dayOfWeek])) {
             throw new \OutOfBoundsException(\sprintf('Invalid day of week "%s".', $dayOfWeek));
@@ -224,7 +224,7 @@ abstract class AbstractDay implements DayInterface
      * @param TimeIntervalInterface[] $openingHoursIntervals The opening hours intervals.
      * @throws \InvalidArgumentException If no days are passed or invalid interval is passed.
      */
-    protected function setOpeningHoursIntervals(array $openingHoursIntervals)
+    protected function setOpeningHoursIntervals(array $openingHoursIntervals): void
     {
         if (empty($openingHoursIntervals)) {
             throw new \InvalidArgumentException('The day must have at least one opening interval.');

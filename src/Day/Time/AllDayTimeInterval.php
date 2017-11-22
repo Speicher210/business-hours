@@ -9,9 +9,6 @@ namespace Speicher210\BusinessHours\Day\Time;
  */
 class AllDayTimeInterval extends TimeInterval
 {
-    /**
-     * Constructor.
-     */
     public function __construct()
     {
         parent::__construct(new Time(0, 0, 0), new Time(24, 0, 0));

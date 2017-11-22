@@ -12,7 +12,7 @@ use Speicher210\BusinessHours\Day\Time\TimeIntervalInterface;
 /**
  * Build a DayInterface concrete implementation.
  */
-class DayBuilder
+final class DayBuilder
 {
     /**
      * Create a new Day.

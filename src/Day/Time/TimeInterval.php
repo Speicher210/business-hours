@@ -24,8 +24,6 @@ class TimeInterval implements TimeIntervalInterface
     protected $end;
 
     /**
-     * Constructor.
-     *
      * @param Time $start The start time.
      * @param Time $end The end time.
      * @throws \InvalidArgumentException If the opening time is not earlier than closing time.
