@@ -2,6 +2,7 @@ language: php
 
 php:
   - 7.1
+  - 7.2
 
 # This triggers builds to run on the new TravisCI infrastructure.
 # See: http://docs.travis-ci.com/user/workers/container-based-infrastructure/
@@ -17,4 +18,5 @@ script:
   - composer cs-check
 
 after_script:
-  - if [[ $TRAVIS_PHP_VERSION == '7.1' ]]; then php vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover; fi
+  - if [[ $TRAVIS_PHP_VERSION == '7.2' ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
+  - if [[ $TRAVIS_PHP_VERSION == '7.2' ]]; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi
