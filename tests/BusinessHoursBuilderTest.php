@@ -13,7 +13,7 @@ use Speicher210\BusinessHours\Day\Time\TimeInterval;
 
 class BusinessHoursBuilderTest extends TestCase
 {
-    public static function dataProviderTestFromArrayThrowsExceptionIfArrayStructureIsNotValid()
+    public static function dataProviderTestFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid()
     {
         return [
             [[]],
@@ -23,13 +23,13 @@ class BusinessHoursBuilderTest extends TestCase
     }
 
     /**
-     * @dataProvider dataProviderTestFromArrayThrowsExceptionIfArrayStructureIsNotValid
+     * @dataProvider dataProviderTestFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Array is not valid.
      *
      * @param array $data
      */
-    public function testFromArrayThrowsExceptionIfArrayStructureIsNotValid(array $data)
+    public function testFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid(array $data)
     {
         BusinessHoursBuilder::fromAssociativeArray($data);
     }

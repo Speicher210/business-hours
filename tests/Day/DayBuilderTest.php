@@ -12,29 +12,51 @@ use Speicher210\BusinessHours\Day\Time\TimeInterval;
 
 class DayBuilderTest extends TestCase
 {
-    public static function dataProviderTestFromArrayThrowsExceptionIfArrayStructureIsNotValid()
+    public static function dataProviderTestFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid()
     {
         return [
             [[]],
             [['openingIntervals' => []]],
-            [['dayOfWeek' => 1]]
+            [['dayOfWeek' => 1]],
+            [[
+                'openingIntervals' => [
+                    []
+                ],
+                'dayOfWeek' => 1
+            ]],
+            [[
+                'openingIntervals' => [
+                    [
+                        'start' => ['hours' => 0],
+                    ],
+                ],
+                'dayOfWeek' => 1
+            ]],
+            [[
+                'openingIntervals' => [
+                    [
+                        'end' => ['hours' => 0],
+                    ],
+                ],
+                'dayOfWeek' => 1
+            ]],
         ];
     }
 
     /**
-     * @dataProvider dataProviderTestFromArrayThrowsExceptionIfArrayStructureIsNotValid
+     * @dataProvider dataProviderTestFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid
      *
      * @param array $data The data to test.
      *
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Array is not valid.
      */
-    public function testFromArrayThrowsExceptionIfArrayStructureIsNotValid(array $data)
+    public function testFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid(array $data)
     {
         DayBuilder::fromAssociativeArray($data);
     }
 
-    public function testFromArrayReturnsAllDay()
+    public function testFromAssociativeArrayReturnsAllDay()
     {
         $data = [
             'openingIntervals' => [
@@ -53,7 +75,7 @@ class DayBuilderTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function testFromArrayReturnsDay()
+    public function testFromAssociativeArrayReturnsDay()
     {
         $data = [
             'openingIntervals' => [

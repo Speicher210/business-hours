@@ -60,6 +60,9 @@ final class DayBuilder
 
         $openingIntervals = [];
         foreach ($data['openingIntervals'] as $openingInterval) {
+            if (!isset($openingInterval['start'], $openingInterval['end'])) {
+                throw new \InvalidArgumentException('Array is not valid.');
+            }
             $start = TimeBuilder::fromArray($openingInterval['start']);
             $end = TimeBuilder::fromArray($openingInterval['end']);
             if (self::isIntervalAllDay($start, $end)) {

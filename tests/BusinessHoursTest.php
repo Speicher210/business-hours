@@ -136,7 +136,6 @@ class BusinessHoursTest extends TestCase
 
     /**
      * @dataProvider dataProviderTestGetPreviousChangeDateTime
-     * @group ttt
      *
      * @param BusinessHours $business
      * @param \DateTime $expectedDateTime
