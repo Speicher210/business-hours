@@ -5,6 +5,10 @@
         bootstrap="vendor/autoload.php"
         colors="true"
         verbose="true">
+    <php>
+        <ini name="error_reporting" value="E_ALL"/>
+        <ini name="display_errors" value="On"/>
+    </php>
     <testsuites>
         <testsuite name="Business hours Test Suite">
             <directory>tests</directory>
