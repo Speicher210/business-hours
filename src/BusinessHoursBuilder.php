@@ -19,9 +19,6 @@ use function max;
 use function min;
 use function Safe\ksort;
 
-/**
- * Build a BusinessHours concrete implementation.
- */
 final class BusinessHoursBuilder
 {
     /**
@@ -115,8 +112,6 @@ final class BusinessHoursBuilder
     }
 
     /**
-     * Flatten days intervals.
-     *
      * @param mixed[] $days The days to flatten.
      *
      * @return DayInterface[]

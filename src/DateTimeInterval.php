@@ -9,24 +9,13 @@ use InvalidArgumentException;
 use JsonSerializable;
 use function Safe\sprintf;
 
-/**
- * Represents a date and time interval.
- */
 class DateTimeInterval implements JsonSerializable
 {
-    /**
-     * The start date and time.
-     */
     private DateTime $start;
 
-    /**
-     * The end date and time.
-     */
     private DateTime $end;
 
     /**
-     * Creates a date and time interval.
-     *
      * @param DateTime $start The starting date and time.
      * @param DateTime $end   The ending date and time.
      *
@@ -48,17 +37,11 @@ class DateTimeInterval implements JsonSerializable
         }
     }
 
-    /**
-     * Get the start date and time.
-     */
     public function getStart() : DateTime
     {
         return $this->start;
     }
 
-    /**
-     * Get the end date and time.
-     */
     public function getEnd() : DateTime
     {
         return $this->end;

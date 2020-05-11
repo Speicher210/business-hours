@@ -16,9 +16,6 @@ use DateTimeZone;
 use JsonSerializable;
 use Speicher210\BusinessHours\Day\DayInterface;
 
-/**
- * BusinessHours interface.
- */
 interface BusinessHoursInterface extends JsonSerializable
 {
     /**
@@ -27,8 +24,6 @@ interface BusinessHoursInterface extends JsonSerializable
     public function getTimezone() : DateTimeZone;
 
     /**
-     * Get the days.
-     *
      * @return DayInterface[]
      */
     public function getDays() : array;

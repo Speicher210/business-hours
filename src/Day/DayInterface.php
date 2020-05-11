@@ -15,9 +15,6 @@ use JsonSerializable;
 use Speicher210\BusinessHours\Day\Time\Time;
 use Speicher210\BusinessHours\Day\Time\TimeIntervalInterface;
 
-/**
- * Day interface.
- */
 interface DayInterface extends JsonSerializable
 {
     public const WEEK_DAY_MONDAY    = 1;
@@ -28,31 +25,17 @@ interface DayInterface extends JsonSerializable
     public const WEEK_DAY_SATURDAY  = 6;
     public const WEEK_DAY_SUNDAY    = 7;
 
-    /**
-     * Gets the day of week.
-     */
     public function getDayOfWeek() : int;
 
-    /**
-     * Get the name of the day.
-     */
     public function getDayOfWeekName() : string;
 
     /**
-     * Get the opening hours intervals.
-     *
      * @return TimeIntervalInterface[]
      */
     public function getOpeningHoursIntervals() : array;
 
-    /**
-     * Gets the opening time of the day.
-     */
     public function getOpeningTime() : Time;
 
-    /**
-     * Gets the closing time of the day.
-     */
     public function getClosingTime() : Time;
 
     /**

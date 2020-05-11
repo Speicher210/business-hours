@@ -13,14 +13,9 @@ use function assert;
 use function is_array;
 use function reset;
 
-/**
- * Build a DayInterface concrete implementation.
- */
 final class DayBuilder
 {
     /**
-     * Create a new Day.
-     *
      * @param int     $dayOfWeek        The day of week.
      * @param mixed[] $openingIntervals The opening intervals.
      */
@@ -50,8 +45,6 @@ final class DayBuilder
     }
 
     /**
-     * Create a DayInterface object from an array.
-     *
      * @param mixed[] $data The day data.
      */
     public static function fromAssociativeArray(array $data) : DayInterface
@@ -78,12 +71,6 @@ final class DayBuilder
         return new Day($data['dayOfWeek'], $openingIntervals);
     }
 
-    /**
-     * Check if an interval array is all day.
-     *
-     * @param Time $start The start time.
-     * @param Time $end   The end time.
-     */
     private static function isIntervalAllDay(Time $start, Time $end) : bool
     {
         if ($start->getHours() !== 0 || $start->getMinutes() !== 0 || $start->getSeconds() !== 0) {

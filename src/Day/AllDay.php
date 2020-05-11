@@ -11,9 +11,6 @@ use Speicher210\BusinessHours\Day\Time\AllDayTimeInterval;
  */
 class AllDay extends Day
 {
-    /**
-     * @param int $dayOfWeek The day of the week.
-     */
     public function __construct(int $dayOfWeek)
     {
         $openingHoursIntervals = [

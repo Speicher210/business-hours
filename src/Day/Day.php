@@ -4,14 +4,9 @@ declare(strict_types=1);
 
 namespace Speicher210\BusinessHours\Day;
 
-/**
- * Represents a standard business day.
- */
 class Day extends AbstractDay
 {
     /**
-     * Get the days of week.
-     *
      * @return int[]
      */
     public static function getDaysOfWeek() : array

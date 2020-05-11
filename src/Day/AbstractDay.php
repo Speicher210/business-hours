@@ -25,14 +25,8 @@ use function reset;
 use function Safe\sprintf;
 use function Safe\usort;
 
-/**
- * Abstract day class.
- */
 abstract class AbstractDay implements DayInterface
 {
-    /**
-     * The days of the week.
-     */
     private const DAYS_OF_WEEK = [
         DayInterface::WEEK_DAY_MONDAY => 'Monday',
         DayInterface::WEEK_DAY_TUESDAY => 'Tuesday',
@@ -43,20 +37,12 @@ abstract class AbstractDay implements DayInterface
         DayInterface::WEEK_DAY_SUNDAY => 'Sunday',
     ];
 
-    /**
-     * The day of week.
-     */
     protected int $dayOfWeek;
 
-    /**
-     * The time intervals.
-     *
-     * @var TimeIntervalInterface[]
-     */
+    /** @var TimeIntervalInterface[] */
     protected array $openingHoursIntervals;
 
     /**
-     * @param int                     $dayOfWeek             The day of week.
      * @param TimeIntervalInterface[] $openingHoursIntervals The opening hours intervals.
      */
     public function __construct(int $dayOfWeek, array $openingHoursIntervals)
@@ -186,8 +172,6 @@ abstract class AbstractDay implements DayInterface
     }
 
     /**
-     * Set the day of week.
-     *
      * @throws OutOfBoundsException If the given day is invalid.
      */
     protected function setDayOfWeek(int $dayOfWeek) : void
@@ -200,8 +184,6 @@ abstract class AbstractDay implements DayInterface
     }
 
     /**
-     * Set the opening hours intervals.
-     *
      * @param TimeIntervalInterface[] $openingHoursIntervals The opening hours intervals.
      *
      * @throws InvalidArgumentException If no days are passed or invalid interval is passed.
@@ -226,8 +208,6 @@ abstract class AbstractDay implements DayInterface
     }
 
     /**
-     * Flatten the intervals that overlap.
-     *
      * @param TimeIntervalInterface[] $openingHoursIntervals
      *
      * @return TimeIntervalInterface[]

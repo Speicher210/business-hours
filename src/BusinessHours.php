@@ -27,16 +27,9 @@ use function Safe\sprintf;
  */
 class BusinessHours implements BusinessHoursInterface
 {
-    /**
-     * The days.
-     *
-     * @var DayInterface[]
-     */
+    /** @var DayInterface[] */
     protected array $days;
 
-    /**
-     * The time zone.
-     */
     protected DateTimeZone $timezone;
 
     /**
@@ -54,8 +47,6 @@ class BusinessHours implements BusinessHoursInterface
     }
 
     /**
-     * Get the days.
-     *
      * @return DayInterface[]
      */
     public function getDays() : array
@@ -64,8 +55,6 @@ class BusinessHours implements BusinessHoursInterface
     }
 
     /**
-     * Add a set of days.
-     *
      * @param DayInterface[] $days The days.
      *
      * @throws InvalidArgumentException If no days are passed.
@@ -363,8 +352,6 @@ class BusinessHours implements BusinessHoursInterface
     }
 
     /**
-     * Add a day.
-     *
      * @param DayInterface $day The day.
      */
     private function addDay(DayInterface $day) : void
