@@ -25,9 +25,9 @@ before_script:
 script:
   - composer analyse
   - composer cs-check
-  - if [[ $CODE_COVERAGE != 'on' ]]; vendor/bin/phpunit; fi
-  - if [[ $CODE_COVERAGE == 'on' ]]; vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover; fi
+  - if [ "$CODE_COVERAGE" != 'on' ]; then composer test; fi;
+  - if [ "$CODE_COVERAGE" = 'on' ]; then vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover; fi;
 
 after_script:
-  - if [[ $CODE_COVERAGE == 'on' ]]; then wget https://scrutinizer-ci.com/ocular.phar; fi
-  - if [[ $CODE_COVERAGE == 'on' ]]; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi
+  - if [ "$CODE_COVERAGE" = 'on' ]; then wget https://scrutinizer-ci.com/ocular.phar; fi;
+  - if [ "$CODE_COVERAGE" = 'on' ]; then php ocular.phar code-coverage:upload --format=php-clover coverage.clover; fi;
