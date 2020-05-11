@@ -7,13 +7,22 @@
  * For the full copyright and license information, please view the LICENSE * file that was distributed with this source code.
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Speicher210\BusinessHours\Day;
 
+use InvalidArgumentException;
+use OutOfBoundsException;
 use Speicher210\BusinessHours\Day\Time\Time;
 use Speicher210\BusinessHours\Day\Time\TimeInterval;
 use Speicher210\BusinessHours\Day\Time\TimeIntervalInterface;
+use function array_reverse;
+use function assert;
+use function end;
+use function max;
+use function reset;
+use function sprintf;
+use function usort;
 
 /**
  * Abstract day class.
@@ -22,8 +31,6 @@ abstract class AbstractDay implements DayInterface
 {
     /**
      * The days of the week.
-     *
-     * @var array
      */
     private const DAYS_OF_WEEK = [
         DayInterface::WEEK_DAY_MONDAY => 'Monday',
@@ -37,20 +44,18 @@ abstract class AbstractDay implements DayInterface
 
     /**
      * The day of week.
-     *
-     * @var integer
      */
-    protected $dayOfWeek;
+    protected int $dayOfWeek;
 
     /**
      * The time intervals.
      *
      * @var TimeIntervalInterface[]
      */
-    protected $openingHoursIntervals;
+    protected array $openingHoursIntervals;
 
     /**
-     * @param integer $dayOfWeek The day of week.
+     * @param int                     $dayOfWeek             The day of week.
      * @param TimeIntervalInterface[] $openingHoursIntervals The opening hours intervals.
      */
     public function __construct(int $dayOfWeek, array $openingHoursIntervals)
@@ -59,18 +64,12 @@ abstract class AbstractDay implements DayInterface
         $this->setOpeningHoursIntervals($openingHoursIntervals);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDayOfWeek(): int
+    public function getDayOfWeek() : int
     {
         return $this->dayOfWeek;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDayOfWeekName(): string
+    public function getDayOfWeekName() : string
     {
         return self::DAYS_OF_WEEK[$this->dayOfWeek];
     }
@@ -78,15 +77,12 @@ abstract class AbstractDay implements DayInterface
     /**
      * {@inheritdoc}
      */
-    public function getOpeningHoursIntervals(): array
+    public function getOpeningHoursIntervals() : array
     {
         return $this->openingHoursIntervals;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getClosestPreviousOpeningHoursInterval(Time $time): ?TimeIntervalInterface
+    public function getClosestPreviousOpeningHoursInterval(Time $time) : ?TimeIntervalInterface
     {
         foreach ($this->openingHoursIntervals as $openingHoursInterval) {
             if ($openingHoursInterval->contains($time)) {
@@ -97,10 +93,7 @@ abstract class AbstractDay implements DayInterface
         return $this->getPreviousOpeningHoursInterval($time);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getClosestNextOpeningHoursInterval(Time $time): ?TimeIntervalInterface
+    public function getClosestNextOpeningHoursInterval(Time $time) : ?TimeIntervalInterface
     {
         foreach ($this->openingHoursIntervals as $openingHoursInterval) {
             if ($openingHoursInterval->contains($time)) {
@@ -111,16 +104,13 @@ abstract class AbstractDay implements DayInterface
         return $this->getNextOpeningHoursInterval($time);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getPreviousOpeningHoursInterval(Time $time): ?TimeIntervalInterface
+    public function getPreviousOpeningHoursInterval(Time $time) : ?TimeIntervalInterface
     {
-        $closestTime = null;
+        $closestTime     = null;
         $closestInterval = null;
 
-        /** @var TimeIntervalInterface $interval */
-        foreach (\array_reverse($this->openingHoursIntervals) as $interval) {
+        foreach (array_reverse($this->openingHoursIntervals) as $interval) {
+            assert($interval instanceof TimeIntervalInterface);
             $distance = $time->toSeconds() - $interval->getEnd()->toSeconds();
 
             if ($distance < 0) {
@@ -128,25 +118,24 @@ abstract class AbstractDay implements DayInterface
             }
 
             if ($closestTime === null) {
-                $closestTime = $interval->getEnd();
+                $closestTime     = $interval->getEnd();
                 $closestInterval = $interval;
             }
 
-            if ($distance < ($time->toSeconds() - $closestTime->toSeconds())) {
-                $closestTime = $interval->getEnd();
-                $closestInterval = $interval;
+            if ($distance >= $time->toSeconds() - $closestTime->toSeconds()) {
+                continue;
             }
+
+            $closestTime     = $interval->getEnd();
+            $closestInterval = $interval;
         }
 
         return $closestInterval;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getNextOpeningHoursInterval(Time $time): ?TimeIntervalInterface
+    public function getNextOpeningHoursInterval(Time $time) : ?TimeIntervalInterface
     {
-        $closestTime = null;
+        $closestTime     = null;
         $closestInterval = null;
 
         foreach ($this->openingHoursIntervals as $interval) {
@@ -157,42 +146,35 @@ abstract class AbstractDay implements DayInterface
             }
 
             if ($closestTime === null) {
-                $closestTime = $interval->getStart();
+                $closestTime     = $interval->getStart();
                 $closestInterval = $interval;
             }
 
-            if ($distance < ($closestTime->toSeconds() - $time->toSeconds())) {
-                $closestTime = $interval->getStart();
-                $closestInterval = $interval;
+            if ($distance >= $closestTime->toSeconds() - $time->toSeconds()) {
+                continue;
             }
+
+            $closestTime     = $interval->getStart();
+            $closestInterval = $interval;
         }
 
         return $closestInterval;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getOpeningTime(): Time
+    public function getOpeningTime() : Time
     {
         return $this->openingHoursIntervals[0]->getStart();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getClosingTime(): Time
+    public function getClosingTime() : Time
     {
-        /** @var TimeIntervalInterface $interval */
-        $interval = \end($this->openingHoursIntervals);
+        $interval = end($this->openingHoursIntervals);
+        assert($interval instanceof TimeIntervalInterface);
 
         return $interval->getEnd();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isWithinOpeningHours(Time $time): bool
+    public function isWithinOpeningHours(Time $time) : bool
     {
         foreach ($this->openingHoursIntervals as $interval) {
             if ($interval->contains($time)) {
@@ -206,13 +188,12 @@ abstract class AbstractDay implements DayInterface
     /**
      * Set the day of week.
      *
-     * @param integer $dayOfWeek
-     * @throws \OutOfBoundsException If the given day is invalid.
+     * @throws OutOfBoundsException If the given day is invalid.
      */
-    protected function setDayOfWeek(int $dayOfWeek): void
+    protected function setDayOfWeek(int $dayOfWeek) : void
     {
-        if (!isset(self::DAYS_OF_WEEK[$dayOfWeek])) {
-            throw new \OutOfBoundsException(\sprintf('Invalid day of week "%s".', $dayOfWeek));
+        if (! isset(self::DAYS_OF_WEEK[$dayOfWeek])) {
+            throw new OutOfBoundsException(sprintf('Invalid day of week "%s".', $dayOfWeek));
         }
 
         $this->dayOfWeek = $dayOfWeek;
@@ -222,19 +203,20 @@ abstract class AbstractDay implements DayInterface
      * Set the opening hours intervals.
      *
      * @param TimeIntervalInterface[] $openingHoursIntervals The opening hours intervals.
-     * @throws \InvalidArgumentException If no days are passed or invalid interval is passed.
+     *
+     * @throws InvalidArgumentException If no days are passed or invalid interval is passed.
      */
-    protected function setOpeningHoursIntervals(array $openingHoursIntervals): void
+    protected function setOpeningHoursIntervals(array $openingHoursIntervals) : void
     {
         if (empty($openingHoursIntervals)) {
-            throw new \InvalidArgumentException('The day must have at least one opening interval.');
+            throw new InvalidArgumentException('The day must have at least one opening interval.');
         }
 
         $intervals = [];
 
         foreach ($openingHoursIntervals as $interval) {
-            if (!$interval instanceof TimeIntervalInterface) {
-                throw new \InvalidArgumentException(\sprintf('Interval must be a %s', TimeIntervalInterface::class));
+            if (! $interval instanceof TimeIntervalInterface) {
+                throw new InvalidArgumentException(sprintf('Interval must be a %s', TimeIntervalInterface::class));
             }
 
             $intervals[] = $interval;
@@ -247,25 +229,26 @@ abstract class AbstractDay implements DayInterface
      * Flatten the intervals that overlap.
      *
      * @param TimeIntervalInterface[] $openingHoursIntervals
+     *
      * @return TimeIntervalInterface[]
      */
-    protected function flattenOpeningHoursIntervals(array $openingHoursIntervals): array
+    protected function flattenOpeningHoursIntervals(array $openingHoursIntervals) : array
     {
-        \usort(
+        usort(
             $openingHoursIntervals,
-            function (TimeIntervalInterface $a, TimeIntervalInterface $b) {
-                return ($a->getStart() > $b->getStart()) ? 1 : -1;
+            static function (TimeIntervalInterface $a, TimeIntervalInterface $b) {
+                return $a->getStart() > $b->getStart() ? 1 : -1;
             }
         );
 
         $intervals = [];
-        $tmpInterval = \reset($openingHoursIntervals);
+        /** @var TimeInterval $tmpInterval */
+        $tmpInterval = reset($openingHoursIntervals);
         foreach ($openingHoursIntervals as $interval) {
-            /** @var TimeInterval $tmpInterval */
             if ($interval->getStart() <= $tmpInterval->getEnd()) {
                 $tmpInterval = new TimeInterval(
                     $tmpInterval->getStart(),
-                    \max($tmpInterval->getEnd(), $interval->getEnd())
+                    max($tmpInterval->getEnd(), $interval->getEnd())
                 );
             } else {
                 $intervals[] = $tmpInterval;

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Speicher210\BusinessHours\Day;
 
@@ -12,9 +12,9 @@ class Day extends AbstractDay
     /**
      * Get the days of week.
      *
-     * @return integer[]
+     * @return int[]
      */
-    public static function getDaysOfWeek(): array
+    public static function getDaysOfWeek() : array
     {
         return [
             self::WEEK_DAY_MONDAY,

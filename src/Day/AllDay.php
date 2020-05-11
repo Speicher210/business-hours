@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Speicher210\BusinessHours\Day;
 
@@ -12,7 +12,7 @@ use Speicher210\BusinessHours\Day\Time\AllDayTimeInterval;
 class AllDay extends Day
 {
     /**
-     * @param integer $dayOfWeek The day of the week.
+     * @param int $dayOfWeek The day of the week.
      */
     public function __construct(int $dayOfWeek)
     {
@@ -28,7 +28,7 @@ class AllDay extends Day
      */
     public function jsonSerialize()
     {
-        $data = parent::jsonSerialize();
+        $data           = parent::jsonSerialize();
         $data['allDay'] = true;
 
         return $data;

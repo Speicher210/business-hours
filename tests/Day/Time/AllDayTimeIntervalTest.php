@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Speicher210\BusinessHours\Test\Day\Time;
 
@@ -10,7 +10,7 @@ use Speicher210\BusinessHours\Day\Time\Time;
 
 class AllDayTimeIntervalTest extends TestCase
 {
-    public function testCreateAllDayTimeInterval()
+    public function testCreateAllDayTimeInterval() : void
     {
         $timeInterval = new AllDayTimeInterval();
 

@@ -1,8 +1,11 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Speicher210\BusinessHours\Day\Time;
+
+use InvalidArgumentException;
+use function sprintf;
 
 /**
  * Represents a time interval.
@@ -11,31 +14,28 @@ class TimeInterval implements TimeIntervalInterface
 {
     /**
      * The start time.
-     *
-     * @var Time
      */
-    protected $start;
+    protected Time $start;
 
     /**
      * The end time.
-     *
-     * @var Time
      */
-    protected $end;
+    protected Time $end;
 
     /**
      * @param Time $start The start time.
-     * @param Time $end The end time.
-     * @throws \InvalidArgumentException If the opening time is not earlier than closing time.
+     * @param Time $end   The end time.
+     *
+     * @throws InvalidArgumentException If the opening time is not earlier than closing time.
      */
     public function __construct(Time $start, Time $end)
     {
         $this->start = $start;
-        $this->end = $end;
+        $this->end   = $end;
 
         if ($start->isAfterOrEqual($end)) {
-            throw new \InvalidArgumentException(
-                \sprintf('The opening time "%s" must be before the closing time "%s".', $start, $end)
+            throw new InvalidArgumentException(
+                sprintf('The opening time "%s" must be before the closing time "%s".', $start, $end)
             );
         }
     }
@@ -44,35 +44,28 @@ class TimeInterval implements TimeIntervalInterface
      * Create a new interval from time strings.
      *
      * @param string $startTime The start time
-     * @param string $endTime The end time
+     * @param string $endTime   The end time
+     *
      * @return TimeInterval
-     * @throws \InvalidArgumentException
+     *
+     * @throws InvalidArgumentException
      */
-    public static function fromString($startTime, $endTime): self
+    public static function fromString(string $startTime, string $endTime) : self
     {
         return new static(TimeBuilder::fromString($startTime), TimeBuilder::fromString($endTime));
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function contains(Time $time): bool
+    public function contains(Time $time) : bool
     {
         return $this->start->isBeforeOrEqual($time) && $this->end->isAfterOrEqual($time);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getStart(): Time
+    public function getStart() : Time
     {
         return $this->start;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getEnd(): Time
+    public function getEnd() : Time
     {
         return $this->end;
     }
@@ -91,6 +84,6 @@ class TimeInterval implements TimeIntervalInterface
     public function __clone()
     {
         $this->start = clone $this->start;
-        $this->end = clone $this->end;
+        $this->end   = clone $this->end;
     }
 }

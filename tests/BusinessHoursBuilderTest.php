@@ -1,9 +1,11 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Speicher210\BusinessHours\Test;
 
+use DateTimeZone;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Speicher210\BusinessHours\BusinessHours;
 use Speicher210\BusinessHours\BusinessHoursBuilder;
@@ -13,29 +15,32 @@ use Speicher210\BusinessHours\Day\Time\TimeInterval;
 
 class BusinessHoursBuilderTest extends TestCase
 {
-    public static function dataProviderTestFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid()
+    /**
+     * @return mixed[]
+     */
+    public static function dataProviderTestFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid() : array
     {
         return [
             [[]],
             [['days' => []]],
-            [['timezone' => 1]]
+            [['timezone' => 1]],
         ];
     }
 
     /**
-     * @dataProvider dataProviderTestFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid
+     * @param mixed[] $data
      *
-     * @param array $data
+     * @dataProvider dataProviderTestFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid
      */
-    public function testFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid(array $data)
+    public function testFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid(array $data) : void
     {
-        $this->expectExceptionMessage("Array is not valid.");
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Array is not valid.');
+        $this->expectException(InvalidArgumentException::class);
 
         BusinessHoursBuilder::fromAssociativeArray($data);
     }
 
-    public function testFromArrayReturnsDay()
+    public function testFromArrayReturnsDay() : void
     {
         $data = [
             'days' => [
@@ -44,106 +49,102 @@ class BusinessHoursBuilderTest extends TestCase
                     'openingIntervals' => [
                         [
                             'start' => ['hours' => 10, 'minutes' => 10],
-                            'end' => ['hours' => 18, 'minutes' => 0, 'seconds' => 30]
+                            'end' => ['hours' => 18, 'minutes' => 0, 'seconds' => 30],
                         ],
                         [
                             'start' => ['hours' => 18, 'minutes' => 30],
-                            'end' => ['hours' => 19]
+                            'end' => ['hours' => 19],
                         ],
-                    ]
+                    ],
                 ],
                 [
                     'dayOfWeek' => Day::WEEK_DAY_FRIDAY,
                     'openingIntervals' => [
                         [
                             'start' => ['hours' => 0],
-                            'end' => ['hours' => 24]
-                        ]
-                    ]
-                ]
+                            'end' => ['hours' => 24],
+                        ],
+                    ],
+                ],
             ],
             'timezone' => 'Europe/Berlin',
         ];
 
         $actual = BusinessHoursBuilder::fromAssociativeArray($data);
 
-        $days = [
+        $days     = [
             new Day(
                 Day::WEEK_DAY_MONDAY,
                 [
                     TimeInterval::fromString('10:10', '18:00:30'),
-                    TimeInterval::fromString('18:30', '19:00')
+                    TimeInterval::fromString('18:30', '19:00'),
                 ]
             ),
-            new AllDay(Day::WEEK_DAY_FRIDAY)
+            new AllDay(Day::WEEK_DAY_FRIDAY),
         ];
-        $timezone = new \DateTimeZone('Europe/Berlin');
+        $timezone = new DateTimeZone('Europe/Berlin');
         $expected = new BusinessHours($days, $timezone);
 
         $this->assertEquals($expected, $actual);
     }
 
-    public function testShiftToTimezoneWhenNewTimezoneIsTheSame()
+    public function testShiftToTimezoneWhenNewTimezoneIsTheSame() : void
     {
-        $days = [
+        $days     = [
             new Day(
                 Day::WEEK_DAY_MONDAY,
                 [
                     TimeInterval::fromString('10:10', '18:00:30'),
-                    TimeInterval::fromString('18:30', '19:00')
+                    TimeInterval::fromString('18:30', '19:00'),
                 ]
             ),
-            new AllDay(Day::WEEK_DAY_FRIDAY)
+            new AllDay(Day::WEEK_DAY_FRIDAY),
         ];
-        $timezone = new \DateTimeZone('Europe/Bucharest');
+        $timezone = new DateTimeZone('Europe/Bucharest');
         $original = new BusinessHours($days, $timezone);
 
-        $actual = BusinessHoursBuilder::shiftToTimezone($original, new \DateTimeZone('Europe/Bucharest'));
+        $actual = BusinessHoursBuilder::shiftToTimezone($original, new DateTimeZone('Europe/Bucharest'));
 
         $this->assertEquals($original, $actual);
         $this->assertNotSame($original, $actual);
     }
 
-    public function testShiftToTimezoneWhenTimezoneShiftIsBackwards()
+    public function testShiftToTimezoneWhenTimezoneShiftIsBackwards() : void
     {
-        $originalDays = [
+        $originalDays     = [
             new Day(
                 Day::WEEK_DAY_MONDAY,
                 [
                     TimeInterval::fromString('00:00', '10:00:30'),
-                    TimeInterval::fromString('18:30', '24:00')
+                    TimeInterval::fromString('18:30', '24:00'),
                 ]
             ),
             new Day(
                 Day::WEEK_DAY_TUESDAY,
-                [
-                    TimeInterval::fromString('01:00', '24:00')
-                ]
+                [TimeInterval::fromString('01:00', '24:00')]
             ),
             new Day(
                 Day::WEEK_DAY_WEDNESDAY,
-                [
-                    TimeInterval::fromString('00:00', '03:00')
-                ]
+                [TimeInterval::fromString('00:00', '03:00')]
             ),
             new AllDay(Day::WEEK_DAY_FRIDAY),
             new Day(
                 Day::WEEK_DAY_SATURDAY,
                 [
                     TimeInterval::fromString('00:30', '00:45'),
-                    TimeInterval::fromString('00:50', '00:55')
+                    TimeInterval::fromString('00:50', '00:55'),
                 ]
             ),
         ];
-        $originalTimezone = new \DateTimeZone('Europe/Bucharest');
-        $original = new BusinessHours($originalDays, $originalTimezone);
+        $originalTimezone = new DateTimeZone('Europe/Bucharest');
+        $original         = new BusinessHours($originalDays, $originalTimezone);
 
-        $expectedDays = [
+        $expectedDays     = [
             new Day(
                 Day::WEEK_DAY_MONDAY,
                 [
                     TimeInterval::fromString('00:00', '09:00:30'),
-                    TimeInterval::fromString('17:30', '23:00')
+                    TimeInterval::fromString('17:30', '23:00'),
                 ]
             ),
             new AllDay(
@@ -151,47 +152,41 @@ class BusinessHoursBuilderTest extends TestCase
             ),
             new Day(
                 Day::WEEK_DAY_WEDNESDAY,
-                [
-                    TimeInterval::fromString('00:00', '02:00')
-                ]
+                [TimeInterval::fromString('00:00', '02:00')]
             ),
             new Day(
                 Day::WEEK_DAY_THURSDAY,
-                [
-                    TimeInterval::fromString('23:00', '24:00')
-                ]
+                [TimeInterval::fromString('23:00', '24:00')]
             ),
             new Day(
                 Day::WEEK_DAY_FRIDAY,
                 [
                     TimeInterval::fromString('00:00', '23:00'),
                     TimeInterval::fromString('23:30', '23:45'),
-                    TimeInterval::fromString('23:50', '23:55')
+                    TimeInterval::fromString('23:50', '23:55'),
                 ]
             ),
             new Day(
                 Day::WEEK_DAY_SUNDAY,
-                [
-                    TimeInterval::fromString('23:00', '24:00')
-                ]
-            )
+                [TimeInterval::fromString('23:00', '24:00')]
+            ),
         ];
-        $expectedTimezone = new \DateTimeZone('Europe/Berlin');
-        $expected = new BusinessHours($expectedDays, $expectedTimezone);
+        $expectedTimezone = new DateTimeZone('Europe/Berlin');
+        $expected         = new BusinessHours($expectedDays, $expectedTimezone);
 
-        $actual = BusinessHoursBuilder::shiftToTimezone($original, new \DateTimeZone('Europe/Berlin'));
+        $actual = BusinessHoursBuilder::shiftToTimezone($original, new DateTimeZone('Europe/Berlin'));
 
         $this->assertEquals($expected, $actual);
     }
 
-    public function testShiftToTimezoneWhenTimezoneShiftIsForward()
+    public function testShiftToTimezoneWhenTimezoneShiftIsForward() : void
     {
-        $originalDays = [
+        $originalDays     = [
             new Day(
                 Day::WEEK_DAY_MONDAY,
                 [
                     TimeInterval::fromString('00:00', '09:00:30'),
-                    TimeInterval::fromString('17:30', '23:00')
+                    TimeInterval::fromString('17:30', '23:00'),
                 ]
             ),
             new AllDay(
@@ -199,67 +194,57 @@ class BusinessHoursBuilderTest extends TestCase
             ),
             new Day(
                 Day::WEEK_DAY_WEDNESDAY,
-                [
-                    TimeInterval::fromString('00:00', '02:00')
-                ]
+                [TimeInterval::fromString('00:00', '02:00')]
             ),
             new Day(
                 Day::WEEK_DAY_THURSDAY,
-                [
-                    TimeInterval::fromString('23:00', '24:00')
-                ]
+                [TimeInterval::fromString('23:00', '24:00')]
             ),
             new Day(
                 Day::WEEK_DAY_FRIDAY,
                 [
                     TimeInterval::fromString('00:00', '23:00'),
                     TimeInterval::fromString('23:30', '23:45'),
-                    TimeInterval::fromString('23:50', '23:55')
+                    TimeInterval::fromString('23:50', '23:55'),
                 ]
             ),
             new Day(
                 Day::WEEK_DAY_SUNDAY,
-                [
-                    TimeInterval::fromString('23:00', '24:00')
-                ]
-            )
+                [TimeInterval::fromString('23:00', '24:00')]
+            ),
         ];
-        $originalTimezone = new \DateTimeZone('Europe/Berlin');
-        $original = new BusinessHours($originalDays, $originalTimezone);
+        $originalTimezone = new DateTimeZone('Europe/Berlin');
+        $original         = new BusinessHours($originalDays, $originalTimezone);
 
-        $expectedDays = [
+        $expectedDays     = [
             new Day(
                 Day::WEEK_DAY_MONDAY,
                 [
                     TimeInterval::fromString('00:00', '10:00:30'),
-                    TimeInterval::fromString('18:30', '24:00')
+                    TimeInterval::fromString('18:30', '24:00'),
                 ]
             ),
             new Day(
                 Day::WEEK_DAY_TUESDAY,
-                [
-                    TimeInterval::fromString('01:00', '24:00')
-                ]
+                [TimeInterval::fromString('01:00', '24:00')]
             ),
             new Day(
                 Day::WEEK_DAY_WEDNESDAY,
-                [
-                    TimeInterval::fromString('00:00', '03:00')
-                ]
+                [TimeInterval::fromString('00:00', '03:00')]
             ),
             new AllDay(Day::WEEK_DAY_FRIDAY),
             new Day(
                 Day::WEEK_DAY_SATURDAY,
                 [
                     TimeInterval::fromString('00:30', '00:45'),
-                    TimeInterval::fromString('00:50', '00:55')
+                    TimeInterval::fromString('00:50', '00:55'),
                 ]
-            )
+            ),
         ];
-        $expectedTimezone = new \DateTimeZone('Europe/Bucharest');
-        $expected = new BusinessHours($expectedDays, $expectedTimezone);
+        $expectedTimezone = new DateTimeZone('Europe/Bucharest');
+        $expected         = new BusinessHours($expectedDays, $expectedTimezone);
 
-        $actual = BusinessHoursBuilder::shiftToTimezone($original, new \DateTimeZone('Europe/Bucharest'));
+        $actual = BusinessHoursBuilder::shiftToTimezone($original, new DateTimeZone('Europe/Bucharest'));
 
         $this->assertEquals($expected, $actual);
     }

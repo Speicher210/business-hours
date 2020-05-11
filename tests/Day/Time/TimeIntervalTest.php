@@ -1,32 +1,34 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Speicher210\BusinessHours\Test\Day\Time;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Speicher210\BusinessHours\Day\Time\Time;
 use Speicher210\BusinessHours\Day\Time\TimeInterval;
+use function json_encode;
 
 class TimeIntervalTest extends TestCase
 {
-    public function testConstructorOpeningEqualClosing()
+    public function testConstructorOpeningEqualClosing() : void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('The opening time "08:00:00" must be before the closing time "08:00:00".');
 
         new TimeInterval(new Time(8, 0), new Time(8, 0));
     }
 
-    public function testConstructorOpeningAfterClosing()
+    public function testConstructorOpeningAfterClosing() : void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('The opening time "18:00:00" must be before the closing time "08:00:00".');
 
         new TimeInterval(new Time(18, 0), new Time(8, 0));
     }
 
-    public function testFromString()
+    public function testFromString() : void
     {
         $interval = TimeInterval::fromString('08:00', '18:30');
 
@@ -37,7 +39,10 @@ class TimeIntervalTest extends TestCase
         $this->assertEquals(30, $interval->getEnd()->getMinutes());
     }
 
-    public static function dataProviderTestContains()
+    /**
+     * @return mixed[]
+     */
+    public static function dataProviderTestContains() : array
     {
         $interval = TimeInterval::fromString('08:00', '18:30');
 
@@ -51,32 +56,32 @@ class TimeIntervalTest extends TestCase
     }
 
     /**
-     * @dataProvider dataProviderTestContains
-     *
      * @param TimeInterval $interval The interval to test.
-     * @param integer $hours The hours to test.
-     * @param integer $minutes The minutes to test.
-     * @param boolean $expected The expected value.
+     * @param int          $hours    The hours to test.
+     * @param int          $minutes  The minutes to test.
+     * @param bool         $expected The expected value.
+     *
+     * @dataProvider dataProviderTestContains
      */
-    public function testContains(TimeInterval $interval, $hours, $minutes, $expected)
+    public function testContains(TimeInterval $interval, int $hours, int $minutes, bool $expected) : void
     {
         $this->assertEquals($interval->contains(new Time($hours, $minutes)), $expected);
     }
 
-    public function testJsonSerialize()
+    public function testJsonSerialize() : void
     {
         $interval = TimeInterval::fromString('08:00:01', '18:30:02');
 
         $this->assertJsonStringEqualsJsonFile(
             __DIR__ . '/Expected/TimeInterval/testJsonSerialize.json',
-            \json_encode($interval)
+            json_encode($interval)
         );
     }
 
-    public function testCloning()
+    public function testCloning() : void
     {
         $original = TimeInterval::fromString('08:00', '18:30');
-        $clone = clone $original;
+        $clone    = clone $original;
 
         $this->assertEquals($original, $clone);
         $this->assertNotSame($original, $clone);

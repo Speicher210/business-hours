@@ -1,58 +1,66 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Speicher210\BusinessHours\Test\Day\Time;
 
+use DateTime;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Speicher210\BusinessHours\Day\Time\TimeBuilder;
+use function sprintf;
 
 class TimeBuilderTest extends TestCase
 {
-    public static function dataProviderTestFromStringInvalid()
+    /**
+     * @return mixed[]
+     */
+    public static function dataProviderTestFromStringInvalid() : array
     {
         return [
             ['invalid'],
             ['24:00:01'],
             ['25:00'],
             [''],
-            [null],
         ];
     }
 
     /**
-     * @dataProvider dataProviderTestFromStringInvalid
-     *
      * @param mixed $string The string to test.
+     *
+     * @dataProvider dataProviderTestFromStringInvalid
      */
-    public function testFromStringInvalid($string)
+    public function testFromStringInvalid($string) : void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(\sprintf('Invalid time "%s".', $string));
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(sprintf('Invalid time "%s".', $string));
 
         TimeBuilder::fromString($string);
     }
 
-    public static function dataProviderTestFromString(): array
+    /**
+     * @return mixed[]
+     */
+    public static function dataProviderTestFromString() : array
     {
         return [
             ['2pm', 14, 0, 0],
             ['11:00', 11, 0, 0],
             ['11:00:11', 11, 0, 11],
             ['23:15', 23, 15, 0],
-            ['24:00', 24, 0, 0]
+            ['24:00', 24, 0, 0],
         ];
     }
 
     /**
-     * @dataProvider dataProviderTestFromString
+     * @param string $string          The time string to test.
+     * @param int    $expectedHours   The expected hours.
+     * @param int    $expectedMinutes The expected minutes.
+     * @param int    $expectedSeconds The expected seconds.
      *
-     * @param string $string The time string to test.
-     * @param integer $expectedHours The expected hours.
-     * @param integer $expectedMinutes The expected minutes.
-     * @param integer $expectedSeconds The expected seconds.
+     * @dataProvider dataProviderTestFromString
      */
-    public function testFromString($string, $expectedHours, $expectedMinutes, $expectedSeconds)
+    public function testFromString(string $string, int $expectedHours, int $expectedMinutes, int $expectedSeconds) : void
     {
         $time = TimeBuilder::fromString($string);
         $this->assertEquals($expectedHours, $time->getHours());
@@ -60,31 +68,34 @@ class TimeBuilderTest extends TestCase
         $this->assertEquals($expectedSeconds, $time->getSeconds());
     }
 
-    public function testFromArrayThrowsExceptionIfArrayStructureIsNotValid()
+    public function testFromArrayThrowsExceptionIfArrayStructureIsNotValid() : void
     {
-        $this->expectExceptionMessage("Array is not valid.");
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Array is not valid.');
+        $this->expectException(InvalidArgumentException::class);
 
         TimeBuilder::fromArray([[]]);
     }
 
-    public static function dataProviderTestFromDate(): array
+    /**
+     * @return mixed[]
+     */
+    public static function dataProviderTestFromDate() : array
     {
         return [
-            [new \DateTime('2 AM'), 2, 0, 0],
-            [new \DateTime('3:20:15 PM'), 15, 20, 15],
+            [new DateTime('2 AM'), 2, 0, 0],
+            [new DateTime('3:20:15 PM'), 15, 20, 15],
         ];
     }
 
     /**
-     * @dataProvider dataProviderTestFromDate
+     * @param DateTime $date            The date and time to test.
+     * @param int      $expectedHours   The expected hours.
+     * @param int      $expectedMinutes The expected minutes.
+     * @param int      $expectedSeconds The expected seconds.
      *
-     * @param \DateTime $date The date and time to test.
-     * @param integer $expectedHours The expected hours.
-     * @param integer $expectedMinutes The expected minutes.
-     * @param integer $expectedSeconds The expected seconds.
+     * @dataProvider dataProviderTestFromDate
      */
-    public function testFromDate(\DateTime $date, $expectedHours, $expectedMinutes, $expectedSeconds)
+    public function testFromDate(DateTime $date, int $expectedHours, int $expectedMinutes, int $expectedSeconds) : void
     {
         $time = TimeBuilder::fromDate($date);
         $this->assertEquals($expectedHours, $time->getHours());
@@ -92,28 +103,34 @@ class TimeBuilderTest extends TestCase
         $this->assertEquals($expectedSeconds, $time->getSeconds());
     }
 
-    public static function dataProviderTestFromSecondsInvalid()
+    /**
+     * @return mixed[]
+     */
+    public static function dataProviderTestFromSecondsInvalid() : array
     {
         return [
             [-1],
-            [86401]
+            [86401],
         ];
     }
 
     /**
-     * @dataProvider dataProviderTestFromSecondsInvalid
-     *
      * @param mixed $seconds The seconds to test.
+     *
+     * @dataProvider dataProviderTestFromSecondsInvalid
      */
-    public function testFromSecondsInvalid($seconds)
+    public function testFromSecondsInvalid($seconds) : void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(\sprintf('Invalid time "%s".', $seconds));
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(sprintf('Invalid time "%s".', $seconds));
 
         TimeBuilder::fromSeconds($seconds);
     }
 
-    public static function dataProviderTestFromSeconds(): array
+    /**
+     * @return mixed[]
+     */
+    public static function dataProviderTestFromSeconds() : array
     {
         return [
             [0, 0, 0, 0],
@@ -126,14 +143,14 @@ class TimeBuilderTest extends TestCase
     }
 
     /**
-     * @dataProvider dataProviderTestFromSeconds
+     * @param int $seconds         The seconds integer to test.
+     * @param int $expectedHours   The expected hours.
+     * @param int $expectedMinutes The expected minutes.
+     * @param int $expectedSeconds The expected seconds.
      *
-     * @param integer $seconds The seconds integer to test.
-     * @param integer $expectedHours The expected hours.
-     * @param integer $expectedMinutes The expected minutes.
-     * @param integer $expectedSeconds The expected seconds.
+     * @dataProvider dataProviderTestFromSeconds
      */
-    public function testFromSeconds(int $seconds, int $expectedHours, int $expectedMinutes, int $expectedSeconds)
+    public function testFromSeconds(int $seconds, int $expectedHours, int $expectedMinutes, int $expectedSeconds) : void
     {
         $time = TimeBuilder::fromSeconds($seconds);
         $this->assertEquals($expectedHours, $time->getHours());
