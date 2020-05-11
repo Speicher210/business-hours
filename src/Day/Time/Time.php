@@ -169,9 +169,9 @@ class Time implements JsonSerializable
     }
 
     /**
-     * {@inheritdoc}
+     * @return array<string,int>
      */
-    public function jsonSerialize()
+    public function jsonSerialize() : array
     {
         return [
             'hours' => $this->hours,

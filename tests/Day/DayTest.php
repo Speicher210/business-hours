@@ -57,17 +57,6 @@ class DayTest extends TestCase
         new Day(Day::WEEK_DAY_MONDAY, []);
     }
 
-    public function testExceptionIsThrownIfOpeningHoursIntervalsArrayDoesNotContainTimeIntervals() : void
-    {
-        $this->expectExceptionMessage('Interval must be a Speicher210\BusinessHours\Day\Time\TimeIntervalInterface');
-        $this->expectException(InvalidArgumentException::class);
-
-        new Day(
-            Day::WEEK_DAY_MONDAY,
-            ['non time interval']
-        );
-    }
-
     public function testGetClosestPreviousOpeningHoursIntervalWhileInsideInterval() : void
     {
         $day             = DayBuilder::fromArray(Day::WEEK_DAY_MONDAY, [['09:00', '10 AM'], ['12:15', '2 pm'], ['14:30', '18:30']]);

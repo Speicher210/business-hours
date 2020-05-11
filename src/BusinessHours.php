@@ -125,9 +125,9 @@ class BusinessHours implements BusinessHoursInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return array<string,mixed>
      */
-    public function jsonSerialize()
+    public function jsonSerialize() : array
     {
         return [
             'days' => $this->days,

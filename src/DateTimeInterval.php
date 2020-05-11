@@ -65,9 +65,9 @@ class DateTimeInterval implements JsonSerializable
     }
 
     /**
-     * {@inheritdoc}
+     * @return array<string,DateTime>
      */
-    public function jsonSerialize()
+    public function jsonSerialize() : array
     {
         return [
             'start' => $this->start,

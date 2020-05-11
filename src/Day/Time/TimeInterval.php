@@ -71,9 +71,9 @@ class TimeInterval implements TimeIntervalInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return array<string,Time>
      */
-    public function jsonSerialize()
+    public function jsonSerialize() : array
     {
         return [
             'start' => $this->start,

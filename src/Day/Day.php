@@ -28,9 +28,9 @@ class Day extends AbstractDay
     }
 
     /**
-     * {@inheritdoc}
+     * @return array<string,mixed>
      */
-    public function jsonSerialize()
+    public function jsonSerialize() : array
     {
         return [
             'dayOfWeek' => $this->dayOfWeek,
