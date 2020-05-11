@@ -8,7 +8,7 @@ use DateTime;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Speicher210\BusinessHours\DateTimeInterval;
-use function json_encode;
+use function Safe\json_encode;
 
 class DateTimeIntervalTest extends TestCase
 {
@@ -32,7 +32,7 @@ class DateTimeIntervalTest extends TestCase
     {
         $interval = new DateTimeInterval(new DateTime('2016-03-07 11:20:50'), new DateTime('2016-03-07 13:33:50'));
 
-        $this->assertJsonStringEqualsJsonFile(
+        self::assertJsonStringEqualsJsonFile(
             __DIR__ . '/Expected/DateTimeInterval/testJsonSerialize.json',
             json_encode($interval)
         );

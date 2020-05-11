@@ -4,4 +4,10 @@ parameters:
 			message: "#^Unsafe usage of new static\\(\\)\\.$#"
 			count: 1
 			path: src/Day/Time/TimeInterval.php
-
+		-
+			message: "#Class DateTime is unsafe to use. Its methods can return FALSE instead of throwing an exception. Please add 'use Safe\\\\DateTime;' at the beginning of the file to use the variant provided by the 'thecodingmachine/safe' library.#"
+			path: ''
+		-
+			message: "#^Instanceof between Speicher210\\\\BusinessHours\\\\Day\\\\Time\\\\TimeIntervalInterface and Speicher210\\\\BusinessHours\\\\Day\\\\Time\\\\TimeIntervalInterface will always evaluate to true\\.$#"
+			count: 1
+			path: src/Day/AbstractDay.php

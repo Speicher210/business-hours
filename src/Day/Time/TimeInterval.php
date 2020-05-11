@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Speicher210\BusinessHours\Day\Time;
 
 use InvalidArgumentException;
-use function sprintf;
+use function Safe\sprintf;
 
 /**
  * Represents a time interval.

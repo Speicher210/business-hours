@@ -14,7 +14,7 @@ class AllDayTimeIntervalTest extends TestCase
     {
         $timeInterval = new AllDayTimeInterval();
 
-        $this->assertEquals(new Time(0, 0, 0), $timeInterval->getStart());
-        $this->assertEquals(new Time(24, 0, 0), $timeInterval->getEnd());
+        self::assertEquals(new Time(0, 0, 0), $timeInterval->getStart());
+        self::assertEquals(new Time(24, 0, 0), $timeInterval->getEnd());
     }
 }

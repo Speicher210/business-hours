@@ -30,7 +30,7 @@ final class DayBuilder
         foreach ($openingIntervals as $interval) {
             if ($interval instanceof TimeIntervalInterface) {
                 $intervals[] = $interval;
-            } elseif (is_array($intervals)) {
+            } elseif (is_array($interval)) {
                 $intervals[] = new TimeInterval(
                     TimeBuilder::fromString($interval[0]),
                     TimeBuilder::fromString($interval[1])

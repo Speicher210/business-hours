@@ -7,7 +7,7 @@ namespace Speicher210\BusinessHours\Test\Day\Time;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Speicher210\BusinessHours\Day\Time\Time;
-use function json_encode;
+use function Safe\json_encode;
 
 class TimeTest extends TestCase
 {
@@ -66,7 +66,7 @@ class TimeTest extends TestCase
      */
     public function testIsAfterOrEqual(Time $time, int $hours, int $minutes, bool $expected) : void
     {
-        $this->assertEquals($time->isAfterOrEqual(new Time($hours, $minutes)), $expected);
+        self::assertEquals($time->isAfterOrEqual(new Time($hours, $minutes)), $expected);
     }
 
     /**
@@ -93,7 +93,7 @@ class TimeTest extends TestCase
      */
     public function testIsBeforeOrEqual(Time $time, int $hours, int $minutes, bool $expected) : void
     {
-        $this->assertEquals($time->isBeforeOrEqual(new Time($hours, $minutes)), $expected);
+        self::assertEquals($time->isBeforeOrEqual(new Time($hours, $minutes)), $expected);
     }
 
     /**
@@ -120,7 +120,7 @@ class TimeTest extends TestCase
      */
     public function testIsEqual(Time $time, int $hours, int $minutes, bool $expected) : void
     {
-        $this->assertEquals($time->isEqual(new Time($hours, $minutes)), $expected);
+        self::assertEquals($time->isEqual(new Time($hours, $minutes)), $expected);
     }
 
     /**
@@ -146,14 +146,14 @@ class TimeTest extends TestCase
     public function testToSeconds(int $expectedTimeRepresentationInSeconds, int $hours, int $minutes, int $seconds) : void
     {
         $time = new Time($hours, $minutes, $seconds);
-        $this->assertEquals($expectedTimeRepresentationInSeconds, $time->toSeconds());
+        self::assertEquals($expectedTimeRepresentationInSeconds, $time->toSeconds());
     }
 
     public function testJsonSerialize() : void
     {
         $time = new Time(20, 30, 15);
 
-        $this->assertJsonStringEqualsJsonFile(
+        self::assertJsonStringEqualsJsonFile(
             __DIR__ . '/Expected/Time/testJsonSerialize.json',
             json_encode($time)
         );

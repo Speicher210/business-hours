@@ -13,7 +13,7 @@ use Speicher210\BusinessHours\Day\DayBuilder;
 use Speicher210\BusinessHours\Day\DayInterface;
 use function date_default_timezone_get;
 use function date_default_timezone_set;
-use function json_encode;
+use function Safe\json_encode;
 
 class BusinessHoursTest extends TestCase
 {
@@ -32,12 +32,12 @@ class BusinessHoursTest extends TestCase
             ]
         );
 
-        $this->assertTrue($business->within(new DateTime('2015-05-11 10:00'))); // Monday
-        $this->assertTrue($business->within(new DateTime('2015-05-11 17:00')));
+        self::assertTrue($business->within(new DateTime('2015-05-11 10:00'))); // Monday
+        self::assertTrue($business->within(new DateTime('2015-05-11 17:00')));
 
-        $this->assertFalse($business->within(new DateTime('2015-05-11 18:00'))); // Monday
-        $this->assertFalse($business->within(new DateTime('2015-05-12 10:00'))); // Tuesday
-        $this->assertFalse(
+        self::assertFalse($business->within(new DateTime('2015-05-11 18:00'))); // Monday
+        self::assertFalse($business->within(new DateTime('2015-05-12 10:00'))); // Tuesday
+        self::assertFalse(
             $business->within(new DateTime('2015-05-11 13:00:25'))
         ); // Monday, seconds outside business hours
     }
@@ -56,7 +56,7 @@ class BusinessHoursTest extends TestCase
         // "2015-05-25 22:00:00" in Europe/Paris
         $date = new DateTime('2015-05-25 10:00:00', new DateTimeZone('Pacific/Tahiti'));
 
-        $this->assertFalse($business->within($date));
+        self::assertFalse($business->within($date));
 
         date_default_timezone_set($tz);
     }
@@ -102,7 +102,7 @@ class BusinessHoursTest extends TestCase
     public function testGetNextChangeDateTime(BusinessHours $business, DateTime $expectedDateTime, DateTime $context) : void
     {
         $date = $business->getNextChangeDateTime($context);
-        $this->assertEquals($expectedDateTime, $date);
+        self::assertEquals($expectedDateTime, $date);
     }
 
     /**
@@ -146,7 +146,7 @@ class BusinessHoursTest extends TestCase
     public function testGetPreviousChangeDateTime(BusinessHours $business, DateTime $expectedDateTime, DateTime $context) : void
     {
         $date = $business->getPreviousChangeDateTime($context);
-        $this->assertEquals($expectedDateTime, $date);
+        self::assertEquals($expectedDateTime, $date);
     }
 
     public function testJsonSerialize() : void
@@ -159,7 +159,7 @@ class BusinessHoursTest extends TestCase
             new DateTimeZone('Europe/London')
         );
 
-        $this->assertJsonStringEqualsJsonFile(
+        self::assertJsonStringEqualsJsonFile(
             __DIR__ . '/Expected/Business/testJsonSerialize.json',
             json_encode($business)
         );
@@ -177,9 +177,9 @@ class BusinessHoursTest extends TestCase
 
         $clone = clone $original;
 
-        $this->assertEquals($original, $clone);
-        $this->assertNotSame($original, $clone);
+        self::assertEquals($original, $clone);
+        self::assertNotSame($original, $clone);
 
-        $this->assertNotSame($original->getDays()[0], $clone->getDays()[0]);
+        self::assertNotSame($original->getDays()[0], $clone->getDays()[0]);
     }
 }

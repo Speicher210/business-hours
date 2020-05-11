@@ -7,7 +7,7 @@ namespace Speicher210\BusinessHours;
 use DateTime;
 use InvalidArgumentException;
 use JsonSerializable;
-use function sprintf;
+use function Safe\sprintf;
 
 /**
  * Represents a date and time interval.

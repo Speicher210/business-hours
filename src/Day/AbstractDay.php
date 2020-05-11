@@ -18,11 +18,12 @@ use Speicher210\BusinessHours\Day\Time\TimeInterval;
 use Speicher210\BusinessHours\Day\Time\TimeIntervalInterface;
 use function array_reverse;
 use function assert;
+use function count;
 use function end;
 use function max;
 use function reset;
-use function sprintf;
-use function usort;
+use function Safe\sprintf;
+use function Safe\usort;
 
 /**
  * Abstract day class.
@@ -110,7 +111,6 @@ abstract class AbstractDay implements DayInterface
         $closestInterval = null;
 
         foreach (array_reverse($this->openingHoursIntervals) as $interval) {
-            assert($interval instanceof TimeIntervalInterface);
             $distance = $time->toSeconds() - $interval->getEnd()->toSeconds();
 
             if ($distance < 0) {
@@ -208,7 +208,7 @@ abstract class AbstractDay implements DayInterface
      */
     protected function setOpeningHoursIntervals(array $openingHoursIntervals) : void
     {
-        if (empty($openingHoursIntervals)) {
+        if (count($openingHoursIntervals) === 0) {
             throw new InvalidArgumentException('The day must have at least one opening interval.');
         }
 

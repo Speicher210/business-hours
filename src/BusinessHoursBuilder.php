@@ -15,9 +15,9 @@ use Speicher210\BusinessHours\Day\Time\TimeInterval;
 use function array_fill_keys;
 use function array_filter;
 use function is_array;
-use function ksort;
 use function max;
 use function min;
+use function Safe\ksort;
 
 /**
  * Build a BusinessHours concrete implementation.

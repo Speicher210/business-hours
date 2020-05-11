@@ -8,7 +8,7 @@ use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Speicher210\BusinessHours\Day\Time\Time;
 use Speicher210\BusinessHours\Day\Time\TimeInterval;
-use function json_encode;
+use function Safe\json_encode;
 
 class TimeIntervalTest extends TestCase
 {
@@ -32,11 +32,11 @@ class TimeIntervalTest extends TestCase
     {
         $interval = TimeInterval::fromString('08:00', '18:30');
 
-        $this->assertEquals(8, $interval->getStart()->getHours());
-        $this->assertEquals(0, $interval->getStart()->getMinutes());
+        self::assertEquals(8, $interval->getStart()->getHours());
+        self::assertEquals(0, $interval->getStart()->getMinutes());
 
-        $this->assertEquals(18, $interval->getEnd()->getHours());
-        $this->assertEquals(30, $interval->getEnd()->getMinutes());
+        self::assertEquals(18, $interval->getEnd()->getHours());
+        self::assertEquals(30, $interval->getEnd()->getMinutes());
     }
 
     /**
@@ -65,14 +65,14 @@ class TimeIntervalTest extends TestCase
      */
     public function testContains(TimeInterval $interval, int $hours, int $minutes, bool $expected) : void
     {
-        $this->assertEquals($interval->contains(new Time($hours, $minutes)), $expected);
+        self::assertEquals($interval->contains(new Time($hours, $minutes)), $expected);
     }
 
     public function testJsonSerialize() : void
     {
         $interval = TimeInterval::fromString('08:00:01', '18:30:02');
 
-        $this->assertJsonStringEqualsJsonFile(
+        self::assertJsonStringEqualsJsonFile(
             __DIR__ . '/Expected/TimeInterval/testJsonSerialize.json',
             json_encode($interval)
         );
@@ -83,10 +83,10 @@ class TimeIntervalTest extends TestCase
         $original = TimeInterval::fromString('08:00', '18:30');
         $clone    = clone $original;
 
-        $this->assertEquals($original, $clone);
-        $this->assertNotSame($original, $clone);
+        self::assertEquals($original, $clone);
+        self::assertNotSame($original, $clone);
 
-        $this->assertNotSame($original->getStart(), $clone->getStart());
-        $this->assertNotSame($original->getEnd(), $clone->getEnd());
+        self::assertNotSame($original->getStart(), $clone->getStart());
+        self::assertNotSame($original->getEnd(), $clone->getEnd());
     }
 }

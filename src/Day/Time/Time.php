@@ -6,7 +6,7 @@ namespace Speicher210\BusinessHours\Day\Time;
 
 use InvalidArgumentException;
 use JsonSerializable;
-use function sprintf;
+use function Safe\sprintf;
 
 /**
  * Represents a time.

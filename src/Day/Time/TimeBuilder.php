@@ -7,7 +7,8 @@ namespace Speicher210\BusinessHours\Day\Time;
 use DateTime;
 use InvalidArgumentException;
 use Throwable;
-use function sprintf;
+use Webmozart\Assert\Assert;
+use function Safe\sprintf;
 use function strpos;
 
 /**
@@ -42,9 +43,7 @@ class TimeBuilder
      */
     public static function fromString(string $time) : Time
     {
-        if (empty($time)) {
-            throw new InvalidArgumentException('Invalid time "".');
-        }
+        Assert::notEmpty($time, 'Invalid time %s.');
 
         try {
             $date = new DateTime($time);

@@ -85,7 +85,7 @@ class BusinessHoursBuilderTest extends TestCase
         $timezone = new DateTimeZone('Europe/Berlin');
         $expected = new BusinessHours($days, $timezone);
 
-        $this->assertEquals($expected, $actual);
+        self::assertEquals($expected, $actual);
     }
 
     public function testShiftToTimezoneWhenNewTimezoneIsTheSame() : void
@@ -105,8 +105,8 @@ class BusinessHoursBuilderTest extends TestCase
 
         $actual = BusinessHoursBuilder::shiftToTimezone($original, new DateTimeZone('Europe/Bucharest'));
 
-        $this->assertEquals($original, $actual);
-        $this->assertNotSame($original, $actual);
+        self::assertEquals($original, $actual);
+        self::assertNotSame($original, $actual);
     }
 
     public function testShiftToTimezoneWhenTimezoneShiftIsBackwards() : void
@@ -176,7 +176,7 @@ class BusinessHoursBuilderTest extends TestCase
 
         $actual = BusinessHoursBuilder::shiftToTimezone($original, new DateTimeZone('Europe/Berlin'));
 
-        $this->assertEquals($expected, $actual);
+        self::assertEquals($expected, $actual);
     }
 
     public function testShiftToTimezoneWhenTimezoneShiftIsForward() : void
@@ -246,6 +246,6 @@ class BusinessHoursBuilderTest extends TestCase
 
         $actual = BusinessHoursBuilder::shiftToTimezone($original, new DateTimeZone('Europe/Bucharest'));
 
-        $this->assertEquals($expected, $actual);
+        self::assertEquals($expected, $actual);
     }
 }

@@ -18,8 +18,9 @@ use Speicher210\BusinessHours\Day\DayInterface;
 use Speicher210\BusinessHours\Day\Time\TimeBuilder;
 use Speicher210\BusinessHours\Day\Time\TimeIntervalInterface;
 use function array_values;
+use function count;
 use function date_default_timezone_get;
-use function sprintf;
+use function Safe\sprintf;
 
 /**
  * Default implementation of BusinessHoursInterface.
@@ -44,7 +45,7 @@ class BusinessHours implements BusinessHoursInterface
     public function __construct(array $days, ?DateTimeZone $timezone = null)
     {
         $this->setDays($days);
-        $this->timezone = $timezone ?: new DateTimeZone(date_default_timezone_get());
+        $this->timezone = $timezone ?? new DateTimeZone(date_default_timezone_get());
     }
 
     public function getTimezone() : DateTimeZone
@@ -71,7 +72,7 @@ class BusinessHours implements BusinessHoursInterface
      */
     protected function setDays(array $days) : void
     {
-        if (empty($days)) {
+        if (count($days) === 0) {
             throw new InvalidArgumentException('At least one day must be added.');
         }
 

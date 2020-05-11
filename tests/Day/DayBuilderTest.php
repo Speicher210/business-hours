@@ -82,7 +82,7 @@ class DayBuilderTest extends TestCase
 
         $expected = new AllDay(Day::WEEK_DAY_MONDAY);
 
-        $this->assertEquals($expected, $actual);
+        self::assertEquals($expected, $actual);
     }
 
     public function testFromAssociativeArrayReturnsDay() : void
@@ -109,6 +109,6 @@ class DayBuilderTest extends TestCase
         ];
         $expected              = new Day(Day::WEEK_DAY_MONDAY, $openingHoursIntervals);
 
-        $this->assertEquals($expected, $actual);
+        self::assertEquals($expected, $actual);
     }
 }

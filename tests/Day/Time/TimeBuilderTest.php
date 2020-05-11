@@ -8,7 +8,7 @@ use DateTime;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Speicher210\BusinessHours\Day\Time\TimeBuilder;
-use function sprintf;
+use function Safe\sprintf;
 
 class TimeBuilderTest extends TestCase
 {
@@ -63,9 +63,9 @@ class TimeBuilderTest extends TestCase
     public function testFromString(string $string, int $expectedHours, int $expectedMinutes, int $expectedSeconds) : void
     {
         $time = TimeBuilder::fromString($string);
-        $this->assertEquals($expectedHours, $time->getHours());
-        $this->assertEquals($expectedMinutes, $time->getMinutes());
-        $this->assertEquals($expectedSeconds, $time->getSeconds());
+        self::assertEquals($expectedHours, $time->getHours());
+        self::assertEquals($expectedMinutes, $time->getMinutes());
+        self::assertEquals($expectedSeconds, $time->getSeconds());
     }
 
     public function testFromArrayThrowsExceptionIfArrayStructureIsNotValid() : void
@@ -98,9 +98,9 @@ class TimeBuilderTest extends TestCase
     public function testFromDate(DateTime $date, int $expectedHours, int $expectedMinutes, int $expectedSeconds) : void
     {
         $time = TimeBuilder::fromDate($date);
-        $this->assertEquals($expectedHours, $time->getHours());
-        $this->assertEquals($expectedMinutes, $time->getMinutes());
-        $this->assertEquals($expectedSeconds, $time->getSeconds());
+        self::assertEquals($expectedHours, $time->getHours());
+        self::assertEquals($expectedMinutes, $time->getMinutes());
+        self::assertEquals($expectedSeconds, $time->getSeconds());
     }
 
     /**
@@ -153,8 +153,8 @@ class TimeBuilderTest extends TestCase
     public function testFromSeconds(int $seconds, int $expectedHours, int $expectedMinutes, int $expectedSeconds) : void
     {
         $time = TimeBuilder::fromSeconds($seconds);
-        $this->assertEquals($expectedHours, $time->getHours());
-        $this->assertEquals($expectedMinutes, $time->getMinutes());
-        $this->assertEquals($expectedSeconds, $time->getSeconds());
+        self::assertEquals($expectedHours, $time->getHours());
+        self::assertEquals($expectedMinutes, $time->getMinutes());
+        self::assertEquals($expectedSeconds, $time->getSeconds());
     }
 }
