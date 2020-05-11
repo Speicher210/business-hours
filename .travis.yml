@@ -23,7 +23,7 @@ before_script:
   - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-dist
 
 script:
-  - composer phpstan
+  - composer analyse
   - composer cs-check
   - if [[ $CODE_COVERAGE != 'on' ]]; vendor/bin/phpunit; fi
   - if [[ $CODE_COVERAGE == 'on' ]]; vendor/bin/phpunit --coverage-text --coverage-clover=coverage.clover; fi
