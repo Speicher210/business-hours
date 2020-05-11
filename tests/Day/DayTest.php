@@ -38,30 +38,27 @@ class DayTest extends TestCase
         );
     }
 
-    /**
-     * @expectedException \OutOfBoundsException
-     * @expectedExceptionMessage Invalid day of week "152".
-     */
     public function testExceptionInvalidDayOfWeek()
     {
+        $this->expectExceptionMessage("Invalid day of week \"152\".");
+        $this->expectException(\OutOfBoundsException::class);
+
         new Day(152, []);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The day must have at least one opening interval.
-     */
     public function testExceptionIsThrownIfOpeningHoursIntervalsIsEmpty()
     {
+        $this->expectExceptionMessage("The day must have at least one opening interval.");
+        $this->expectException(\InvalidArgumentException::class);
+
         new Day(Day::WEEK_DAY_MONDAY, []);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Interval must be a Speicher210\BusinessHours\Day\Time\TimeIntervalInterface
-     */
     public function testExceptionIsThrownIfOpeningHoursIntervalsArrayDoesNotContainTimeIntervals()
     {
+        $this->expectExceptionMessage("Interval must be a Speicher210\BusinessHours\Day\Time\TimeIntervalInterface");
+        $this->expectException(\InvalidArgumentException::class);
+
         new Day(
             Day::WEEK_DAY_MONDAY,
             ['non time interval']

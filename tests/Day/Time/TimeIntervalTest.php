@@ -10,21 +10,19 @@ use Speicher210\BusinessHours\Day\Time\TimeInterval;
 
 class TimeIntervalTest extends TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The opening time "08:00:00" must be before the closing time "08:00:00".
-     */
     public function testConstructorOpeningEqualClosing()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The opening time "08:00:00" must be before the closing time "08:00:00".');
+
         new TimeInterval(new Time(8, 0), new Time(8, 0));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The opening time "18:00:00" must be before the closing time "08:00:00".
-     */
     public function testConstructorOpeningAfterClosing()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The opening time "18:00:00" must be before the closing time "08:00:00".');
+
         new TimeInterval(new Time(18, 0), new Time(8, 0));
     }
 

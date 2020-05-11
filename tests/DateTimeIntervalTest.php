@@ -9,21 +9,19 @@ use Speicher210\BusinessHours\DateTimeInterval;
 
 class DateTimeIntervalTest extends TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The opening date and time "2016-03-07 13:00:00" must be before the closing date and time "2016-03-07 13:00:00".
-     */
     public function testConstructorOpeningEqualClosing()
     {
+        $this->expectExceptionMessage("The opening date and time \"2016-03-07 13:00:00\" must be before the closing date and time \"2016-03-07 13:00:00\".");
+        $this->expectException(\InvalidArgumentException::class);
+
         new DateTimeInterval(new \DateTime('2016-03-07 13:00:00'), new \DateTime('2016-03-07 13:00:00'));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage The opening date and time "2016-03-07 15:00:00" must be before the closing date and time "2016-03-07 13:00:00".
-     */
     public function testConstructorOpeningAfterClosing()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage("The opening date and time \"2016-03-07 15:00:00\" must be before the closing date and time \"2016-03-07 13:00:00\".");
+
         new DateTimeInterval(new \DateTime('2016-03-07 15:00:00'), new \DateTime('2016-03-07 13:00:00'));
     }
 

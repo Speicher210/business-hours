@@ -11,12 +11,10 @@ use Speicher210\BusinessHours\Day\DayInterface;
 
 class BusinessHoursTest extends TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage At least one day must be added.
-     */
     public function testExceptionIsThrownIfNoDaysAreSet()
     {
+        $this->expectExceptionMessage("At least one day must be added.");
+        $this->expectException(\InvalidArgumentException::class);
         new BusinessHours([]);
     }
 

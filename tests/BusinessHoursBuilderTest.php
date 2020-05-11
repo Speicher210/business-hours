@@ -24,13 +24,14 @@ class BusinessHoursBuilderTest extends TestCase
 
     /**
      * @dataProvider dataProviderTestFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Array is not valid.
      *
      * @param array $data
      */
     public function testFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid(array $data)
     {
+        $this->expectExceptionMessage("Array is not valid.");
+        $this->expectException(\InvalidArgumentException::class);
+
         BusinessHoursBuilder::fromAssociativeArray($data);
     }
 

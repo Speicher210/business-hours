@@ -60,12 +60,11 @@ class TimeBuilderTest extends TestCase
         $this->assertEquals($expectedSeconds, $time->getSeconds());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Array is not valid.
-     */
     public function testFromArrayThrowsExceptionIfArrayStructureIsNotValid()
     {
+        $this->expectExceptionMessage("Array is not valid.");
+        $this->expectException(\InvalidArgumentException::class);
+
         TimeBuilder::fromArray([[]]);
     }
 

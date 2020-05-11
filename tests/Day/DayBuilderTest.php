@@ -47,12 +47,12 @@ class DayBuilderTest extends TestCase
      * @dataProvider dataProviderTestFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid
      *
      * @param array $data The data to test.
-     *
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Array is not valid.
      */
     public function testFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid(array $data)
     {
+        $this->expectExceptionMessage("Array is not valid.");
+        $this->expectException(\InvalidArgumentException::class);
+
         DayBuilder::fromAssociativeArray($data);
     }
 
