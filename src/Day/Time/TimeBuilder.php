@@ -5,21 +5,19 @@ declare(strict_types=1);
 namespace Speicher210\BusinessHours\Day\Time;
 
 use DateTime;
+use DateTimeInterface;
 use InvalidArgumentException;
 use Throwable;
 use Webmozart\Assert\Assert;
 use function Safe\sprintf;
 use function strpos;
 
-/**
- * Builder for Time.
- */
 class TimeBuilder
 {
     /**
-     * Create a new Time from an array.
+     * @param int[] $data
      *
-     * @param mixed[] $data The data.
+     * @psalm-param array{hours: int, minutes?: int, seconds?: int} $data
      */
     public static function fromArray(array $data) : Time
     {
@@ -35,10 +33,6 @@ class TimeBuilder
     }
 
     /**
-     * Create a new time from a string.
-     *
-     * @param string $time The time as a string.
-     *
      * @throws InvalidArgumentException If the passed time is invalid.
      */
     public static function fromString(string $time) : Time
@@ -59,21 +53,11 @@ class TimeBuilder
         return $return;
     }
 
-    /**
-     * Create a new time from a date.
-     *
-     * @param DateTime $date The date.
-     */
-    public static function fromDate(DateTime $date) : Time
+    public static function fromDate(DateTimeInterface $date) : Time
     {
         return new Time((int) $date->format('H'), (int) $date->format('i'), (int) $date->format('s'));
     }
 
-    /**
-     * Create a new time from seconds.
-     *
-     * @param int $seconds The seconds.
-     */
     public static function fromSeconds(int $seconds) : Time
     {
         if ($seconds < 0 || $seconds > 86400) {

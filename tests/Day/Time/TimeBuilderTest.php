@@ -68,14 +68,6 @@ class TimeBuilderTest extends TestCase
         self::assertEquals($expectedSeconds, $time->getSeconds());
     }
 
-    public function testFromArrayThrowsExceptionIfArrayStructureIsNotValid() : void
-    {
-        $this->expectExceptionMessage('Array is not valid.');
-        $this->expectException(InvalidArgumentException::class);
-
-        TimeBuilder::fromArray([[]]);
-    }
-
     /**
      * @return mixed[]
      */
