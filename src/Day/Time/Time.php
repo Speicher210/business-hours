@@ -188,7 +188,7 @@ class Time implements JsonSerializable
     /**
      * Check if the time elements are valid.
      *
-     * @param int $hours   The hours.
+     * @param int $hours The hours.
      * @param int $minutes The minutes.
      * @param int $seconds The seconds.
      *
@@ -227,11 +227,13 @@ class Time implements JsonSerializable
         ];
     }
 
-    /**
-     * Returns a string representation of the time.
-     */
-    public function __toString() : string
+    public function asString() : string
     {
         return sprintf('%02d:%02d:%02d', $this->hours, $this->minutes, $this->seconds);
+    }
+
+    public function __toString() : string
+    {
+        return $this->asString();
     }
 }
