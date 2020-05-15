@@ -188,10 +188,6 @@ class Time implements JsonSerializable
     /**
      * Check if the time elements are valid.
      *
-     * @param int $hours The hours.
-     * @param int $minutes The minutes.
-     * @param int $seconds The seconds.
-     *
      * @throws InvalidArgumentException If the elements are not valid.
      */
     private function timeElementsAreValid(int $hours, int $minutes, int $seconds) : bool
