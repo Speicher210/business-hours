@@ -39,7 +39,8 @@
     "phpstan/phpstan-webmozart-assert": "^0.12.4",
     "phpunit/phpunit": "^9.1",
     "thecodingmachine/phpstan-safe-rule": "^1.0",
-    "thecodingmachine/phpstan-strict-rules": "^0.12.0"
+    "thecodingmachine/phpstan-strict-rules": "^0.12.0",
+    "vimeo/psalm": "^3.11"
   },
   "autoload": {
     "psr-4": {
@@ -58,8 +59,12 @@
     "analyse-phpstan-update": [
       "phpstan analyse --generate-baseline"
     ],
+    "analyse-psalm": [
+      "psalm --show-info=false"
+    ],
     "analyse": [
-      "phpstan analyse"
+      "@analyse-phpstan",
+      "@analyse-psalm"
     ],
     "check": [
       "composer validate",
