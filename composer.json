@@ -32,6 +32,7 @@
   "require-dev": {
     "doctrine/coding-standard": "^7.0",
     "ekino/phpstan-banned-code": "^0.3.1",
+    "infection/infection": "^0.16.3",
     "phpstan/phpstan": "^0.12",
     "phpstan/phpstan-deprecation-rules": "^0.12.2",
     "phpstan/phpstan-phpunit": "^0.12.8",

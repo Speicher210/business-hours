@@ -1,5 +1,6 @@
 .idea/
 .phpcs-cache
+infection.log
 phpunit.xml
 build/
 composer.lock
