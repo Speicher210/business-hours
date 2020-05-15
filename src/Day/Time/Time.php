@@ -10,6 +10,7 @@ use InvalidArgumentException;
 use JsonSerializable;
 use Throwable;
 use Webmozart\Assert\Assert;
+use function abs;
 use function Safe\sprintf;
 use function strpos;
 
@@ -59,7 +60,15 @@ class Time implements JsonSerializable
     public static function fromSeconds(int $seconds) : Time
     {
         if ($seconds < 0 || $seconds > 86400) {
-            throw new InvalidArgumentException(sprintf('Invalid time "%s".', $seconds));
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Invalid time "%s%02d:%02d:%02d".',
+                    $seconds < 0 ? '-' : '',
+                    abs((int) ($seconds / 3600)),
+                    abs(($seconds / 60) % 60),
+                    abs($seconds % 60)
+                )
+            );
         }
 
         $data = [
@@ -127,19 +136,34 @@ class Time implements JsonSerializable
         return 3600 * $this->hours + 60 * $this->minutes + $this->seconds;
     }
 
-    public function withHours(int $hours) : self
-    {
-        return new self($hours, $this->minutes, $this->seconds);
-    }
-
     public function hours() : int
     {
         return $this->hours;
     }
 
-    public function withMinutes(int $minutes) : self
+    public function withHours(int $hours) : self
     {
-        return new self($this->hours, $minutes, $this->seconds);
+        return new self($hours, $this->minutes, $this->seconds);
+    }
+
+    /**
+     * Add hours to the current time.
+     *
+     * @throws InvalidArgumentException If the result is not a valid time.
+     */
+    public function addHours(int $hours) : self
+    {
+        return $this->addSeconds($hours * 3600);
+    }
+
+    /**
+     * Subtract hours from the current time.
+     *
+     * @throws InvalidArgumentException If the result is not a valid time.
+     */
+    public function subtractHours(int $hours) : self
+    {
+        return $this->subtractSeconds($hours * 3600);
     }
 
     public function minutes() : int
@@ -147,14 +171,59 @@ class Time implements JsonSerializable
         return $this->minutes;
     }
 
-    public function withSeconds(int $seconds) : self
+    public function withMinutes(int $minutes) : self
     {
-        return new self($this->hours, $this->minutes, $seconds);
+        return new self($this->hours, $minutes, $this->seconds);
+    }
+
+    /**
+     * Add minutes to the current time.
+     *
+     * @throws InvalidArgumentException If the result is not a valid time.
+     */
+    public function addMinutes(int $minutes) : self
+    {
+        return $this->addSeconds($minutes * 60);
+    }
+
+    /**
+     * Subtract seconds from the current time.
+     *
+     * @throws InvalidArgumentException If the result is not a valid time.
+     */
+    public function subtractMinutes(int $minutes) : self
+    {
+        return $this->subtractSeconds($minutes * 60);
     }
 
     public function seconds() : int
     {
         return $this->seconds;
+    }
+
+    public function withSeconds(int $seconds) : self
+    {
+        return new self($this->hours, $this->minutes, $seconds);
+    }
+
+    /**
+     * Add seconds to the current time.
+     *
+     * @throws InvalidArgumentException If the result is not a valid time.
+     */
+    public function addSeconds(int $seconds) : self
+    {
+        return self::fromSeconds($this->toSeconds() + $seconds);
+    }
+
+    /**
+     * Subtract seconds from the current time.
+     *
+     * @throws InvalidArgumentException If the result is not a valid time.
+     */
+    public function subtractSeconds(int $seconds) : self
+    {
+        return self::fromSeconds($this->toSeconds() - $seconds);
     }
 
     /**

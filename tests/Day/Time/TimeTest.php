@@ -123,18 +123,18 @@ class TimeTest extends TestCase
     public static function dataProviderTestFromSecondsInvalid() : array
     {
         return [
-            [-1],
-            [86401],
+            [-1, 'Invalid time "-00:00:01".'],
+            [86401, 'Invalid time "24:00:01".'],
         ];
     }
 
     /**
      * @dataProvider dataProviderTestFromSecondsInvalid
      */
-    public function testFromSecondsInvalid(int $seconds) : void
+    public function testFromSecondsInvalid(int $seconds, string $expectedMessage) : void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage(sprintf('Invalid time "%s".', $seconds));
+        $this->expectExceptionMessage($expectedMessage);
 
         Time::fromSeconds($seconds);
     }
@@ -266,6 +266,46 @@ class TimeTest extends TestCase
         self::assertEquals('10:23:45', $newTime->asString());
     }
 
+    public function testAddHours() : void
+    {
+        $time = new Time(1, 0, 0);
+
+        $newTime = $time->addHours(2);
+
+        self::assertEquals('01:00:00', $time->asString());
+        self::assertEquals('03:00:00', $newTime->asString());
+    }
+
+    public function testAddHoursThrowsExceptionIfResultIsNotValid() : void
+    {
+        $time = new Time(10, 0, 1);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid time "24:00:01".');
+
+        $time->addHours(14);
+    }
+
+    public function testSubtractHours() : void
+    {
+        $time = new Time(11, 0, 0);
+
+        $newTime = $time->subtractHours(2);
+
+        self::assertEquals('11:00:00', $time->asString());
+        self::assertEquals('09:00:00', $newTime->asString());
+    }
+
+    public function testSubtractHoursThrowsExceptionIfResultIsNotValid() : void
+    {
+        $time = new Time(10, 0, 1);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid time "-03:59:59".');
+
+        $time->subtractHours(14);
+    }
+
     public function testWithMinutes() : void
     {
         $time = new Time(1, 23, 45);
@@ -276,6 +316,46 @@ class TimeTest extends TestCase
         self::assertEquals('01:32:45', $newTime->asString());
     }
 
+    public function testAddMinutes() : void
+    {
+        $time = new Time(0, 0, 0);
+
+        $newTime = $time->addMinutes(100);
+
+        self::assertEquals('00:00:00', $time->asString());
+        self::assertEquals('01:40:00', $newTime->asString());
+    }
+
+    public function testAddMinutesThrowsExceptionIfResultIsNotValid() : void
+    {
+        $time = new Time(24, 0, 0);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid time "24:01:00".');
+
+        $time->addMinutes(1);
+    }
+
+    public function testSubtractMinutes() : void
+    {
+        $time = new Time(11, 0, 0);
+
+        $newTime = $time->subtractMinutes(100);
+
+        self::assertEquals('11:00:00', $time->asString());
+        self::assertEquals('09:20:00', $newTime->asString());
+    }
+
+    public function testSubtractMinutesThrowsExceptionIfResultIsNotValid() : void
+    {
+        $time = new Time(0, 0, 0);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid time "-00:01:00".');
+
+        $time->subtractMinutes(1);
+    }
+
     public function testWithSeconds() : void
     {
         $time = new Time(1, 23, 45);
@@ -284,6 +364,46 @@ class TimeTest extends TestCase
 
         self::assertEquals('01:23:45', $time->asString());
         self::assertEquals('01:23:54', $newTime->asString());
+    }
+
+    public function testAddSeconds() : void
+    {
+        $time = new Time(0, 59, 58);
+
+        $newTime = $time->addSeconds(3);
+
+        self::assertEquals('00:59:58', $time->asString());
+        self::assertEquals('01:00:01', $newTime->asString());
+    }
+
+    public function testAddSecondsThrowsExceptionIfResultIsNotValid() : void
+    {
+        $time = new Time(24, 0, 0);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid time "24:00:01".');
+
+        $time->addSeconds(1);
+    }
+
+    public function testSubtractSeconds() : void
+    {
+        $time = new Time(11, 0, 0);
+
+        $newTime = $time->subtractSeconds(100);
+
+        self::assertEquals('11:00:00', $time->asString());
+        self::assertEquals('10:58:20', $newTime->asString());
+    }
+
+    public function testSubtractSecondsThrowsExceptionIfResultIsNotValid() : void
+    {
+        $time = new Time(0, 0, 0);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid time "-00:00:01".');
+
+        $time->subtractSeconds(1);
     }
 
     public function testAsString() : void
