@@ -62,10 +62,10 @@ class DayTest extends TestCase
         $day             = DayBuilder::fromArray(Day::WEEK_DAY_MONDAY, [['09:00', '10 AM'], ['12:15', '2 pm'], ['14:30', '18:30']]);
         $closestInterval = $day->getClosestPreviousOpeningHoursInterval(new Time(13, 0));
 
-        self::assertSame(12, $closestInterval->getStart()->getHours());
-        self::assertSame(15, $closestInterval->getStart()->getMinutes());
-        self::assertSame(14, $closestInterval->getEnd()->getHours());
-        self::assertSame(0, $closestInterval->getEnd()->getMinutes());
+        self::assertSame(12, $closestInterval->getStart()->hours());
+        self::assertSame(15, $closestInterval->getStart()->minutes());
+        self::assertSame(14, $closestInterval->getEnd()->hours());
+        self::assertSame(0, $closestInterval->getEnd()->minutes());
     }
 
     public function testGetClosestPreviousOpeningHoursIntervalWhileBetweenIntervals() : void
@@ -73,10 +73,10 @@ class DayTest extends TestCase
         $day             = DayBuilder::fromArray(Day::WEEK_DAY_MONDAY, [['09:00', '10 AM'], ['12:12', '2 pm'], ['14:30', '18:25']]);
         $closestInterval = $day->getClosestPreviousOpeningHoursInterval(new Time(14, 20));
 
-        self::assertSame(12, $closestInterval->getStart()->getHours());
-        self::assertSame(12, $closestInterval->getStart()->getMinutes());
-        self::assertSame(14, $closestInterval->getEnd()->getHours());
-        self::assertSame(00, $closestInterval->getEnd()->getMinutes());
+        self::assertSame(12, $closestInterval->getStart()->hours());
+        self::assertSame(12, $closestInterval->getStart()->minutes());
+        self::assertSame(14, $closestInterval->getEnd()->hours());
+        self::assertSame(00, $closestInterval->getEnd()->minutes());
     }
 
     public function testGetClosestPreviousOpeningHoursIntervalWhileBeingBeforeAllIntervals() : void
@@ -92,10 +92,10 @@ class DayTest extends TestCase
         $day             = DayBuilder::fromArray(Day::WEEK_DAY_MONDAY, [['09:00', '10 AM'], ['12:15', '2 pm'], ['14:30', '18:30']]);
         $closestInterval = $day->getClosestNextOpeningHoursInterval(new Time(13, 0));
 
-        self::assertSame(12, $closestInterval->getStart()->getHours());
-        self::assertSame(15, $closestInterval->getStart()->getMinutes());
-        self::assertSame(14, $closestInterval->getEnd()->getHours());
-        self::assertSame(0, $closestInterval->getEnd()->getMinutes());
+        self::assertSame(12, $closestInterval->getStart()->hours());
+        self::assertSame(15, $closestInterval->getStart()->minutes());
+        self::assertSame(14, $closestInterval->getEnd()->hours());
+        self::assertSame(0, $closestInterval->getEnd()->minutes());
     }
 
     public function testGetClosestNextOpeningHoursIntervalWhileBetweenIntervals() : void
@@ -103,10 +103,10 @@ class DayTest extends TestCase
         $day             = DayBuilder::fromArray(Day::WEEK_DAY_MONDAY, [['09:00', '10 AM'], ['12:00', '2 pm'], ['14:30', '18:25']]);
         $closestInterval = $day->getClosestNextOpeningHoursInterval(new Time(14, 20));
 
-        self::assertSame(14, $closestInterval->getStart()->getHours());
-        self::assertSame(30, $closestInterval->getStart()->getMinutes());
-        self::assertSame(18, $closestInterval->getEnd()->getHours());
-        self::assertSame(25, $closestInterval->getEnd()->getMinutes());
+        self::assertSame(14, $closestInterval->getStart()->hours());
+        self::assertSame(30, $closestInterval->getStart()->minutes());
+        self::assertSame(18, $closestInterval->getEnd()->hours());
+        self::assertSame(25, $closestInterval->getEnd()->minutes());
     }
 
     public function testGetClosestNextOpeningHoursIntervalWhileBeingAfterAllIntervals() : void
@@ -125,10 +125,10 @@ class DayTest extends TestCase
         );
         $nextInterval = $day->getPreviousOpeningHoursInterval(new Time(13, 0));
 
-        self::assertSame(9, $nextInterval->getStart()->getHours());
-        self::assertSame(30, $nextInterval->getStart()->getMinutes());
-        self::assertSame(10, $nextInterval->getEnd()->getHours());
-        self::assertSame(00, $nextInterval->getEnd()->getMinutes());
+        self::assertSame(9, $nextInterval->getStart()->hours());
+        self::assertSame(30, $nextInterval->getStart()->minutes());
+        self::assertSame(10, $nextInterval->getEnd()->hours());
+        self::assertSame(00, $nextInterval->getEnd()->minutes());
     }
 
     public function testGetPreviousOpeningHoursIntervalWhileBetweenIntervals() : void
@@ -136,10 +136,10 @@ class DayTest extends TestCase
         $day          = DayBuilder::fromArray(Day::WEEK_DAY_MONDAY, [['09:00', '10 AM'], ['12:15', '2 pm'], ['14:30', '18:25']]);
         $nextInterval = $day->getPreviousOpeningHoursInterval(new Time(14, 20));
 
-        self::assertSame(12, $nextInterval->getStart()->getHours());
-        self::assertSame(15, $nextInterval->getStart()->getMinutes());
-        self::assertSame(14, $nextInterval->getEnd()->getHours());
-        self::assertSame(00, $nextInterval->getEnd()->getMinutes());
+        self::assertSame(12, $nextInterval->getStart()->hours());
+        self::assertSame(15, $nextInterval->getStart()->minutes());
+        self::assertSame(14, $nextInterval->getEnd()->hours());
+        self::assertSame(00, $nextInterval->getEnd()->minutes());
     }
 
     public function testGetPreviousOpeningHoursIntervalWhileOutsideIntervals() : void
@@ -158,10 +158,10 @@ class DayTest extends TestCase
         );
         $nextInterval = $day->getNextOpeningHoursInterval(new Time(13, 0));
 
-        self::assertSame(14, $nextInterval->getStart()->getHours());
-        self::assertSame(30, $nextInterval->getStart()->getMinutes());
-        self::assertSame(18, $nextInterval->getEnd()->getHours());
-        self::assertSame(20, $nextInterval->getEnd()->getMinutes());
+        self::assertSame(14, $nextInterval->getStart()->hours());
+        self::assertSame(30, $nextInterval->getStart()->minutes());
+        self::assertSame(18, $nextInterval->getEnd()->hours());
+        self::assertSame(20, $nextInterval->getEnd()->minutes());
     }
 
     public function testGetNextOpeningHoursIntervalWhileBetweenIntervals() : void
@@ -169,10 +169,10 @@ class DayTest extends TestCase
         $day          = DayBuilder::fromArray(Day::WEEK_DAY_MONDAY, [['09:00', '10 AM'], ['12:00', '2 pm'], ['14:30', '18:25']]);
         $nextInterval = $day->getNextOpeningHoursInterval(new Time(14, 20));
 
-        self::assertSame(14, $nextInterval->getStart()->getHours());
-        self::assertSame(30, $nextInterval->getStart()->getMinutes());
-        self::assertSame(18, $nextInterval->getEnd()->getHours());
-        self::assertSame(25, $nextInterval->getEnd()->getMinutes());
+        self::assertSame(14, $nextInterval->getStart()->hours());
+        self::assertSame(30, $nextInterval->getStart()->minutes());
+        self::assertSame(18, $nextInterval->getEnd()->hours());
+        self::assertSame(25, $nextInterval->getEnd()->minutes());
     }
 
     public function testGetNextOpeningHoursIntervalWhileOutsideIntervals() : void
@@ -186,15 +186,15 @@ class DayTest extends TestCase
     public function testGetOpeningTime() : void
     {
         $day = DayBuilder::fromArray(Day::WEEK_DAY_MONDAY, [['12:00', '2 pm'], ['14:30', '18:30'], ['09:00', '10 AM']]);
-        self::assertEquals(9, $day->getOpeningTime()->getHours());
-        self::assertEquals(0, $day->getOpeningTime()->getMinutes());
+        self::assertEquals(9, $day->getOpeningTime()->hours());
+        self::assertEquals(0, $day->getOpeningTime()->minutes());
     }
 
     public function testGetClosingTime() : void
     {
         $day = DayBuilder::fromArray(Day::WEEK_DAY_MONDAY, [['12:00', '2 pm'], ['14:30', '18:30'], ['09:00', '10 AM']]);
-        self::assertEquals(18, $day->getClosingTime()->getHours());
-        self::assertEquals(30, $day->getClosingTime()->getMinutes());
+        self::assertEquals(18, $day->getClosingTime()->hours());
+        self::assertEquals(30, $day->getClosingTime()->minutes());
     }
 
     /**

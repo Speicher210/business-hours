@@ -17,15 +17,17 @@ class Time implements JsonSerializable
 {
     protected int $hours;
 
-    protected int $minutes = 0;
+    protected int $minutes;
 
-    protected int $seconds = 0;
+    protected int $seconds;
 
     public function __construct(int $hours, int $minutes = 0, int $seconds = 0)
     {
-        $this->setHours($hours);
-        $this->setMinutes($minutes);
-        $this->setSeconds($seconds);
+        $this->assertTimeElementsAreValid($hours, $minutes, $seconds);
+
+        $this->hours   = $hours;
+        $this->minutes = $minutes;
+        $this->seconds = $seconds;
     }
 
     public static function fromDate(DateTimeInterface $date) : self
@@ -48,7 +50,7 @@ class Time implements JsonSerializable
 
         $return = static::fromDate($date);
         if (strpos($time, '24') === 0) {
-            $return->setHours(24);
+            return $return->withHours(24);
         }
 
         return $return;
@@ -125,62 +127,32 @@ class Time implements JsonSerializable
         return 3600 * $this->hours + 60 * $this->minutes + $this->seconds;
     }
 
-    /**
-     * Set the hours.
-     *
-     * @param int $hours The hours.
-     */
-    public function setHours(int $hours) : void
+    public function withHours(int $hours) : self
     {
-        $this->timeElementsAreValid($hours, $this->minutes, $this->seconds);
-
-        $this->hours = $hours;
+        return new self($hours, $this->minutes, $this->seconds);
     }
 
-    /**
-     * Get the hours.
-     */
-    public function getHours() : int
+    public function hours() : int
     {
         return $this->hours;
     }
 
-    /**
-     * Set the minutes.
-     *
-     * @param int $minutes The minutes
-     */
-    public function setMinutes(int $minutes) : void
+    public function withMinutes(int $minutes) : self
     {
-        $this->timeElementsAreValid($this->hours, $minutes, $this->seconds);
-
-        $this->minutes = $minutes;
+        return new self($this->hours, $minutes, $this->seconds);
     }
 
-    /**
-     * Get the minutes.
-     */
-    public function getMinutes() : int
+    public function minutes() : int
     {
         return $this->minutes;
     }
 
-    /**
-     * Set the seconds.
-     *
-     * @param int $seconds The seconds.
-     */
-    public function setSeconds(int $seconds) : void
+    public function withSeconds(int $seconds) : self
     {
-        $this->timeElementsAreValid($this->hours, $this->minutes, $seconds);
-
-        $this->seconds = $seconds;
+        return new self($this->hours, $this->minutes, $seconds);
     }
 
-    /**
-     * Get the seconds.
-     */
-    public function getSeconds() : int
+    public function seconds() : int
     {
         return $this->seconds;
     }
@@ -190,7 +162,7 @@ class Time implements JsonSerializable
      *
      * @throws InvalidArgumentException If the elements are not valid.
      */
-    private function timeElementsAreValid(int $hours, int $minutes, int $seconds) : bool
+    private function assertTimeElementsAreValid(int $hours, int $minutes, int $seconds) : bool
     {
         $exception = new InvalidArgumentException(
             sprintf('Invalid time "%02d:%02d:%02d".', $hours, $minutes, $seconds)

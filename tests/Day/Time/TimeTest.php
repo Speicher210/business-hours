@@ -90,9 +90,9 @@ class TimeTest extends TestCase
         int $expectedSeconds
     ) : void {
         $time = Time::fromString($string);
-        self::assertEquals($expectedHours, $time->getHours());
-        self::assertEquals($expectedMinutes, $time->getMinutes());
-        self::assertEquals($expectedSeconds, $time->getSeconds());
+        self::assertEquals($expectedHours, $time->hours());
+        self::assertEquals($expectedMinutes, $time->minutes());
+        self::assertEquals($expectedSeconds, $time->seconds());
     }
 
     /**
@@ -112,9 +112,9 @@ class TimeTest extends TestCase
     public function testFromDate(DateTime $date, int $expectedHours, int $expectedMinutes, int $expectedSeconds) : void
     {
         $time = Time::fromDate($date);
-        self::assertEquals($expectedHours, $time->getHours());
-        self::assertEquals($expectedMinutes, $time->getMinutes());
-        self::assertEquals($expectedSeconds, $time->getSeconds());
+        self::assertEquals($expectedHours, $time->hours());
+        self::assertEquals($expectedMinutes, $time->minutes());
+        self::assertEquals($expectedSeconds, $time->seconds());
     }
 
     /**
@@ -160,9 +160,9 @@ class TimeTest extends TestCase
     public function testFromSeconds(int $seconds, int $expectedHours, int $expectedMinutes, int $expectedSeconds) : void
     {
         $time = Time::fromSeconds($seconds);
-        self::assertEquals($expectedHours, $time->getHours());
-        self::assertEquals($expectedMinutes, $time->getMinutes());
-        self::assertEquals($expectedSeconds, $time->getSeconds());
+        self::assertEquals($expectedHours, $time->hours());
+        self::assertEquals($expectedMinutes, $time->minutes());
+        self::assertEquals($expectedSeconds, $time->seconds());
     }
 
     /**
@@ -254,6 +254,43 @@ class TimeTest extends TestCase
     ) : void {
         $time = new Time($hours, $minutes, $seconds);
         self::assertEquals($expectedTimeRepresentationInSeconds, $time->toSeconds());
+    }
+
+    public function testWithHours() : void
+    {
+        $time = new Time(1, 23, 45);
+
+        $newTime = $time->withHours(10);
+
+        self::assertEquals('01:23:45', $time->asString());
+        self::assertEquals('10:23:45', $newTime->asString());
+    }
+
+    public function testWithMinutes() : void
+    {
+        $time = new Time(1, 23, 45);
+
+        $newTime = $time->withMinutes(32);
+
+        self::assertEquals('01:23:45', $time->asString());
+        self::assertEquals('01:32:45', $newTime->asString());
+    }
+
+    public function testWithSeconds() : void
+    {
+        $time = new Time(1, 23, 45);
+
+        $newTime = $time->withSeconds(54);
+
+        self::assertEquals('01:23:45', $time->asString());
+        self::assertEquals('01:23:54', $newTime->asString());
+    }
+
+    public function testAsString() : void
+    {
+        $time = new Time(12, 34, 56);
+
+        self::assertSame('12:34:56', $time->asString());
     }
 
     public function testJsonSerialize() : void

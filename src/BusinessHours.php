@@ -189,14 +189,14 @@ class BusinessHours implements BusinessHoursInterface
         $intervalEnd   = clone $date;
 
         $intervalStart->setTime(
-            $timeInterval->getStart()->getHours(),
-            $timeInterval->getStart()->getMinutes(),
-            $timeInterval->getStart()->getSeconds()
+            $timeInterval->getStart()->hours(),
+            $timeInterval->getStart()->minutes(),
+            $timeInterval->getStart()->seconds()
         );
         $intervalEnd->setTime(
-            $timeInterval->getEnd()->getHours(),
-            $timeInterval->getEnd()->getMinutes(),
-            $timeInterval->getEnd()->getSeconds()
+            $timeInterval->getEnd()->hours(),
+            $timeInterval->getEnd()->minutes(),
+            $timeInterval->getEnd()->seconds()
         );
 
         return new DateTimeInterval($intervalStart, $intervalEnd);
