@@ -33,7 +33,6 @@ use Speicher210\BusinessHours\Day\Day;
 use Speicher210\BusinessHours\Day\DayBuilder;
 use Speicher210\BusinessHours\Day\DayInterface;
 use Speicher210\BusinessHours\Day\Time\Time;
-use Speicher210\BusinessHours\Day\Time\TimeBuilder;
 use Speicher210\BusinessHours\Day\Time\TimeInterval;
 
 require_once __DIR__ . '/vendor/autoload.php';
@@ -54,19 +53,19 @@ $businessHours = new BusinessHours(
         ),
         // Tuesday is opened all day (from 00:00 to 24:00).
         new AllDay(DayInterface::WEEK_DAY_TUESDAY),
-        // For Wednesday we use the TimeBuilder
+        // For Wednesday we use Time::fromString
         new Day(
             DayInterface::WEEK_DAY_WEDNESDAY,
             [
                 // First part of the day.
                 new TimeInterval(
-                    TimeBuilder::fromString('10:00'),
-                    TimeBuilder::fromString('14:00')
+                    Time::fromString('10:00'),
+                    Time::fromString('14:00')
                 ),
                 // Second part of the day.
                 new TimeInterval(
-                    TimeBuilder::fromString('15:00'),
-                    TimeBuilder::fromString('20:00')
+                    Time::fromString('15:00'),
+                    Time::fromString('20:00')
                 ),
             ]
         ),

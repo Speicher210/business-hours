@@ -10,7 +10,7 @@ use InvalidArgumentException;
 use Speicher210\BusinessHours\Day\Day;
 use Speicher210\BusinessHours\Day\DayBuilder;
 use Speicher210\BusinessHours\Day\DayInterface;
-use Speicher210\BusinessHours\Day\Time\TimeBuilder;
+use Speicher210\BusinessHours\Day\Time\Time;
 use Speicher210\BusinessHours\Day\Time\TimeInterval;
 use function array_fill_keys;
 use function array_filter;
@@ -69,8 +69,8 @@ final class BusinessHoursBuilder
 
                     $dayOfWeek             = $day->getDayOfWeek();
                     $interval              = new TimeInterval(
-                        TimeBuilder::fromSeconds($startForCurrentDay),
-                        TimeBuilder::fromSeconds($endForCurrentDay)
+                        Time::fromSeconds($startForCurrentDay),
+                        Time::fromSeconds($endForCurrentDay)
                     );
                     $tmpDays[$dayOfWeek][] = $interval;
                 }
@@ -82,8 +82,8 @@ final class BusinessHoursBuilder
 
                     $dayOfWeek             = self::getPreviousDayOfWeek($day->getDayOfWeek());
                     $interval              = new TimeInterval(
-                        TimeBuilder::fromSeconds($startForPreviousDay),
-                        TimeBuilder::fromSeconds($endForPreviousDay)
+                        Time::fromSeconds($startForPreviousDay),
+                        Time::fromSeconds($endForPreviousDay)
                     );
                     $tmpDays[$dayOfWeek][] = $interval;
                 }
@@ -98,8 +98,8 @@ final class BusinessHoursBuilder
 
                 $dayOfWeek             = self::getNextDayOfWeek($day->getDayOfWeek());
                 $interval              = new TimeInterval(
-                    TimeBuilder::fromSeconds($startForNextDay),
-                    TimeBuilder::fromSeconds($endForNextDay)
+                    Time::fromSeconds($startForNextDay),
+                    Time::fromSeconds($endForNextDay)
                 );
                 $tmpDays[$dayOfWeek][] = $interval;
             }

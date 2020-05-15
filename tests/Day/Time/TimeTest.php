@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 namespace Speicher210\BusinessHours\Test\Day\Time;
 
+use DateTime;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Speicher210\BusinessHours\Day\Time\Time;
 use function Safe\json_encode;
+use function Safe\sprintf;
 
 class TimeTest extends TestCase
 {
     /**
      * @return mixed[]
      */
-    public static function dataProviderTestCreateTimeWithInvalidData() : array
+    public static function dataProviderTestInstantiateTimeWithInvalidData() : array
     {
         return [
             [-1, 0, 0],
@@ -28,18 +30,139 @@ class TimeTest extends TestCase
     }
 
     /**
-     * @param int $hours   The hours.
-     * @param int $minutes The minutes.
-     * @param int $seconds The seconds.
-     *
-     * @dataProvider dataProviderTestCreateTimeWithInvalidData
+     * @dataProvider dataProviderTestInstantiateTimeWithInvalidData
      */
-    public function testCreateTimeWithInvalidData(int $hours, int $minutes, int $seconds) : void
+    public function testInstantiateTimeWithInvalidData(int $hours, int $minutes, int $seconds) : void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid time');
 
         new Time($hours, $minutes, $seconds);
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public static function dataProviderTestFromStringInvalid() : array
+    {
+        return [
+            ['invalid'],
+            ['24:00:01'],
+            ['25:00'],
+            [''],
+        ];
+    }
+
+    /**
+     * @param mixed $string The string to test.
+     *
+     * @dataProvider dataProviderTestFromStringInvalid
+     */
+    public function testFromStringInvalid($string) : void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(sprintf('Invalid time "%s".', $string));
+
+        Time::fromString($string);
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public static function dataProviderTestFromString() : array
+    {
+        return [
+            ['2pm', 14, 0, 0],
+            ['11:00', 11, 0, 0],
+            ['11:00:11', 11, 0, 11],
+            ['23:15', 23, 15, 0],
+            ['24:00', 24, 0, 0],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderTestFromString
+     */
+    public function testFromString(
+        string $string,
+        int $expectedHours,
+        int $expectedMinutes,
+        int $expectedSeconds
+    ) : void {
+        $time = Time::fromString($string);
+        self::assertEquals($expectedHours, $time->getHours());
+        self::assertEquals($expectedMinutes, $time->getMinutes());
+        self::assertEquals($expectedSeconds, $time->getSeconds());
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public static function dataProviderTestFromDate() : array
+    {
+        return [
+            [new DateTime('2 AM'), 2, 0, 0],
+            [new DateTime('3:20:15 PM'), 15, 20, 15],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderTestFromDate
+     */
+    public function testFromDate(DateTime $date, int $expectedHours, int $expectedMinutes, int $expectedSeconds) : void
+    {
+        $time = Time::fromDate($date);
+        self::assertEquals($expectedHours, $time->getHours());
+        self::assertEquals($expectedMinutes, $time->getMinutes());
+        self::assertEquals($expectedSeconds, $time->getSeconds());
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public static function dataProviderTestFromSecondsInvalid() : array
+    {
+        return [
+            [-1],
+            [86401],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderTestFromSecondsInvalid
+     */
+    public function testFromSecondsInvalid(int $seconds) : void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(sprintf('Invalid time "%s".', $seconds));
+
+        Time::fromSeconds($seconds);
+    }
+
+    /**
+     * @return mixed[]
+     */
+    public static function dataProviderTestFromSeconds() : array
+    {
+        return [
+            [0, 0, 0, 0],
+            [40, 0, 0, 40],
+            [60, 0, 1, 0],
+            [3600, 1, 0, 0],
+            [86400, 24, 0, 0],
+            [45296, 12, 34, 56],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderTestFromSeconds
+     */
+    public function testFromSeconds(int $seconds, int $expectedHours, int $expectedMinutes, int $expectedSeconds) : void
+    {
+        $time = Time::fromSeconds($seconds);
+        self::assertEquals($expectedHours, $time->getHours());
+        self::assertEquals($expectedMinutes, $time->getMinutes());
+        self::assertEquals($expectedSeconds, $time->getSeconds());
     }
 
     /**
@@ -57,11 +180,6 @@ class TimeTest extends TestCase
     }
 
     /**
-     * @param Time $time     The date and time to test.
-     * @param int  $hours    The hours to test.
-     * @param int  $minutes  The minutes to test.
-     * @param bool $expected The expected value.
-     *
      * @dataProvider dataProviderTestIsAfterOrEqual
      */
     public function testIsAfterOrEqual(Time $time, int $hours, int $minutes, bool $expected) : void
@@ -84,11 +202,6 @@ class TimeTest extends TestCase
     }
 
     /**
-     * @param Time $time     The date and time to test.
-     * @param int  $hours    The hours to test.
-     * @param int  $minutes  The minutes to test.
-     * @param bool $expected The expected value.
-     *
      * @dataProvider dataProviderTestIsBeforeOrEqual
      */
     public function testIsBeforeOrEqual(Time $time, int $hours, int $minutes, bool $expected) : void
@@ -111,11 +224,6 @@ class TimeTest extends TestCase
     }
 
     /**
-     * @param Time $time     The date and time to test.
-     * @param int  $hours    The hours to test.
-     * @param int  $minutes  The minutes to test.
-     * @param bool $expected The expected value.
-     *
      * @dataProvider dataProviderTestIsEqual
      */
     public function testIsEqual(Time $time, int $hours, int $minutes, bool $expected) : void
@@ -136,15 +244,14 @@ class TimeTest extends TestCase
     }
 
     /**
-     * @param int $expectedTimeRepresentationInSeconds The expected representation of time in seconds.
-     * @param int $hours                               The hours to test.
-     * @param int $minutes                             The minutes to test.
-     * @param int $seconds                             The seconds to test.
-     *
      * @dataProvider dataProviderTestToSeconds
      */
-    public function testToSeconds(int $expectedTimeRepresentationInSeconds, int $hours, int $minutes, int $seconds) : void
-    {
+    public function testToSeconds(
+        int $expectedTimeRepresentationInSeconds,
+        int $hours,
+        int $minutes,
+        int $seconds
+    ) : void {
         $time = new Time($hours, $minutes, $seconds);
         self::assertEquals($expectedTimeRepresentationInSeconds, $time->toSeconds());
     }

@@ -6,7 +6,6 @@ namespace Speicher210\BusinessHours\Day;
 
 use InvalidArgumentException;
 use Speicher210\BusinessHours\Day\Time\Time;
-use Speicher210\BusinessHours\Day\Time\TimeBuilder;
 use Speicher210\BusinessHours\Day\Time\TimeInterval;
 use Speicher210\BusinessHours\Day\Time\TimeIntervalInterface;
 use function assert;
@@ -27,8 +26,8 @@ final class DayBuilder
                 $intervals[] = $interval;
             } elseif (is_array($interval)) {
                 $intervals[] = new TimeInterval(
-                    TimeBuilder::fromString($interval[0]),
-                    TimeBuilder::fromString($interval[1])
+                    Time::fromString($interval[0]),
+                    Time::fromString($interval[1])
                 );
             }
         }
@@ -59,8 +58,8 @@ final class DayBuilder
                 throw new InvalidArgumentException('Array is not valid.');
             }
 
-            $start = TimeBuilder::fromArray($openingInterval['start']);
-            $end   = TimeBuilder::fromArray($openingInterval['end']);
+            $start = Time::fromArray($openingInterval['start']);
+            $end   = Time::fromArray($openingInterval['end']);
             if (self::isIntervalAllDay($start, $end)) {
                 return new AllDay($data['dayOfWeek']);
             }

@@ -15,7 +15,7 @@ use DateTime;
 use DateTimeZone;
 use InvalidArgumentException;
 use Speicher210\BusinessHours\Day\DayInterface;
-use Speicher210\BusinessHours\Day\Time\TimeBuilder;
+use Speicher210\BusinessHours\Day\Time\Time;
 use Speicher210\BusinessHours\Day\Time\TimeIntervalInterface;
 use function array_values;
 use function count;
@@ -79,7 +79,7 @@ class BusinessHours implements BusinessHoursInterface
 
         $day = $this->getDay((int) $tmpDate->format('N'));
         if ($day !== null) {
-            return $day->isWithinOpeningHours(TimeBuilder::fromDate($tmpDate));
+            return $day->isWithinOpeningHours(Time::fromDate($tmpDate));
         }
 
         return false;
@@ -133,7 +133,7 @@ class BusinessHours implements BusinessHoursInterface
     {
         $tmpDate   = clone $date;
         $dayOfWeek = (int) $tmpDate->format('N');
-        $time      = TimeBuilder::fromDate($tmpDate);
+        $time      = Time::fromDate($tmpDate);
 
         $day = $this->getDay($dayOfWeek);
         if ($day !== null) {
@@ -160,7 +160,7 @@ class BusinessHours implements BusinessHoursInterface
     {
         $tmpDate   = clone $date;
         $dayOfWeek = (int) $tmpDate->format('N');
-        $time      = TimeBuilder::fromDate($tmpDate);
+        $time      = Time::fromDate($tmpDate);
 
         $day = $this->getDay($dayOfWeek);
         if ($day !== null) {
@@ -244,7 +244,7 @@ class BusinessHours implements BusinessHoursInterface
     {
         $tmpDate   = clone $date;
         $dayOfWeek = (int) $tmpDate->format('N');
-        $time      = TimeBuilder::fromDate($tmpDate);
+        $time      = Time::fromDate($tmpDate);
 
         $day = $this->getDay($dayOfWeek);
         if ($day !== null) {
@@ -264,7 +264,7 @@ class BusinessHours implements BusinessHoursInterface
     {
         $tmpDate   = clone $date;
         $dayOfWeek = (int) $tmpDate->format('N');
-        $time      = TimeBuilder::fromDate($tmpDate);
+        $time      = Time::fromDate($tmpDate);
 
         $day = $this->getDay($dayOfWeek);
         if ($day !== null) {

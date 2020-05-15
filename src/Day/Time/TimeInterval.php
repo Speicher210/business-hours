@@ -52,7 +52,7 @@ class TimeInterval implements TimeIntervalInterface
      */
     public static function fromString(string $startTime, string $endTime) : self
     {
-        return new static(TimeBuilder::fromString($startTime), TimeBuilder::fromString($endTime));
+        return new static(Time::fromString($startTime), Time::fromString($endTime));
     }
 
     public function contains(Time $time) : bool
