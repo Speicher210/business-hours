@@ -406,6 +406,49 @@ class TimeTest extends TestCase
         $time->subtractSeconds(1);
     }
 
+    /**
+     * @return mixed[]
+     */
+    public static function dataProviderTestRoundToMinutes() : array
+    {
+        return [
+            [Time::fromString('14:20:00'), 10, Time::ROUND_HALF_UP, Time::fromString('14:20')],
+            [Time::fromString('14:21:00'), 10, Time::ROUND_HALF_UP, Time::fromString('14:20')],
+            [Time::fromString('14:21:20'), 10, Time::ROUND_HALF_UP, Time::fromString('14:20')],
+            [Time::fromString('14:25:00'), 10, Time::ROUND_HALF_UP, Time::fromString('14:30')],
+            [Time::fromString('14:25:20'), 10, Time::ROUND_HALF_UP, Time::fromString('14:30')],
+            [Time::fromString('14:20:00'), 10, Time::ROUND_HALF_DOWN, Time::fromString('14:20')],
+            [Time::fromString('14:21:00'), 10, Time::ROUND_HALF_DOWN, Time::fromString('14:20')],
+            [Time::fromString('14:21:20'), 10, Time::ROUND_HALF_DOWN, Time::fromString('14:20')],
+            [Time::fromString('14:25:00'), 10, Time::ROUND_HALF_DOWN, Time::fromString('14:20')],
+            [Time::fromString('14:25:20'), 10, Time::ROUND_HALF_DOWN, Time::fromString('14:30')],
+            [Time::fromString('14:20:00'), 10, Time::ROUND_UP, Time::fromString('14:20')],
+            [Time::fromString('14:21:00'), 10, Time::ROUND_UP, Time::fromString('14:30')],
+            [Time::fromString('14:21:20'), 10, Time::ROUND_UP, Time::fromString('14:30')],
+            [Time::fromString('14:25:00'), 10, Time::ROUND_UP, Time::fromString('14:30')],
+            [Time::fromString('14:25:20'), 10, Time::ROUND_UP, Time::fromString('14:30')],
+            [Time::fromString('14:20:00'), 10, Time::ROUND_DOWN, Time::fromString('14:20')],
+            [Time::fromString('14:21:00'), 10, Time::ROUND_DOWN, Time::fromString('14:20')],
+            [Time::fromString('14:21:20'), 10, Time::ROUND_DOWN, Time::fromString('14:20')],
+            [Time::fromString('14:25:00'), 10, Time::ROUND_DOWN, Time::fromString('14:20')],
+            [Time::fromString('14:25:20'), 10, Time::ROUND_DOWN, Time::fromString('14:20')],
+            [Time::fromString('14:20:01'), 1, Time::ROUND_UP, Time::fromString('14:21')],
+            [Time::fromString('14:20:01'), 1, Time::ROUND_DOWN, Time::fromString('14:20')],
+            [Time::fromString('14:24:01'), 5, Time::ROUND_UP, Time::fromString('14:25')],
+            [Time::fromString('14:24:59'), 5, Time::ROUND_DOWN, Time::fromString('14:20')],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderTestRoundToMinutes
+     */
+    public function testRoundToMinutes(Time $time, int $precision, int $roundingMode, Time $expected) : void
+    {
+        $actual = $time->roundToMinutes($precision, $roundingMode);
+
+        self::assertEquals($expected, $actual);
+    }
+
     public function testAsString() : void
     {
         $time = new Time(12, 34, 56);

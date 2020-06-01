@@ -11,11 +11,24 @@ use JsonSerializable;
 use Throwable;
 use Webmozart\Assert\Assert;
 use function abs;
+use function ceil;
+use function floor;
+use function round;
 use function Safe\sprintf;
 use function strpos;
+use const PHP_ROUND_HALF_DOWN;
+use const PHP_ROUND_HALF_UP;
 
 class Time implements JsonSerializable
 {
+    public const ROUND_HALF_UP = PHP_ROUND_HALF_UP;
+
+    public const ROUND_HALF_DOWN = PHP_ROUND_HALF_DOWN;
+
+    public const ROUND_UP = 5;
+
+    public const ROUND_DOWN = 6;
+
     protected int $hours;
 
     protected int $minutes;
@@ -250,6 +263,46 @@ class Time implements JsonSerializable
         }
 
         throw $exception;
+    }
+
+    private function assertRoundingMode(int $roundingMode) : void
+    {
+        Assert::oneOf(
+            $roundingMode,
+            [
+                self::ROUND_HALF_UP,
+                self::ROUND_HALF_DOWN,
+                self::ROUND_UP,
+                self::ROUND_DOWN,
+            ]
+        );
+    }
+
+    /**
+     * @param int $precision    Number of minutes to round.
+     * @param int $roundingMode The rounding mode. One of the ROUND_* constants.
+     */
+    public function roundToMinutes(int $precision, int $roundingMode = self::ROUND_HALF_UP) : self
+    {
+        $this->assertRoundingMode($roundingMode);
+
+        $roundingSeconds = $precision * 60;
+
+        if ($roundingMode === self::ROUND_UP) {
+            $newSeconds = ceil($this->toSeconds() / $roundingSeconds) * $roundingSeconds;
+
+            return self::fromSeconds((int) $newSeconds);
+        }
+
+        if ($roundingMode === self::ROUND_DOWN) {
+            $newSeconds = floor($this->toSeconds() / $roundingSeconds) * $roundingSeconds;
+
+            return self::fromSeconds((int) $newSeconds);
+        }
+
+        $newSeconds = round($this->toSeconds() / $roundingSeconds, 0, $roundingMode) * $roundingSeconds;
+
+        return self::fromSeconds((int) $newSeconds);
     }
 
     /**
