@@ -6,9 +6,6 @@ namespace Speicher210\BusinessHours\Day\Time;
 
 use JsonSerializable;
 
-/**
- * Interface for time interval.
- */
 interface TimeIntervalInterface extends JsonSerializable
 {
     /**
@@ -18,13 +15,7 @@ interface TimeIntervalInterface extends JsonSerializable
      */
     public function contains(Time $time) : bool;
 
-    /**
-     * Get the start time.
-     */
     public function getStart() : Time;
 
-    /**
-     * Get the end time.
-     */
     public function getEnd() : Time;
 }
