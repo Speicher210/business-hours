@@ -247,6 +247,14 @@ class Time implements JsonSerializable
             ->addSeconds($time->seconds());
     }
 
+    public function subtractTime(Time $time) : self
+    {
+        return $this
+            ->subtractHours($time->hours())
+            ->subtractMinutes($time->minutes())
+            ->subtractSeconds($time->seconds());
+    }
+
     /**
      * Check if the time elements are valid.
      *

@@ -438,6 +438,38 @@ class TimeTest extends TestCase
     }
 
     /**
+     * @return array<array<Time>>
+     */
+    public static function dataProviderTestSubtractTime() : array
+    {
+        return [
+            [Time::fromString('03:40'), Time::fromString('01:15'), Time::fromString('02:25')],
+            [Time::fromString('06:30'), Time::fromString('05:45'), Time::fromString('00:45')],
+            [Time::fromString('22:45:20'), Time::fromString('22:45:20'), Time::fromString('00:00')],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderTestSubtractTime
+     * @group ttt
+     */
+    public function testSubtractTime(Time $startingTime, Time $timeToSubtract, Time $expected) : void
+    {
+        self::assertEquals(
+            $expected,
+            $startingTime->subtractTime($timeToSubtract)
+        );
+    }
+
+    public function testExceptionIsThrownIfSubtractingTimeOverflows() : void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid time "-00:00:01".');
+
+        Time::fromString('01:45')->subtractTime(Time::fromString('01:45:01'));
+    }
+
+    /**
      * @return mixed[]
      */
     public static function dataProviderTestRoundToMinutes() : array
