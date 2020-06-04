@@ -321,6 +321,11 @@ class Time implements JsonSerializable
         return self::fromSeconds((int) $newSeconds);
     }
 
+    public function equals(Time $other) : bool
+    {
+        return $this->compareTo($other) === 0;
+    }
+
     public function greaterThan(Time $other) : bool
     {
         return $this->compareTo($other) > 0;

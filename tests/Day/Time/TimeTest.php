@@ -524,6 +524,7 @@ class TimeTest extends TestCase
         $time2 = Time::fromString('15:00:00');
 
         self::assertEquals(0, $time1->compareTo($time2));
+        self::assertTrue($time1->equals($time2));
         self::assertTrue($time1->greaterThanOrEqual($time2));
         self::assertFalse($time1->greaterThan($time2));
         self::assertTrue($time1->lessThanOrEqual($time2));
@@ -536,6 +537,7 @@ class TimeTest extends TestCase
         $time2 = Time::fromString('15:00:00');
 
         self::assertEquals(1, $time1->compareTo($time2));
+        self::assertFalse($time1->equals($time2));
         self::assertTrue($time1->greaterThanOrEqual($time2));
         self::assertTrue($time1->greaterThan($time2));
         self::assertFalse($time1->lessThanOrEqual($time2));
@@ -548,6 +550,7 @@ class TimeTest extends TestCase
         $time2 = Time::fromString('15:00:01');
 
         self::assertEquals(-1, $time1->compareTo($time2));
+        self::assertFalse($time1->equals($time2));
         self::assertFalse($time1->greaterThanOrEqual($time2));
         self::assertFalse($time1->greaterThan($time2));
         self::assertTrue($time1->lessThanOrEqual($time2));
