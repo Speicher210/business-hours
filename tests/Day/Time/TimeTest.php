@@ -557,6 +557,34 @@ class TimeTest extends TestCase
         self::assertTrue($time1->lessThan($time2));
     }
 
+    public function testMin() : void
+    {
+        $times = [
+            Time::fromString('22:00:00'),
+            Time::fromString('22:00:00'),
+            Time::fromString('05:00:01'),
+            Time::fromString('05:00:00'),
+            Time::fromString('06:00:00'),
+        ];
+
+        $actual = Time::min(...$times);
+        self::assertEquals(Time::fromString('5:00'), $actual);
+    }
+
+    public function testMax() : void
+    {
+        $times = [
+            Time::fromString('22:00:00'),
+            Time::fromString('22:00:01'),
+            Time::fromString('05:00:00'),
+            Time::fromString('05:00:00'),
+            Time::fromString('06:00:00'),
+        ];
+
+        $actual = Time::max(...$times);
+        self::assertEquals(Time::fromString('22:00:01'), $actual);
+    }
+
     public function testAsString() : void
     {
         $time = new Time(12, 34, 56);

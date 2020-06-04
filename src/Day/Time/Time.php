@@ -351,6 +351,36 @@ class Time implements JsonSerializable
         return $this->toSeconds() <=> $time->toSeconds();
     }
 
+    public static function min(Time $first, Time ...$otherTimes) : Time
+    {
+        $min = $first;
+
+        foreach ($otherTimes as $time) {
+            if (! $time->lessThan($min)) {
+                continue;
+            }
+
+            $min = $time;
+        }
+
+        return $min;
+    }
+
+    public static function max(Time $first, Time ...$otherTimes) : Time
+    {
+        $max = $first;
+
+        foreach ($otherTimes as $time) {
+            if (! $time->greaterThan($max)) {
+                continue;
+            }
+
+            $max = $time;
+        }
+
+        return $max;
+    }
+
     /**
      * @return array<string,int>
      */
