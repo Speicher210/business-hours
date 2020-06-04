@@ -451,7 +451,6 @@ class TimeTest extends TestCase
 
     /**
      * @dataProvider dataProviderTestSubtractTime
-     * @group ttt
      */
     public function testSubtractTime(Time $startingTime, Time $timeToSubtract, Time $expected) : void
     {
@@ -510,6 +509,49 @@ class TimeTest extends TestCase
         $actual = $time->roundToMinutes($precision, $roundingMode);
 
         self::assertEquals($expected, $actual);
+    }
+
+    public function testCompareTo() : void
+    {
+        self::assertEquals(1, Time::fromString('15:00:01')->compareTo(Time::fromString('15:00:00')));
+        self::assertEquals(0, Time::fromString('15:00')->compareTo(Time::fromString('15:00:00')));
+        self::assertEquals(-1, Time::fromString('15:00:00')->compareTo(Time::fromString('15:00:01')));
+    }
+
+    public function testCompareEqual() : void
+    {
+        $time1 = Time::fromString('15:00');
+        $time2 = Time::fromString('15:00:00');
+
+        self::assertEquals(0, $time1->compareTo($time2));
+        self::assertTrue($time1->greaterThanOrEqual($time2));
+        self::assertFalse($time1->greaterThan($time2));
+        self::assertTrue($time1->lessThanOrEqual($time2));
+        self::assertFalse($time1->lessThan($time2));
+    }
+
+    public function testCompareGreaterThan() : void
+    {
+        $time1 = Time::fromString('15:00:01');
+        $time2 = Time::fromString('15:00:00');
+
+        self::assertEquals(1, $time1->compareTo($time2));
+        self::assertTrue($time1->greaterThanOrEqual($time2));
+        self::assertTrue($time1->greaterThan($time2));
+        self::assertFalse($time1->lessThanOrEqual($time2));
+        self::assertFalse($time1->lessThan($time2));
+    }
+
+    public function testCompareLessThan() : void
+    {
+        $time1 = Time::fromString('15:00:00');
+        $time2 = Time::fromString('15:00:01');
+
+        self::assertEquals(-1, $time1->compareTo($time2));
+        self::assertFalse($time1->greaterThanOrEqual($time2));
+        self::assertFalse($time1->greaterThan($time2));
+        self::assertTrue($time1->lessThanOrEqual($time2));
+        self::assertTrue($time1->lessThan($time2));
     }
 
     public function testAsString() : void
