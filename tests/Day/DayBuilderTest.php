@@ -16,7 +16,7 @@ class DayBuilderTest extends TestCase
     /**
      * @return mixed[]
      */
-    public static function dataProviderTestFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid() : array
+    public static function dataProviderTestFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid(): array
     {
         return [
             [[]],
@@ -58,7 +58,7 @@ class DayBuilderTest extends TestCase
      *
      * @dataProvider dataProviderTestFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid
      */
-    public function testFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid(array $data) : void
+    public function testFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid(array $data): void
     {
         $this->expectExceptionMessage('Array is not valid.');
         $this->expectException(InvalidArgumentException::class);
@@ -66,7 +66,7 @@ class DayBuilderTest extends TestCase
         DayBuilder::fromAssociativeArray($data);
     }
 
-    public function testFromAssociativeArrayReturnsAllDay() : void
+    public function testFromAssociativeArrayReturnsAllDay(): void
     {
         $data = [
             'openingIntervals' => [
@@ -85,7 +85,7 @@ class DayBuilderTest extends TestCase
         self::assertEquals($expected, $actual);
     }
 
-    public function testFromAssociativeArrayReturnsDay() : void
+    public function testFromAssociativeArrayReturnsDay(): void
     {
         $data = [
             'openingIntervals' => [

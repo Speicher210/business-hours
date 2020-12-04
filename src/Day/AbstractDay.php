@@ -16,6 +16,7 @@ use OutOfBoundsException;
 use Speicher210\BusinessHours\Day\Time\Time;
 use Speicher210\BusinessHours\Day\Time\TimeInterval;
 use Speicher210\BusinessHours\Day\Time\TimeIntervalInterface;
+
 use function array_reverse;
 use function assert;
 use function count;
@@ -51,12 +52,12 @@ abstract class AbstractDay implements DayInterface
         $this->setOpeningHoursIntervals($openingHoursIntervals);
     }
 
-    public function getDayOfWeek() : int
+    public function getDayOfWeek(): int
     {
         return $this->dayOfWeek;
     }
 
-    public function getDayOfWeekName() : string
+    public function getDayOfWeekName(): string
     {
         return self::DAYS_OF_WEEK[$this->dayOfWeek];
     }
@@ -64,12 +65,12 @@ abstract class AbstractDay implements DayInterface
     /**
      * {@inheritdoc}
      */
-    public function getOpeningHoursIntervals() : array
+    public function getOpeningHoursIntervals(): array
     {
         return $this->openingHoursIntervals;
     }
 
-    public function getClosestPreviousOpeningHoursInterval(Time $time) : ?TimeIntervalInterface
+    public function getClosestPreviousOpeningHoursInterval(Time $time): ?TimeIntervalInterface
     {
         foreach ($this->openingHoursIntervals as $openingHoursInterval) {
             if ($openingHoursInterval->contains($time)) {
@@ -80,7 +81,7 @@ abstract class AbstractDay implements DayInterface
         return $this->getPreviousOpeningHoursInterval($time);
     }
 
-    public function getClosestNextOpeningHoursInterval(Time $time) : ?TimeIntervalInterface
+    public function getClosestNextOpeningHoursInterval(Time $time): ?TimeIntervalInterface
     {
         foreach ($this->openingHoursIntervals as $openingHoursInterval) {
             if ($openingHoursInterval->contains($time)) {
@@ -91,7 +92,7 @@ abstract class AbstractDay implements DayInterface
         return $this->getNextOpeningHoursInterval($time);
     }
 
-    public function getPreviousOpeningHoursInterval(Time $time) : ?TimeIntervalInterface
+    public function getPreviousOpeningHoursInterval(Time $time): ?TimeIntervalInterface
     {
         $closestTime     = null;
         $closestInterval = null;
@@ -119,7 +120,7 @@ abstract class AbstractDay implements DayInterface
         return $closestInterval;
     }
 
-    public function getNextOpeningHoursInterval(Time $time) : ?TimeIntervalInterface
+    public function getNextOpeningHoursInterval(Time $time): ?TimeIntervalInterface
     {
         $closestTime     = null;
         $closestInterval = null;
@@ -147,12 +148,12 @@ abstract class AbstractDay implements DayInterface
         return $closestInterval;
     }
 
-    public function getOpeningTime() : Time
+    public function getOpeningTime(): Time
     {
         return $this->openingHoursIntervals[0]->getStart();
     }
 
-    public function getClosingTime() : Time
+    public function getClosingTime(): Time
     {
         $interval = end($this->openingHoursIntervals);
         assert($interval instanceof TimeIntervalInterface);
@@ -160,7 +161,7 @@ abstract class AbstractDay implements DayInterface
         return $interval->getEnd();
     }
 
-    public function isWithinOpeningHours(Time $time) : bool
+    public function isWithinOpeningHours(Time $time): bool
     {
         foreach ($this->openingHoursIntervals as $interval) {
             if ($interval->contains($time)) {
@@ -174,7 +175,7 @@ abstract class AbstractDay implements DayInterface
     /**
      * @throws OutOfBoundsException If the given day is invalid.
      */
-    protected function setDayOfWeek(int $dayOfWeek) : void
+    protected function setDayOfWeek(int $dayOfWeek): void
     {
         if (! isset(self::DAYS_OF_WEEK[$dayOfWeek])) {
             throw new OutOfBoundsException(sprintf('Invalid day of week "%s".', $dayOfWeek));
@@ -188,7 +189,7 @@ abstract class AbstractDay implements DayInterface
      *
      * @throws InvalidArgumentException If no days are passed or invalid interval is passed.
      */
-    protected function setOpeningHoursIntervals(array $openingHoursIntervals) : void
+    protected function setOpeningHoursIntervals(array $openingHoursIntervals): void
     {
         if (count($openingHoursIntervals) === 0) {
             throw new InvalidArgumentException('The day must have at least one opening interval.');
@@ -212,7 +213,7 @@ abstract class AbstractDay implements DayInterface
      *
      * @return TimeIntervalInterface[]
      */
-    protected function flattenOpeningHoursIntervals(array $openingHoursIntervals) : array
+    protected function flattenOpeningHoursIntervals(array $openingHoursIntervals): array
     {
         usort(
             $openingHoursIntervals,

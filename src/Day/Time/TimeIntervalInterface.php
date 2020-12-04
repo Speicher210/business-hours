@@ -13,9 +13,9 @@ interface TimeIntervalInterface extends JsonSerializable
      *
      * @param Time $time The time to check.
      */
-    public function contains(Time $time) : bool;
+    public function contains(Time $time): bool;
 
-    public function getStart() : Time;
+    public function getStart(): Time;
 
-    public function getEnd() : Time;
+    public function getEnd(): Time;
 }

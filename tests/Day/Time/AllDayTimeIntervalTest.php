@@ -10,7 +10,7 @@ use Speicher210\BusinessHours\Day\Time\Time;
 
 class AllDayTimeIntervalTest extends TestCase
 {
-    public function testCreateAllDayTimeInterval() : void
+    public function testCreateAllDayTimeInterval(): void
     {
         $timeInterval = new AllDayTimeInterval();
 

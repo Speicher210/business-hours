@@ -8,6 +8,7 @@ use DateTime;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Speicher210\BusinessHours\Day\Time\Time;
+
 use function Safe\json_encode;
 use function Safe\sprintf;
 
@@ -16,7 +17,7 @@ class TimeTest extends TestCase
     /**
      * @return mixed[]
      */
-    public static function dataProviderTestInstantiateTimeWithInvalidData() : array
+    public static function dataProviderTestInstantiateTimeWithInvalidData(): array
     {
         return [
             [-1, 0, 0],
@@ -32,7 +33,7 @@ class TimeTest extends TestCase
     /**
      * @dataProvider dataProviderTestInstantiateTimeWithInvalidData
      */
-    public function testInstantiateTimeWithInvalidData(int $hours, int $minutes, int $seconds) : void
+    public function testInstantiateTimeWithInvalidData(int $hours, int $minutes, int $seconds): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid time');
@@ -43,7 +44,7 @@ class TimeTest extends TestCase
     /**
      * @return mixed[]
      */
-    public static function dataProviderTestFromStringInvalid() : array
+    public static function dataProviderTestFromStringInvalid(): array
     {
         return [
             ['invalid'],
@@ -58,7 +59,7 @@ class TimeTest extends TestCase
      *
      * @dataProvider dataProviderTestFromStringInvalid
      */
-    public function testFromStringInvalid($string) : void
+    public function testFromStringInvalid($string): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(sprintf('Invalid time "%s".', $string));
@@ -69,7 +70,7 @@ class TimeTest extends TestCase
     /**
      * @return mixed[]
      */
-    public static function dataProviderTestFromString() : array
+    public static function dataProviderTestFromString(): array
     {
         return [
             ['2pm', 14, 0, 0],
@@ -88,7 +89,7 @@ class TimeTest extends TestCase
         int $expectedHours,
         int $expectedMinutes,
         int $expectedSeconds
-    ) : void {
+    ): void {
         $time = Time::fromString($string);
         self::assertEquals($expectedHours, $time->hours());
         self::assertEquals($expectedMinutes, $time->minutes());
@@ -98,7 +99,7 @@ class TimeTest extends TestCase
     /**
      * @return mixed[]
      */
-    public static function dataProviderTestFromDate() : array
+    public static function dataProviderTestFromDate(): array
     {
         return [
             [new DateTime('2 AM'), 2, 0, 0],
@@ -109,7 +110,7 @@ class TimeTest extends TestCase
     /**
      * @dataProvider dataProviderTestFromDate
      */
-    public function testFromDate(DateTime $date, int $expectedHours, int $expectedMinutes, int $expectedSeconds) : void
+    public function testFromDate(DateTime $date, int $expectedHours, int $expectedMinutes, int $expectedSeconds): void
     {
         $time = Time::fromDate($date);
         self::assertEquals($expectedHours, $time->hours());
@@ -120,7 +121,7 @@ class TimeTest extends TestCase
     /**
      * @return mixed[]
      */
-    public static function dataProviderTestFromSecondsInvalid() : array
+    public static function dataProviderTestFromSecondsInvalid(): array
     {
         return [
             [-1, 'Invalid time "-00:00:01".'],
@@ -131,7 +132,7 @@ class TimeTest extends TestCase
     /**
      * @dataProvider dataProviderTestFromSecondsInvalid
      */
-    public function testFromSecondsInvalid(int $seconds, string $expectedMessage) : void
+    public function testFromSecondsInvalid(int $seconds, string $expectedMessage): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage($expectedMessage);
@@ -142,7 +143,7 @@ class TimeTest extends TestCase
     /**
      * @return mixed[]
      */
-    public static function dataProviderTestFromSeconds() : array
+    public static function dataProviderTestFromSeconds(): array
     {
         return [
             [0, 0, 0, 0],
@@ -157,7 +158,7 @@ class TimeTest extends TestCase
     /**
      * @dataProvider dataProviderTestFromSeconds
      */
-    public function testFromSeconds(int $seconds, int $expectedHours, int $expectedMinutes, int $expectedSeconds) : void
+    public function testFromSeconds(int $seconds, int $expectedHours, int $expectedMinutes, int $expectedSeconds): void
     {
         $time = Time::fromSeconds($seconds);
         self::assertEquals($expectedHours, $time->hours());
@@ -168,7 +169,7 @@ class TimeTest extends TestCase
     /**
      * @return mixed[]
      */
-    public static function dataProviderTestIsAfterOrEqual() : array
+    public static function dataProviderTestIsAfterOrEqual(): array
     {
         $time = new Time(20, 00);
 
@@ -182,7 +183,7 @@ class TimeTest extends TestCase
     /**
      * @dataProvider dataProviderTestIsAfterOrEqual
      */
-    public function testIsAfterOrEqual(Time $time, int $hours, int $minutes, bool $expected) : void
+    public function testIsAfterOrEqual(Time $time, int $hours, int $minutes, bool $expected): void
     {
         self::assertEquals($time->isAfterOrEqual(new Time($hours, $minutes)), $expected);
     }
@@ -190,7 +191,7 @@ class TimeTest extends TestCase
     /**
      * @return mixed[]
      */
-    public static function dataProviderTestIsBeforeOrEqual() : array
+    public static function dataProviderTestIsBeforeOrEqual(): array
     {
         $time = new Time(20, 00);
 
@@ -204,7 +205,7 @@ class TimeTest extends TestCase
     /**
      * @dataProvider dataProviderTestIsBeforeOrEqual
      */
-    public function testIsBeforeOrEqual(Time $time, int $hours, int $minutes, bool $expected) : void
+    public function testIsBeforeOrEqual(Time $time, int $hours, int $minutes, bool $expected): void
     {
         self::assertEquals($time->isBeforeOrEqual(new Time($hours, $minutes)), $expected);
     }
@@ -212,7 +213,7 @@ class TimeTest extends TestCase
     /**
      * @return mixed[]
      */
-    public static function dataProviderTestIsEqual() : array
+    public static function dataProviderTestIsEqual(): array
     {
         $time = new Time(20, 00);
 
@@ -226,7 +227,7 @@ class TimeTest extends TestCase
     /**
      * @dataProvider dataProviderTestIsEqual
      */
-    public function testIsEqual(Time $time, int $hours, int $minutes, bool $expected) : void
+    public function testIsEqual(Time $time, int $hours, int $minutes, bool $expected): void
     {
         self::assertEquals($time->isEqual(new Time($hours, $minutes)), $expected);
     }
@@ -234,7 +235,7 @@ class TimeTest extends TestCase
     /**
      * @return mixed[]
      */
-    public static function dataProviderTestToSeconds() : array
+    public static function dataProviderTestToSeconds(): array
     {
         return [
             [72000, 20, 0, 0],
@@ -251,12 +252,12 @@ class TimeTest extends TestCase
         int $hours,
         int $minutes,
         int $seconds
-    ) : void {
+    ): void {
         $time = new Time($hours, $minutes, $seconds);
         self::assertEquals($expectedTimeRepresentationInSeconds, $time->toSeconds());
     }
 
-    public function testWithHours() : void
+    public function testWithHours(): void
     {
         $time = new Time(1, 23, 45);
 
@@ -266,7 +267,7 @@ class TimeTest extends TestCase
         self::assertEquals('10:23:45', $newTime->asString());
     }
 
-    public function testAddHours() : void
+    public function testAddHours(): void
     {
         $time = new Time(1, 0, 0);
 
@@ -276,7 +277,7 @@ class TimeTest extends TestCase
         self::assertEquals('03:00:00', $newTime->asString());
     }
 
-    public function testAddHoursThrowsExceptionIfResultIsNotValid() : void
+    public function testAddHoursThrowsExceptionIfResultIsNotValid(): void
     {
         $time = new Time(10, 0, 1);
 
@@ -286,7 +287,7 @@ class TimeTest extends TestCase
         $time->addHours(14);
     }
 
-    public function testSubtractHours() : void
+    public function testSubtractHours(): void
     {
         $time = new Time(11, 0, 0);
 
@@ -296,7 +297,7 @@ class TimeTest extends TestCase
         self::assertEquals('09:00:00', $newTime->asString());
     }
 
-    public function testSubtractHoursThrowsExceptionIfResultIsNotValid() : void
+    public function testSubtractHoursThrowsExceptionIfResultIsNotValid(): void
     {
         $time = new Time(10, 0, 1);
 
@@ -306,7 +307,7 @@ class TimeTest extends TestCase
         $time->subtractHours(14);
     }
 
-    public function testWithMinutes() : void
+    public function testWithMinutes(): void
     {
         $time = new Time(1, 23, 45);
 
@@ -316,7 +317,7 @@ class TimeTest extends TestCase
         self::assertEquals('01:32:45', $newTime->asString());
     }
 
-    public function testAddMinutes() : void
+    public function testAddMinutes(): void
     {
         $time = new Time(0, 0, 0);
 
@@ -326,7 +327,7 @@ class TimeTest extends TestCase
         self::assertEquals('01:40:00', $newTime->asString());
     }
 
-    public function testAddMinutesThrowsExceptionIfResultIsNotValid() : void
+    public function testAddMinutesThrowsExceptionIfResultIsNotValid(): void
     {
         $time = new Time(24, 0, 0);
 
@@ -336,7 +337,7 @@ class TimeTest extends TestCase
         $time->addMinutes(1);
     }
 
-    public function testSubtractMinutes() : void
+    public function testSubtractMinutes(): void
     {
         $time = new Time(11, 0, 0);
 
@@ -346,7 +347,7 @@ class TimeTest extends TestCase
         self::assertEquals('09:20:00', $newTime->asString());
     }
 
-    public function testSubtractMinutesThrowsExceptionIfResultIsNotValid() : void
+    public function testSubtractMinutesThrowsExceptionIfResultIsNotValid(): void
     {
         $time = new Time(0, 0, 0);
 
@@ -356,7 +357,7 @@ class TimeTest extends TestCase
         $time->subtractMinutes(1);
     }
 
-    public function testWithSeconds() : void
+    public function testWithSeconds(): void
     {
         $time = new Time(1, 23, 45);
 
@@ -366,7 +367,7 @@ class TimeTest extends TestCase
         self::assertEquals('01:23:54', $newTime->asString());
     }
 
-    public function testAddSeconds() : void
+    public function testAddSeconds(): void
     {
         $time = new Time(0, 59, 58);
 
@@ -376,7 +377,7 @@ class TimeTest extends TestCase
         self::assertEquals('01:00:01', $newTime->asString());
     }
 
-    public function testAddSecondsThrowsExceptionIfResultIsNotValid() : void
+    public function testAddSecondsThrowsExceptionIfResultIsNotValid(): void
     {
         $time = new Time(24, 0, 0);
 
@@ -386,7 +387,7 @@ class TimeTest extends TestCase
         $time->addSeconds(1);
     }
 
-    public function testSubtractSeconds() : void
+    public function testSubtractSeconds(): void
     {
         $time = new Time(11, 0, 0);
 
@@ -396,7 +397,7 @@ class TimeTest extends TestCase
         self::assertEquals('10:58:20', $newTime->asString());
     }
 
-    public function testSubtractSecondsThrowsExceptionIfResultIsNotValid() : void
+    public function testSubtractSecondsThrowsExceptionIfResultIsNotValid(): void
     {
         $time = new Time(0, 0, 0);
 
@@ -409,7 +410,7 @@ class TimeTest extends TestCase
     /**
      * @return array<array<Time>>
      */
-    public static function dataProviderTestAddTime() : array
+    public static function dataProviderTestAddTime(): array
     {
         return [
             [Time::fromString('00:00'), Time::fromString('01:01'), Time::fromString('01:01')],
@@ -421,7 +422,7 @@ class TimeTest extends TestCase
     /**
      * @dataProvider dataProviderTestAddTime
      */
-    public function testAddTime(Time $startingTime, Time $timeToAdd, Time $expected) : void
+    public function testAddTime(Time $startingTime, Time $timeToAdd, Time $expected): void
     {
         self::assertEquals(
             $expected,
@@ -429,7 +430,7 @@ class TimeTest extends TestCase
         );
     }
 
-    public function testExceptionIsThrownIfAddingTimeOverflows() : void
+    public function testExceptionIsThrownIfAddingTimeOverflows(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid time "24:00:01".');
@@ -440,7 +441,7 @@ class TimeTest extends TestCase
     /**
      * @return array<array<Time>>
      */
-    public static function dataProviderTestSubtractTime() : array
+    public static function dataProviderTestSubtractTime(): array
     {
         return [
             [Time::fromString('03:40'), Time::fromString('01:15'), Time::fromString('02:25')],
@@ -452,7 +453,7 @@ class TimeTest extends TestCase
     /**
      * @dataProvider dataProviderTestSubtractTime
      */
-    public function testSubtractTime(Time $startingTime, Time $timeToSubtract, Time $expected) : void
+    public function testSubtractTime(Time $startingTime, Time $timeToSubtract, Time $expected): void
     {
         self::assertEquals(
             $expected,
@@ -460,7 +461,7 @@ class TimeTest extends TestCase
         );
     }
 
-    public function testExceptionIsThrownIfSubtractingTimeOverflows() : void
+    public function testExceptionIsThrownIfSubtractingTimeOverflows(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Invalid time "-00:00:01".');
@@ -471,7 +472,7 @@ class TimeTest extends TestCase
     /**
      * @return mixed[]
      */
-    public static function dataProviderTestRoundToMinutes() : array
+    public static function dataProviderTestRoundToMinutes(): array
     {
         return [
             [Time::fromString('14:20:00'), 10, Time::ROUND_HALF_UP, Time::fromString('14:20')],
@@ -504,21 +505,21 @@ class TimeTest extends TestCase
     /**
      * @dataProvider dataProviderTestRoundToMinutes
      */
-    public function testRoundToMinutes(Time $time, int $precision, int $roundingMode, Time $expected) : void
+    public function testRoundToMinutes(Time $time, int $precision, int $roundingMode, Time $expected): void
     {
         $actual = $time->roundToMinutes($precision, $roundingMode);
 
         self::assertEquals($expected, $actual);
     }
 
-    public function testCompareTo() : void
+    public function testCompareTo(): void
     {
         self::assertEquals(1, Time::fromString('15:00:01')->compareTo(Time::fromString('15:00:00')));
         self::assertEquals(0, Time::fromString('15:00')->compareTo(Time::fromString('15:00:00')));
         self::assertEquals(-1, Time::fromString('15:00:00')->compareTo(Time::fromString('15:00:01')));
     }
 
-    public function testCompareEqual() : void
+    public function testCompareEqual(): void
     {
         $time1 = Time::fromString('15:00');
         $time2 = Time::fromString('15:00:00');
@@ -531,7 +532,7 @@ class TimeTest extends TestCase
         self::assertFalse($time1->lessThan($time2));
     }
 
-    public function testCompareGreaterThan() : void
+    public function testCompareGreaterThan(): void
     {
         $time1 = Time::fromString('15:00:01');
         $time2 = Time::fromString('15:00:00');
@@ -544,7 +545,7 @@ class TimeTest extends TestCase
         self::assertFalse($time1->lessThan($time2));
     }
 
-    public function testCompareLessThan() : void
+    public function testCompareLessThan(): void
     {
         $time1 = Time::fromString('15:00:00');
         $time2 = Time::fromString('15:00:01');
@@ -557,7 +558,7 @@ class TimeTest extends TestCase
         self::assertTrue($time1->lessThan($time2));
     }
 
-    public function testMin() : void
+    public function testMin(): void
     {
         $times = [
             Time::fromString('22:00:00'),
@@ -571,7 +572,7 @@ class TimeTest extends TestCase
         self::assertEquals(Time::fromString('5:00'), $actual);
     }
 
-    public function testMax() : void
+    public function testMax(): void
     {
         $times = [
             Time::fromString('22:00:00'),
@@ -585,14 +586,14 @@ class TimeTest extends TestCase
         self::assertEquals(Time::fromString('22:00:01'), $actual);
     }
 
-    public function testAsString() : void
+    public function testAsString(): void
     {
         $time = new Time(12, 34, 56);
 
         self::assertSame('12:34:56', $time->asString());
     }
 
-    public function testJsonSerialize() : void
+    public function testJsonSerialize(): void
     {
         $time = new Time(20, 30, 15);
 

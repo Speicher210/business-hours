@@ -18,7 +18,7 @@ class BusinessHoursBuilderTest extends TestCase
     /**
      * @return mixed[]
      */
-    public static function dataProviderTestFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid() : array
+    public static function dataProviderTestFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid(): array
     {
         return [
             [[]],
@@ -32,7 +32,7 @@ class BusinessHoursBuilderTest extends TestCase
      *
      * @dataProvider dataProviderTestFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid
      */
-    public function testFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid(array $data) : void
+    public function testFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid(array $data): void
     {
         $this->expectExceptionMessage('Array is not valid.');
         $this->expectException(InvalidArgumentException::class);
@@ -40,7 +40,7 @@ class BusinessHoursBuilderTest extends TestCase
         BusinessHoursBuilder::fromAssociativeArray($data);
     }
 
-    public function testFromArrayReturnsDay() : void
+    public function testFromArrayReturnsDay(): void
     {
         $data = [
             'days' => [
@@ -88,7 +88,7 @@ class BusinessHoursBuilderTest extends TestCase
         self::assertEquals($expected, $actual);
     }
 
-    public function testShiftToTimezoneWhenNewTimezoneIsTheSame() : void
+    public function testShiftToTimezoneWhenNewTimezoneIsTheSame(): void
     {
         $days     = [
             new Day(
@@ -109,7 +109,7 @@ class BusinessHoursBuilderTest extends TestCase
         self::assertNotSame($original, $actual);
     }
 
-    public function testShiftToTimezoneWhenTimezoneShiftIsBackwards() : void
+    public function testShiftToTimezoneWhenTimezoneShiftIsBackwards(): void
     {
         $originalDays     = [
             new Day(
@@ -179,7 +179,7 @@ class BusinessHoursBuilderTest extends TestCase
         self::assertEquals($expected, $actual);
     }
 
-    public function testShiftToTimezoneWhenTimezoneShiftIsForward() : void
+    public function testShiftToTimezoneWhenTimezoneShiftIsForward(): void
     {
         $originalDays     = [
             new Day(

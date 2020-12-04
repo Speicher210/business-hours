@@ -12,6 +12,7 @@ use Speicher210\BusinessHours\Day\DayBuilder;
 use Speicher210\BusinessHours\Day\DayInterface;
 use Speicher210\BusinessHours\Day\Time\Time;
 use Speicher210\BusinessHours\Day\Time\TimeInterval;
+
 use function array_fill_keys;
 use function array_filter;
 use function is_array;
@@ -26,7 +27,7 @@ final class BusinessHoursBuilder
      *
      * @param mixed[] $data The business hours data.
      */
-    public static function fromAssociativeArray(array $data) : BusinessHours
+    public static function fromAssociativeArray(array $data): BusinessHours
     {
         if (! isset($data['days'], $data['timezone']) || ! is_array($data['days'])) {
             throw new InvalidArgumentException('Array is not valid.');
@@ -46,7 +47,7 @@ final class BusinessHoursBuilder
      * @param BusinessHours $businessHours The original business hours.
      * @param DateTimeZone  $newTimezone   The new timezone.
      */
-    public static function shiftToTimezone(BusinessHours $businessHours, DateTimeZone $newTimezone) : BusinessHours
+    public static function shiftToTimezone(BusinessHours $businessHours, DateTimeZone $newTimezone): BusinessHours
     {
         $now         = new DateTime('now');
         $oldTimezone = $businessHours->getTimezone();
@@ -116,7 +117,7 @@ final class BusinessHoursBuilder
      *
      * @return DayInterface[]
      */
-    private static function flattenDaysIntervals(array $days) : array
+    private static function flattenDaysIntervals(array $days): array
     {
         ksort($days);
 
@@ -133,7 +134,7 @@ final class BusinessHoursBuilder
      *
      * @param int $dayOfWeek The day of week.
      */
-    private static function getPreviousDayOfWeek(int $dayOfWeek) : int
+    private static function getPreviousDayOfWeek(int $dayOfWeek): int
     {
         return $dayOfWeek === DayInterface::WEEK_DAY_MONDAY ? DayInterface::WEEK_DAY_SUNDAY : --$dayOfWeek;
     }
@@ -143,7 +144,7 @@ final class BusinessHoursBuilder
      *
      * @param int $dayOfWeek The day of week.
      */
-    private static function getNextDayOfWeek(int $dayOfWeek) : int
+    private static function getNextDayOfWeek(int $dayOfWeek): int
     {
         return $dayOfWeek === DayInterface::WEEK_DAY_SUNDAY ? DayInterface::WEEK_DAY_MONDAY : ++$dayOfWeek;
     }

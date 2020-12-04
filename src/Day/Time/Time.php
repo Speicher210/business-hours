@@ -10,12 +10,14 @@ use InvalidArgumentException;
 use JsonSerializable;
 use Throwable;
 use Webmozart\Assert\Assert;
+
 use function abs;
 use function ceil;
 use function floor;
 use function round;
 use function Safe\sprintf;
 use function strpos;
+
 use const PHP_ROUND_HALF_DOWN;
 use const PHP_ROUND_HALF_UP;
 
@@ -44,7 +46,7 @@ class Time implements JsonSerializable
         $this->seconds = $seconds;
     }
 
-    public static function fromDate(DateTimeInterface $date) : self
+    public static function fromDate(DateTimeInterface $date): self
     {
         return new self((int) $date->format('H'), (int) $date->format('i'), (int) $date->format('s'));
     }
@@ -52,7 +54,7 @@ class Time implements JsonSerializable
     /**
      * @throws InvalidArgumentException If the passed time is invalid.
      */
-    public static function fromString(string $time) : Time
+    public static function fromString(string $time): Time
     {
         Assert::notEmpty($time, 'Invalid time %s.');
 
@@ -70,7 +72,7 @@ class Time implements JsonSerializable
         return $return;
     }
 
-    public static function fromSeconds(int $seconds) : Time
+    public static function fromSeconds(int $seconds): Time
     {
         if ($seconds < 0 || $seconds > 86400) {
             throw new InvalidArgumentException(
@@ -98,7 +100,7 @@ class Time implements JsonSerializable
      *
      * @psalm-param array{hours: int, minutes?: int, seconds?: int} $data
      */
-    public static function fromArray(array $data) : Time
+    public static function fromArray(array $data): Time
     {
         if (! isset($data['hours'])) {
             throw new InvalidArgumentException('Array is not valid.');
@@ -116,7 +118,7 @@ class Time implements JsonSerializable
      *
      * @param Time $other The time to compare it against.
      */
-    public function isBeforeOrEqual(Time $other) : bool
+    public function isBeforeOrEqual(Time $other): bool
     {
         return $this->toSeconds() <= $other->toSeconds();
     }
@@ -126,7 +128,7 @@ class Time implements JsonSerializable
      *
      * @param Time $other The time to compare it against.
      */
-    public function isAfterOrEqual(Time $other) : bool
+    public function isAfterOrEqual(Time $other): bool
     {
         return $this->toSeconds() >= $other->toSeconds();
     }
@@ -136,7 +138,7 @@ class Time implements JsonSerializable
      *
      * @param Time $other The time to compare it against.
      */
-    public function isEqual(Time $other) : bool
+    public function isEqual(Time $other): bool
     {
         return $this->toSeconds() === $other->toSeconds();
     }
@@ -144,17 +146,17 @@ class Time implements JsonSerializable
     /**
      * Get the time representation in seconds.
      */
-    public function toSeconds() : int
+    public function toSeconds(): int
     {
         return 3600 * $this->hours + 60 * $this->minutes + $this->seconds;
     }
 
-    public function hours() : int
+    public function hours(): int
     {
         return $this->hours;
     }
 
-    public function withHours(int $hours) : self
+    public function withHours(int $hours): self
     {
         return new self($hours, $this->minutes, $this->seconds);
     }
@@ -164,7 +166,7 @@ class Time implements JsonSerializable
      *
      * @throws InvalidArgumentException If the result is not a valid time.
      */
-    public function addHours(int $hours) : self
+    public function addHours(int $hours): self
     {
         return $this->addSeconds($hours * 3600);
     }
@@ -174,17 +176,17 @@ class Time implements JsonSerializable
      *
      * @throws InvalidArgumentException If the result is not a valid time.
      */
-    public function subtractHours(int $hours) : self
+    public function subtractHours(int $hours): self
     {
         return $this->subtractSeconds($hours * 3600);
     }
 
-    public function minutes() : int
+    public function minutes(): int
     {
         return $this->minutes;
     }
 
-    public function withMinutes(int $minutes) : self
+    public function withMinutes(int $minutes): self
     {
         return new self($this->hours, $minutes, $this->seconds);
     }
@@ -194,7 +196,7 @@ class Time implements JsonSerializable
      *
      * @throws InvalidArgumentException If the result is not a valid time.
      */
-    public function addMinutes(int $minutes) : self
+    public function addMinutes(int $minutes): self
     {
         return $this->addSeconds($minutes * 60);
     }
@@ -204,17 +206,17 @@ class Time implements JsonSerializable
      *
      * @throws InvalidArgumentException If the result is not a valid time.
      */
-    public function subtractMinutes(int $minutes) : self
+    public function subtractMinutes(int $minutes): self
     {
         return $this->subtractSeconds($minutes * 60);
     }
 
-    public function seconds() : int
+    public function seconds(): int
     {
         return $this->seconds;
     }
 
-    public function withSeconds(int $seconds) : self
+    public function withSeconds(int $seconds): self
     {
         return new self($this->hours, $this->minutes, $seconds);
     }
@@ -224,7 +226,7 @@ class Time implements JsonSerializable
      *
      * @throws InvalidArgumentException If the result is not a valid time.
      */
-    public function addSeconds(int $seconds) : self
+    public function addSeconds(int $seconds): self
     {
         return self::fromSeconds($this->toSeconds() + $seconds);
     }
@@ -234,12 +236,12 @@ class Time implements JsonSerializable
      *
      * @throws InvalidArgumentException If the result is not a valid time.
      */
-    public function subtractSeconds(int $seconds) : self
+    public function subtractSeconds(int $seconds): self
     {
         return self::fromSeconds($this->toSeconds() - $seconds);
     }
 
-    public function addTime(Time $time) : self
+    public function addTime(Time $time): self
     {
         return $this
             ->addHours($time->hours())
@@ -247,7 +249,7 @@ class Time implements JsonSerializable
             ->addSeconds($time->seconds());
     }
 
-    public function subtractTime(Time $time) : self
+    public function subtractTime(Time $time): self
     {
         return $this
             ->subtractHours($time->hours())
@@ -260,7 +262,7 @@ class Time implements JsonSerializable
      *
      * @throws InvalidArgumentException If the elements are not valid.
      */
-    private function assertTimeElementsAreValid(int $hours, int $minutes, int $seconds) : bool
+    private function assertTimeElementsAreValid(int $hours, int $minutes, int $seconds): bool
     {
         $exception = new InvalidArgumentException(
             sprintf('Invalid time "%02d:%02d:%02d".', $hours, $minutes, $seconds)
@@ -281,7 +283,7 @@ class Time implements JsonSerializable
         throw $exception;
     }
 
-    private function assertRoundingMode(int $roundingMode) : void
+    private function assertRoundingMode(int $roundingMode): void
     {
         Assert::oneOf(
             $roundingMode,
@@ -298,7 +300,7 @@ class Time implements JsonSerializable
      * @param int $precision    Number of minutes to round.
      * @param int $roundingMode The rounding mode. One of the ROUND_* constants.
      */
-    public function roundToMinutes(int $precision, int $roundingMode = self::ROUND_HALF_UP) : self
+    public function roundToMinutes(int $precision, int $roundingMode = self::ROUND_HALF_UP): self
     {
         $this->assertRoundingMode($roundingMode);
 
@@ -321,37 +323,37 @@ class Time implements JsonSerializable
         return self::fromSeconds((int) $newSeconds);
     }
 
-    public function equals(Time $other) : bool
+    public function equals(Time $other): bool
     {
         return $this->compareTo($other) === 0;
     }
 
-    public function greaterThan(Time $other) : bool
+    public function greaterThan(Time $other): bool
     {
         return $this->compareTo($other) > 0;
     }
 
-    public function greaterThanOrEqual(Time $other) : bool
+    public function greaterThanOrEqual(Time $other): bool
     {
         return $this->compareTo($other) >= 0;
     }
 
-    public function lessThan(Time $other) : bool
+    public function lessThan(Time $other): bool
     {
         return $this->compareTo($other) < 0;
     }
 
-    public function lessThanOrEqual(Time $other) : bool
+    public function lessThanOrEqual(Time $other): bool
     {
         return $this->compareTo($other) <= 0;
     }
 
-    public function compareTo(Time $time) : int
+    public function compareTo(Time $time): int
     {
         return $this->toSeconds() <=> $time->toSeconds();
     }
 
-    public static function min(Time $first, Time ...$otherTimes) : Time
+    public static function min(Time $first, Time ...$otherTimes): Time
     {
         $min = $first;
 
@@ -366,7 +368,7 @@ class Time implements JsonSerializable
         return $min;
     }
 
-    public static function max(Time $first, Time ...$otherTimes) : Time
+    public static function max(Time $first, Time ...$otherTimes): Time
     {
         $max = $first;
 
@@ -384,7 +386,7 @@ class Time implements JsonSerializable
     /**
      * @return array<string,int>
      */
-    public function jsonSerialize() : array
+    public function jsonSerialize(): array
     {
         return [
             'hours' => $this->hours,
@@ -393,12 +395,12 @@ class Time implements JsonSerializable
         ];
     }
 
-    public function asString() : string
+    public function asString(): string
     {
         return sprintf('%02d:%02d:%02d', $this->hours, $this->minutes, $this->seconds);
     }
 
-    public function __toString() : string
+    public function __toString(): string
     {
         return $this->asString();
     }

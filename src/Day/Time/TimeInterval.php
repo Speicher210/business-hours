@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Speicher210\BusinessHours\Day\Time;
 
 use InvalidArgumentException;
+
 use function Safe\sprintf;
 
 class TimeInterval implements TimeIntervalInterface
@@ -31,22 +32,22 @@ class TimeInterval implements TimeIntervalInterface
     /**
      * @throws InvalidArgumentException
      */
-    public static function fromString(string $startTime, string $endTime) : self
+    public static function fromString(string $startTime, string $endTime): self
     {
         return new static(Time::fromString($startTime), Time::fromString($endTime));
     }
 
-    public function contains(Time $time) : bool
+    public function contains(Time $time): bool
     {
         return $this->start->isBeforeOrEqual($time) && $this->end->isAfterOrEqual($time);
     }
 
-    public function getStart() : Time
+    public function getStart(): Time
     {
         return $this->start;
     }
 
-    public function getEnd() : Time
+    public function getEnd(): Time
     {
         return $this->end;
     }
@@ -54,7 +55,7 @@ class TimeInterval implements TimeIntervalInterface
     /**
      * @return array<string,Time>
      */
-    public function jsonSerialize() : array
+    public function jsonSerialize(): array
     {
         return [
             'start' => $this->start,

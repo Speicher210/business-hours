@@ -11,20 +11,21 @@ use PHPUnit\Framework\TestCase;
 use Speicher210\BusinessHours\BusinessHours;
 use Speicher210\BusinessHours\Day\DayBuilder;
 use Speicher210\BusinessHours\Day\DayInterface;
+
 use function date_default_timezone_get;
 use function date_default_timezone_set;
 use function Safe\json_encode;
 
 class BusinessHoursTest extends TestCase
 {
-    public function testExceptionIsThrownIfNoDaysAreSet() : void
+    public function testExceptionIsThrownIfNoDaysAreSet(): void
     {
         $this->expectExceptionMessage('At least one day must be added.');
         $this->expectException(InvalidArgumentException::class);
         new BusinessHours([]);
     }
 
-    public function testWithin() : void
+    public function testWithin(): void
     {
         $business = new BusinessHours(
             [
@@ -42,7 +43,7 @@ class BusinessHoursTest extends TestCase
         ); // Monday, seconds outside business hours
     }
 
-    public function testWithinCustomTimezone() : void
+    public function testWithinCustomTimezone(): void
     {
         $tz = date_default_timezone_get();
         date_default_timezone_set('Europe/Paris');
@@ -64,7 +65,7 @@ class BusinessHoursTest extends TestCase
     /**
      * @return mixed[]
      */
-    public static function dataProviderTestGetNextChangeDateTime() : array
+    public static function dataProviderTestGetNextChangeDateTime(): array
     {
         $utcTimeZone = new DateTimeZone('UTC');
         $business    = new BusinessHours(
@@ -99,7 +100,7 @@ class BusinessHoursTest extends TestCase
     /**
      * @dataProvider dataProviderTestGetNextChangeDateTime
      */
-    public function testGetNextChangeDateTime(BusinessHours $business, DateTime $expectedDateTime, DateTime $context) : void
+    public function testGetNextChangeDateTime(BusinessHours $business, DateTime $expectedDateTime, DateTime $context): void
     {
         $date = $business->getNextChangeDateTime($context);
         self::assertEquals($expectedDateTime, $date);
@@ -108,7 +109,7 @@ class BusinessHoursTest extends TestCase
     /**
      * @return mixed[]
      */
-    public static function dataProviderTestGetPreviousChangeDateTime() : array
+    public static function dataProviderTestGetPreviousChangeDateTime(): array
     {
         $utcTimeZone = new DateTimeZone('UTC');
         $business    = new BusinessHours(
@@ -143,13 +144,13 @@ class BusinessHoursTest extends TestCase
     /**
      * @dataProvider dataProviderTestGetPreviousChangeDateTime
      */
-    public function testGetPreviousChangeDateTime(BusinessHours $business, DateTime $expectedDateTime, DateTime $context) : void
+    public function testGetPreviousChangeDateTime(BusinessHours $business, DateTime $expectedDateTime, DateTime $context): void
     {
         $date = $business->getPreviousChangeDateTime($context);
         self::assertEquals($expectedDateTime, $date);
     }
 
-    public function testJsonSerialize() : void
+    public function testJsonSerialize(): void
     {
         $business = new BusinessHours(
             [
@@ -165,7 +166,7 @@ class BusinessHoursTest extends TestCase
         );
     }
 
-    public function testCloning() : void
+    public function testCloning(): void
     {
         $original = new BusinessHours(
             [

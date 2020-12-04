@@ -8,6 +8,7 @@ use InvalidArgumentException;
 use Speicher210\BusinessHours\Day\Time\Time;
 use Speicher210\BusinessHours\Day\Time\TimeInterval;
 use Speicher210\BusinessHours\Day\Time\TimeIntervalInterface;
+
 use function assert;
 use function is_array;
 use function reset;
@@ -18,7 +19,7 @@ final class DayBuilder
      * @param int     $dayOfWeek        The day of week.
      * @param mixed[] $openingIntervals The opening intervals.
      */
-    public static function fromArray(int $dayOfWeek, array $openingIntervals) : Day
+    public static function fromArray(int $dayOfWeek, array $openingIntervals): Day
     {
         $intervals = [];
         foreach ($openingIntervals as $interval) {
@@ -46,7 +47,7 @@ final class DayBuilder
     /**
      * @param mixed[] $data The day data.
      */
-    public static function fromAssociativeArray(array $data) : DayInterface
+    public static function fromAssociativeArray(array $data): DayInterface
     {
         if (! isset($data['openingIntervals'], $data['dayOfWeek']) || ! is_array($data['openingIntervals'])) {
             throw new InvalidArgumentException('Array is not valid.');
@@ -70,7 +71,7 @@ final class DayBuilder
         return new Day($data['dayOfWeek'], $openingIntervals);
     }
 
-    private static function isIntervalAllDay(Time $start, Time $end) : bool
+    private static function isIntervalAllDay(Time $start, Time $end): bool
     {
         if ($start->hours() !== 0 || $start->minutes() !== 0 || $start->seconds() !== 0) {
             return false;

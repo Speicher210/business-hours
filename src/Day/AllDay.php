@@ -23,7 +23,7 @@ class AllDay extends Day
     /**
      * {@inheritdoc}
      */
-    public function jsonSerialize() : array
+    public function jsonSerialize(): array
     {
         $data           = parent::jsonSerialize();
         $data['allDay'] = true;

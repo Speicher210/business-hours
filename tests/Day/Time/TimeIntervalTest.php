@@ -8,11 +8,12 @@ use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Speicher210\BusinessHours\Day\Time\Time;
 use Speicher210\BusinessHours\Day\Time\TimeInterval;
+
 use function Safe\json_encode;
 
 class TimeIntervalTest extends TestCase
 {
-    public function testConstructorOpeningEqualClosing() : void
+    public function testConstructorOpeningEqualClosing(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('The opening time "08:00:00" must be before the closing time "08:00:00".');
@@ -20,7 +21,7 @@ class TimeIntervalTest extends TestCase
         new TimeInterval(new Time(8, 0), new Time(8, 0));
     }
 
-    public function testConstructorOpeningAfterClosing() : void
+    public function testConstructorOpeningAfterClosing(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('The opening time "18:00:00" must be before the closing time "08:00:00".');
@@ -28,7 +29,7 @@ class TimeIntervalTest extends TestCase
         new TimeInterval(new Time(18, 0), new Time(8, 0));
     }
 
-    public function testFromString() : void
+    public function testFromString(): void
     {
         $interval = TimeInterval::fromString('08:00', '18:30');
 
@@ -42,7 +43,7 @@ class TimeIntervalTest extends TestCase
     /**
      * @return mixed[]
      */
-    public static function dataProviderTestContains() : array
+    public static function dataProviderTestContains(): array
     {
         $interval = TimeInterval::fromString('08:00', '18:30');
 
@@ -63,12 +64,12 @@ class TimeIntervalTest extends TestCase
      *
      * @dataProvider dataProviderTestContains
      */
-    public function testContains(TimeInterval $interval, int $hours, int $minutes, bool $expected) : void
+    public function testContains(TimeInterval $interval, int $hours, int $minutes, bool $expected): void
     {
         self::assertEquals($interval->contains(new Time($hours, $minutes)), $expected);
     }
 
-    public function testJsonSerialize() : void
+    public function testJsonSerialize(): void
     {
         $interval = TimeInterval::fromString('08:00:01', '18:30:02');
 
@@ -78,7 +79,7 @@ class TimeIntervalTest extends TestCase
         );
     }
 
-    public function testCloning() : void
+    public function testCloning(): void
     {
         $original = TimeInterval::fromString('08:00', '18:30');
         $clone    = clone $original;

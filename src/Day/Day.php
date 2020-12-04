@@ -9,7 +9,7 @@ class Day extends AbstractDay
     /**
      * @return int[]
      */
-    public static function getDaysOfWeek() : array
+    public static function getDaysOfWeek(): array
     {
         return [
             self::WEEK_DAY_MONDAY,
@@ -25,7 +25,7 @@ class Day extends AbstractDay
     /**
      * @return array<string,mixed>
      */
-    public function jsonSerialize() : array
+    public function jsonSerialize(): array
     {
         return [
             'dayOfWeek' => $this->dayOfWeek,

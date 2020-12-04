@@ -25,51 +25,51 @@ interface DayInterface extends JsonSerializable
     public const WEEK_DAY_SATURDAY  = 6;
     public const WEEK_DAY_SUNDAY    = 7;
 
-    public function getDayOfWeek() : int;
+    public function getDayOfWeek(): int;
 
-    public function getDayOfWeekName() : string;
+    public function getDayOfWeekName(): string;
 
     /**
      * @return TimeIntervalInterface[]
      */
-    public function getOpeningHoursIntervals() : array;
+    public function getOpeningHoursIntervals(): array;
 
-    public function getOpeningTime() : Time;
+    public function getOpeningTime(): Time;
 
-    public function getClosingTime() : Time;
+    public function getClosingTime(): Time;
 
     /**
      * Get the closest opening hours interval for the given time (including it or in the past).
      *
      * @param Time $time The time.
      */
-    public function getClosestPreviousOpeningHoursInterval(Time $time) : ?TimeIntervalInterface;
+    public function getClosestPreviousOpeningHoursInterval(Time $time): ?TimeIntervalInterface;
 
     /**
      * Get the closest opening hours interval for the given time (including it or in the future).
      *
      * @param Time $time The time.
      */
-    public function getClosestNextOpeningHoursInterval(Time $time) : ?TimeIntervalInterface;
+    public function getClosestNextOpeningHoursInterval(Time $time): ?TimeIntervalInterface;
 
     /**
      * Get the previous opening hours interval excluding current (if inside of given time).
      *
      * @param Time $time The time.
      */
-    public function getPreviousOpeningHoursInterval(Time $time) : ?TimeIntervalInterface;
+    public function getPreviousOpeningHoursInterval(Time $time): ?TimeIntervalInterface;
 
     /**
      * Get the next opening hours interval excluding current (if inside of given time).
      *
      * @param Time $time The time.
      */
-    public function getNextOpeningHoursInterval(Time $time) : ?TimeIntervalInterface;
+    public function getNextOpeningHoursInterval(Time $time): ?TimeIntervalInterface;
 
     /**
      * Checks if the given time is within opening hours of the day.
      *
      * @param Time $time The time
      */
-    public function isWithinOpeningHours(Time $time) : bool;
+    public function isWithinOpeningHours(Time $time): bool;
 }

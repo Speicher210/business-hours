@@ -7,6 +7,7 @@ namespace Speicher210\BusinessHours;
 use DateTime;
 use InvalidArgumentException;
 use JsonSerializable;
+
 use function Safe\sprintf;
 
 class DateTimeInterval implements JsonSerializable
@@ -37,12 +38,12 @@ class DateTimeInterval implements JsonSerializable
         }
     }
 
-    public function getStart() : DateTime
+    public function getStart(): DateTime
     {
         return $this->start;
     }
 
-    public function getEnd() : DateTime
+    public function getEnd(): DateTime
     {
         return $this->end;
     }
@@ -50,7 +51,7 @@ class DateTimeInterval implements JsonSerializable
     /**
      * @return array<string,DateTime>
      */
-    public function jsonSerialize() : array
+    public function jsonSerialize(): array
     {
         return [
             'start' => $this->start,
