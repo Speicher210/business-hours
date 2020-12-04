@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Speicher210\BusinessHours;
 
-use DateTime;
+use DateTimeInterface;
 use InvalidArgumentException;
 use JsonSerializable;
 
@@ -12,17 +12,17 @@ use function Safe\sprintf;
 
 class DateTimeInterval implements JsonSerializable
 {
-    private DateTime $start;
+    private DateTimeInterface $start;
 
-    private DateTime $end;
+    private DateTimeInterface $end;
 
     /**
-     * @param DateTime $start The starting date and time.
-     * @param DateTime $end   The ending date and time.
+     * @param DateTimeInterface $start The starting date and time.
+     * @param DateTimeInterface $end   The ending date and time.
      *
      * @throws InvalidArgumentException If the opening date and time is not earlier than closing date and time.
      */
-    public function __construct(DateTime $start, DateTime $end)
+    public function __construct(DateTimeInterface $start, DateTimeInterface $end)
     {
         $this->start = $start;
         $this->end   = $end;
@@ -38,18 +38,18 @@ class DateTimeInterval implements JsonSerializable
         }
     }
 
-    public function getStart(): DateTime
+    public function getStart(): DateTimeInterface
     {
         return $this->start;
     }
 
-    public function getEnd(): DateTime
+    public function getEnd(): DateTimeInterface
     {
         return $this->end;
     }
 
     /**
-     * @return array<string,DateTime>
+     * @return array<string,DateTimeInterface>
      */
     public function jsonSerialize(): array
     {

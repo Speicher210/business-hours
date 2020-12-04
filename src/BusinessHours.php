@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Speicher210\BusinessHours;
 
-use DateTime;
+use DateTimeInterface;
 use DateTimeZone;
 use InvalidArgumentException;
 use Speicher210\BusinessHours\Day\DayInterface;
@@ -73,7 +73,7 @@ class BusinessHours implements BusinessHoursInterface
         }
     }
 
-    public function within(DateTime $date): bool
+    public function within(DateTimeInterface $date): bool
     {
         $tmpDate = clone $date;
         $tmpDate->setTimezone($this->timezone);
@@ -86,7 +86,7 @@ class BusinessHours implements BusinessHoursInterface
         return false;
     }
 
-    public function getNextChangeDateTime(DateTime $date): DateTime
+    public function getNextChangeDateTime(DateTimeInterface $date): DateTimeInterface
     {
         $tmpDate = clone $date;
         $tmpDate->setTimezone($this->timezone);
@@ -100,7 +100,7 @@ class BusinessHours implements BusinessHoursInterface
         return $dateInterval->getStart();
     }
 
-    public function getPreviousChangeDateTime(DateTime $date): DateTime
+    public function getPreviousChangeDateTime(DateTimeInterface $date): DateTimeInterface
     {
         $tmpDate = clone $date;
         $tmpDate->setTimezone($this->timezone);
@@ -128,9 +128,9 @@ class BusinessHours implements BusinessHoursInterface
     /**
      * Get the closest business hours date interval before the given date.
      *
-     * @param DateTime $date The given date.
+     * @param DateTimeInterface $date The given date.
      */
-    private function getClosestDateIntervalBefore(DateTime $date): DateTimeInterval
+    private function getClosestDateIntervalBefore(DateTimeInterface $date): DateTimeInterval
     {
         $tmpDate   = clone $date;
         $dayOfWeek = (int) $tmpDate->format('N');
@@ -157,7 +157,7 @@ class BusinessHours implements BusinessHoursInterface
     /**
      * Get the closest business hours date interval after the given date.
      */
-    private function getClosestDateIntervalAfter(DateTime $date): DateTimeInterval
+    private function getClosestDateIntervalAfter(DateTimeInterface $date): DateTimeInterval
     {
         $tmpDate   = clone $date;
         $dayOfWeek = (int) $tmpDate->format('N');
@@ -184,7 +184,7 @@ class BusinessHours implements BusinessHoursInterface
     /**
      * Build a new date time interval for a date.
      */
-    private function buildDateTimeInterval(DateTime $date, TimeIntervalInterface $timeInterval): DateTimeInterval
+    private function buildDateTimeInterval(DateTimeInterface $date, TimeIntervalInterface $timeInterval): DateTimeInterval
     {
         $intervalStart = clone $date;
         $intervalEnd   = clone $date;
@@ -206,7 +206,7 @@ class BusinessHours implements BusinessHoursInterface
     /**
      * Get the business hours date before the given date.
      */
-    private function getDateBefore(DateTime $date): DateTime
+    private function getDateBefore(DateTimeInterface $date): DateTimeInterface
     {
         $tmpDate = clone $date;
         $tmpDate->modify('-1 day');
@@ -223,7 +223,7 @@ class BusinessHours implements BusinessHoursInterface
     /**
      * Get the business hours date after the given date.
      */
-    private function getDateAfter(DateTime $date): DateTime
+    private function getDateAfter(DateTimeInterface $date): DateTimeInterface
     {
         $tmpDate = clone $date;
         $tmpDate->modify('+1 day');
@@ -241,7 +241,7 @@ class BusinessHours implements BusinessHoursInterface
     /**
      * Get the closest interval endpoint after the given date.
      */
-    private function getPreviousClosestInterval(DateTime $date): DateTimeInterval
+    private function getPreviousClosestInterval(DateTimeInterface $date): DateTimeInterval
     {
         $tmpDate   = clone $date;
         $dayOfWeek = (int) $tmpDate->format('N');
@@ -261,7 +261,7 @@ class BusinessHours implements BusinessHoursInterface
     /**
      * Get the closest interval endpoint after the given date.
      */
-    private function getNextClosestInterval(DateTime $date): DateTimeInterval
+    private function getNextClosestInterval(DateTimeInterface $date): DateTimeInterval
     {
         $tmpDate   = clone $date;
         $dayOfWeek = (int) $tmpDate->format('N');
@@ -284,11 +284,8 @@ class BusinessHours implements BusinessHoursInterface
     private function getClosestDayBefore(int $dayNumber): ?DayInterface
     {
         $day = $this->getDay($dayNumber);
-        if ($day !== null) {
-            return $day;
-        }
 
-        return $this->getDayBefore($dayNumber);
+        return $day ?? $this->getDayBefore($dayNumber);
     }
 
     /**
@@ -297,11 +294,8 @@ class BusinessHours implements BusinessHoursInterface
     private function getClosestDayAfter(int $dayNumber): ?DayInterface
     {
         $day = $this->getDay($dayNumber);
-        if ($day !== null) {
-            return $day;
-        }
 
-        return $this->getDayAfter($dayNumber);
+        return $day ?? $this->getDayAfter($dayNumber);
     }
 
     /**
