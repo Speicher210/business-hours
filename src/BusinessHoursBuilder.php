@@ -43,11 +43,8 @@ final class BusinessHoursBuilder
 
     /**
      * Create a new BusinessHours with a different timezone from an existing BusinessHours.
-     *
-     * @param BusinessHours $businessHours The original business hours.
-     * @param DateTimeZone  $newTimezone   The new timezone.
      */
-    public static function shiftToTimezone(BusinessHours $businessHours, DateTimeZone $newTimezone): BusinessHours
+    public static function shiftToTimezone(BusinessHoursInterface $businessHours, DateTimeZone $newTimezone): BusinessHoursInterface
     {
         $now         = new DateTime('now');
         $oldTimezone = $businessHours->getTimezone();
