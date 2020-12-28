@@ -512,6 +512,37 @@ class TimeTest extends TestCase
         self::assertEquals($expected, $actual);
     }
 
+    /**
+     * @return mixed[]
+     */
+    public static function dataProviderTestRoundToHour(): array
+    {
+        return [
+            [Time::fromString('14:00:00'), Time::ROUND_HALF_UP, Time::fromString('14:00')],
+            [Time::fromString('14:20:00'), Time::ROUND_HALF_UP, Time::fromString('14:00')],
+            [Time::fromString('14:30:00'), Time::ROUND_HALF_UP, Time::fromString('15:00')],
+            [Time::fromString('14:00:00'), Time::ROUND_HALF_DOWN, Time::fromString('14:00')],
+            [Time::fromString('14:20:00'), Time::ROUND_HALF_DOWN, Time::fromString('14:00')],
+            [Time::fromString('14:30:00'), Time::ROUND_HALF_DOWN, Time::fromString('14:00')],
+            [Time::fromString('14:00:00'), Time::ROUND_UP, Time::fromString('14:00')],
+            [Time::fromString('14:00:01'), Time::ROUND_UP, Time::fromString('15:00')],
+            [Time::fromString('14:30:00'), Time::ROUND_UP, Time::fromString('15:00')],
+            [Time::fromString('14:00:00'), Time::ROUND_DOWN, Time::fromString('14:00')],
+            [Time::fromString('14:00:01'), Time::ROUND_DOWN, Time::fromString('14:00')],
+            [Time::fromString('14:59:59'), Time::ROUND_DOWN, Time::fromString('14:00')],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderTestRoundToHour
+     */
+    public function testRoundToHour(Time $time, int $roundingMode, Time $expected): void
+    {
+        $actual = $time->roundToHour($roundingMode);
+
+        self::assertEquals($expected, $actual);
+    }
+
     public function testCompareTo(): void
     {
         self::assertEquals(1, Time::fromString('15:00:01')->compareTo(Time::fromString('15:00:00')));

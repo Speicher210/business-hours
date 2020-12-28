@@ -323,6 +323,11 @@ class Time implements JsonSerializable
         return self::fromSeconds((int) $newSeconds);
     }
 
+    public function roundToHour(int $roundingMode = self::ROUND_HALF_UP): self
+    {
+        return $this->roundToMinutes(60, $roundingMode);
+    }
+
     public function equals(Time $other): bool
     {
         return $this->compareTo($other) === 0;
