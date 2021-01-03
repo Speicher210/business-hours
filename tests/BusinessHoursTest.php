@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Speicher210\BusinessHours\Test;
 
 use DateTime;
+use DateTimeImmutable;
+use DateTimeInterface;
 use DateTimeZone;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -43,19 +45,31 @@ class BusinessHoursTest extends TestCase
         ); // Monday, seconds outside business hours
     }
 
-    public function testWithinCustomTimezone(): void
+    /**
+     * @return mixed[]
+     */
+    public static function dataProviderTestWithinCustomTimezone(): array
+    {
+        return [
+            // "2015-05-25 22:00:00" in Europe/Paris
+            [new DateTime('2015-05-25 10:00:00', new DateTimeZone('Pacific/Tahiti'))],
+            [new DateTimeImmutable('2015-05-25 10:00:00', new DateTimeZone('Pacific/Tahiti'))],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderTestWithinCustomTimezone
+     */
+    public function testWithinCustomTimezone(DateTimeInterface $date): void
     {
         $tz = date_default_timezone_get();
         date_default_timezone_set('Europe/Paris');
 
         $business = new BusinessHours(
             [
-                DayBuilder::fromArray(DayInterface::WEEK_DAY_FRIDAY, [['10:00', '13:00'], ['14:00', '17:00']]),
+                DayBuilder::fromArray(DayInterface::WEEK_DAY_MONDAY, [['10:00', '13:00'], ['14:00', '17:00']]),
             ]
         );
-
-        // "2015-05-25 22:00:00" in Europe/Paris
-        $date = new DateTime('2015-05-25 10:00:00', new DateTimeZone('Pacific/Tahiti'));
 
         self::assertFalse($business->within($date));
 
@@ -80,27 +94,38 @@ class BusinessHoursTest extends TestCase
         return [
             // Monday
             [$business, new DateTime('2016-03-07 13:00:00'), new DateTime('2016-03-07 10:00:00', $utcTimeZone)],
+            [$business, new DateTimeImmutable('2016-03-07 13:00:00'), new DateTimeImmutable('2016-03-07 10:00:00', $utcTimeZone)],
             // Friday / Tuesday
             [$business, new DateTime('2016-03-11 10:00:00'), new DateTime('2016-03-10 17:30:00', $utcTimeZone)],
+            [$business, new DateTimeImmutable('2016-03-11 10:00:00'), new DateTimeImmutable('2016-03-10 17:30:00', $utcTimeZone)],
             // Monday / Friday
             [$business, new DateTime('2016-03-28 09:00:00'), new DateTime('2016-03-25 17:30:00', $utcTimeZone)],
+            [$business, new DateTimeImmutable('2016-03-28 09:00:00'), new DateTimeImmutable('2016-03-25 17:30:00', $utcTimeZone)],
             // Wednesday
             [$business, new DateTime('2016-03-30 12:30:00'), new DateTime('2016-03-30 12:15:00', $utcTimeZone)],
+            [$business, new DateTimeImmutable('2016-03-30 12:30:00'), new DateTimeImmutable('2016-03-30 12:15:00', $utcTimeZone)],
             // Monday
             [
                 $business,
                 new DateTime('2016-03-28 09:00:00'),
                 new DateTime('2016-03-28 10:00:00', new DateTimeZone('Europe/Bucharest')),
             ],
+            [
+                $business,
+                new DateTimeImmutable('2016-03-28 09:00:00'),
+                new DateTimeImmutable('2016-03-28 10:00:00', new DateTimeZone('Europe/Bucharest')),
+            ],
             [$business, new DateTime('2016-03-28 09:00:00'), new DateTime('2016-03-28 09:00:00', $utcTimeZone)],
+            [$business, new DateTimeImmutable('2016-03-28 09:00:00'), new DateTimeImmutable('2016-03-28 09:00:00', $utcTimeZone)],
             [$business, new DateTime('2016-03-28 17:00:00'), new DateTime('2016-03-28 17:00:00', $utcTimeZone)],
+            [$business, new DateTimeImmutable('2016-03-28 17:00:00'), new DateTimeImmutable('2016-03-28 17:00:00', $utcTimeZone)],
         ];
     }
 
     /**
      * @dataProvider dataProviderTestGetNextChangeDateTime
      */
-    public function testGetNextChangeDateTime(BusinessHours $business, DateTime $expectedDateTime, DateTime $context): void
+    public function testGetNextChangeDateTime(BusinessHours $business, DateTimeInterface $expectedDateTime, DateTimeInterface $context): void
     {
         $date = $business->getNextChangeDateTime($context);
         self::assertEquals($expectedDateTime, $date);
@@ -124,27 +149,38 @@ class BusinessHoursTest extends TestCase
         return [
             // Monday
             [$business, new DateTime('2016-03-07 09:00:00'), new DateTime('2016-03-07 10:00:00', $utcTimeZone)],
+            [$business, new DateTimeImmutable('2016-03-07 09:00:00'), new DateTimeImmutable('2016-03-07 10:00:00', $utcTimeZone)],
             // Friday / Thursday
             [$business, new DateTime('2016-03-09 17:00:00'), new DateTime('2016-03-10 17:30:00', $utcTimeZone)],
+            [$business, new DateTimeImmutable('2016-03-09 17:00:00'), new DateTimeImmutable('2016-03-10 17:30:00', $utcTimeZone)],
             // Monday / Friday
             [$business, new DateTime('2016-03-25 17:00:00'), new DateTime('2016-03-25 17:30:00', $utcTimeZone)],
+            [$business, new DateTimeImmutable('2016-03-25 17:00:00'), new DateTimeImmutable('2016-03-25 17:30:00', $utcTimeZone)],
             // Wednesday
             [$business, new DateTime('2016-03-30 12:00:00'), new DateTime('2016-03-30 12:15:00', $utcTimeZone)],
+            [$business, new DateTimeImmutable('2016-03-30 12:00:00'), new DateTimeImmutable('2016-03-30 12:15:00', $utcTimeZone)],
             // Monday
             [
                 $business,
                 new DateTime('2016-03-25 17:00:00'),
                 new DateTime('2016-03-28 10:00:00', new DateTimeZone('Europe/Bucharest')),
             ],
+            [
+                $business,
+                new DateTimeImmutable('2016-03-25 17:00:00'),
+                new DateTimeImmutable('2016-03-28 10:00:00', new DateTimeZone('Europe/Bucharest')),
+            ],
             [$business, new DateTime('2016-03-28 09:00:00'), new DateTime('2016-03-28 09:00:00', $utcTimeZone)],
+            [$business, new DateTimeImmutable('2016-03-28 09:00:00'), new DateTimeImmutable('2016-03-28 09:00:00', $utcTimeZone)],
             [$business, new DateTime('2016-03-28 17:00:00'), new DateTime('2016-03-28 17:00:00', $utcTimeZone)],
+            [$business, new DateTimeImmutable('2016-03-28 17:00:00'), new DateTimeImmutable('2016-03-28 17:00:00', $utcTimeZone)],
         ];
     }
 
     /**
      * @dataProvider dataProviderTestGetPreviousChangeDateTime
      */
-    public function testGetPreviousChangeDateTime(BusinessHours $business, DateTime $expectedDateTime, DateTime $context): void
+    public function testGetPreviousChangeDateTime(BusinessHours $business, DateTimeInterface $expectedDateTime, DateTimeInterface $context): void
     {
         $date = $business->getPreviousChangeDateTime($context);
         self::assertEquals($expectedDateTime, $date);

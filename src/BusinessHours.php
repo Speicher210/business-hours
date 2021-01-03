@@ -76,7 +76,7 @@ class BusinessHours implements BusinessHoursInterface
     public function within(DateTimeInterface $date): bool
     {
         $tmpDate = clone $date;
-        $tmpDate->setTimezone($this->timezone);
+        $tmpDate = $tmpDate->setTimezone($this->timezone);
 
         $day = $this->getDay((int) $tmpDate->format('N'));
         if ($day !== null) {
@@ -88,8 +88,8 @@ class BusinessHours implements BusinessHoursInterface
 
     public function getNextChangeDateTime(DateTimeInterface $date): DateTimeInterface
     {
-        $tmpDate = clone $date;
-        $tmpDate->setTimezone($this->timezone);
+        $tmpDate      = clone $date;
+        $tmpDate      = $tmpDate->setTimezone($this->timezone);
         $dateInterval = $this->getNextClosestInterval($tmpDate);
 
         if ($this->within($date)) {
@@ -102,8 +102,8 @@ class BusinessHours implements BusinessHoursInterface
 
     public function getPreviousChangeDateTime(DateTimeInterface $date): DateTimeInterface
     {
-        $tmpDate = clone $date;
-        $tmpDate->setTimezone($this->timezone);
+        $tmpDate      = clone $date;
+        $tmpDate      = $tmpDate->setTimezone($this->timezone);
         $dateInterval = $this->getPreviousClosestInterval($tmpDate);
 
         if ($this->within($date)) {
@@ -132,18 +132,7 @@ class BusinessHours implements BusinessHoursInterface
      */
     private function getClosestDateIntervalBefore(DateTimeInterface $date): DateTimeInterval
     {
-        $tmpDate   = clone $date;
-        $dayOfWeek = (int) $tmpDate->format('N');
-        $time      = Time::fromDate($tmpDate);
-
-        $day = $this->getDay($dayOfWeek);
-        if ($day !== null) {
-            $closestTime = $day->getClosestPreviousOpeningHoursInterval($time);
-            if ($closestTime !== null) {
-                return $this->buildDateTimeInterval($tmpDate, $closestTime);
-            }
-        }
-
+        $tmpDate = clone $date;
         $tmpDate = $this->getDateBefore($tmpDate);
 
         $closestDay = $this->getClosestDayBefore((int) $tmpDate->format('N'));
@@ -159,18 +148,7 @@ class BusinessHours implements BusinessHoursInterface
      */
     private function getClosestDateIntervalAfter(DateTimeInterface $date): DateTimeInterval
     {
-        $tmpDate   = clone $date;
-        $dayOfWeek = (int) $tmpDate->format('N');
-        $time      = Time::fromDate($tmpDate);
-
-        $day = $this->getDay($dayOfWeek);
-        if ($day !== null) {
-            $closestTime = $day->getClosestNextOpeningHoursInterval($time);
-            if ($closestTime !== null) {
-                return $this->buildDateTimeInterval($tmpDate, $closestTime);
-            }
-        }
-
+        $tmpDate = clone $date;
         $tmpDate = $this->getDateAfter($tmpDate);
 
         $closestDay = $this->getClosestDayBefore((int) $tmpDate->format('N'));
@@ -189,12 +167,12 @@ class BusinessHours implements BusinessHoursInterface
         $intervalStart = clone $date;
         $intervalEnd   = clone $date;
 
-        $intervalStart->setTime(
+        $intervalStart = $intervalStart->setTime(
             $timeInterval->getStart()->hours(),
             $timeInterval->getStart()->minutes(),
             $timeInterval->getStart()->seconds()
         );
-        $intervalEnd->setTime(
+        $intervalEnd   = $intervalEnd->setTime(
             $timeInterval->getEnd()->hours(),
             $timeInterval->getEnd()->minutes(),
             $timeInterval->getEnd()->seconds()
@@ -209,12 +187,12 @@ class BusinessHours implements BusinessHoursInterface
     private function getDateBefore(DateTimeInterface $date): DateTimeInterface
     {
         $tmpDate = clone $date;
-        $tmpDate->modify('-1 day');
+        $tmpDate = $tmpDate->modify('-1 day');
 
         $dayOfWeek  = (int) $tmpDate->format('N');
         $closestDay = $this->getClosestDayBefore($dayOfWeek);
         if ($closestDay->getDayOfWeek() !== $dayOfWeek) {
-            $tmpDate->modify(sprintf('last %s', $closestDay->getDayOfWeekName()));
+            $tmpDate = $tmpDate->modify(sprintf('last %s', $closestDay->getDayOfWeekName()));
         }
 
         return $tmpDate;
@@ -226,13 +204,13 @@ class BusinessHours implements BusinessHoursInterface
     private function getDateAfter(DateTimeInterface $date): DateTimeInterface
     {
         $tmpDate = clone $date;
-        $tmpDate->modify('+1 day');
+        $tmpDate = $tmpDate->modify('+1 day');
 
         $dayOfWeek  = (int) $tmpDate->format('N');
         $closestDay = $this->getClosestDayAfter($dayOfWeek);
 
         if ($closestDay->getDayOfWeek() !== $dayOfWeek) {
-            $tmpDate->modify(sprintf('next %s', $closestDay->getDayOfWeekName()));
+            $tmpDate = $tmpDate->modify(sprintf('next %s', $closestDay->getDayOfWeekName()));
         }
 
         return $tmpDate;
