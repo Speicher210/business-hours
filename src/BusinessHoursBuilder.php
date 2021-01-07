@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Speicher210\BusinessHours;
 
-use DateTime;
+use DateTimeInterface;
 use DateTimeZone;
 use InvalidArgumentException;
 use Speicher210\BusinessHours\Day\Day;
@@ -43,12 +43,19 @@ final class BusinessHoursBuilder
 
     /**
      * Create a new BusinessHours with a different timezone from an existing BusinessHours.
+     *
+     * Shifting requires information about the offset. The offset can vary depending on DST.
+     * To cover this scenario, we require a DateTimeInterface to be passed for extracting offset information.
+     *
+     * Example:
+     *  Opening time of 10:00 with timezone UTC means either 11:00 or 12:00 for Europe/Berlin depending on the date.
      */
-    public static function shiftToTimezone(BusinessHoursInterface $businessHours, DateTimeZone $newTimezone): BusinessHoursInterface
+    public static function shiftToTimezone(BusinessHoursInterface $businessHours, DateTimeInterface $dateTime): BusinessHoursInterface
     {
-        $now         = new DateTime('now');
         $oldTimezone = $businessHours->getTimezone();
-        $offset      = $newTimezone->getOffset($now) - $oldTimezone->getOffset($now);
+        $newTimezone = $dateTime->getTimezone();
+
+        $offset = $dateTime->getOffset() - $oldTimezone->getOffset($dateTime);
 
         if ($offset === 0) {
             return clone $businessHours;
