@@ -31,18 +31,18 @@
   "require-dev": {
     "doctrine/coding-standard": "^8.2",
     "ekino/phpstan-banned-code": "^0.3.1",
-    "ergebnis/composer-normalize": "^2.11",
+    "ergebnis/composer-normalize": "^2.13",
     "infection/infection": "^0.20.2",
-    "phpstan/phpstan": "^0.12.64",
+    "phpstan/phpstan": "^0.12.71",
     "phpstan/phpstan-deprecation-rules": "^0.12.6",
     "phpstan/phpstan-phpunit": "^0.12.17",
-    "phpstan/phpstan-strict-rules": "^0.12.7",
-    "phpstan/phpstan-webmozart-assert": "^0.12.8",
-    "phpunit/phpunit": "^9.5.0",
-    "psalm/plugin-phpunit": "^0.15",
+    "phpstan/phpstan-strict-rules": "^0.12.9",
+    "phpstan/phpstan-webmozart-assert": "^0.12.12",
+    "phpunit/phpunit": "^9.5.2",
+    "psalm/plugin-phpunit": "^0.15.1",
     "thecodingmachine/phpstan-safe-rule": "^1.0.1",
     "thecodingmachine/phpstan-strict-rules": "^0.12.1",
-    "vimeo/psalm": "^4.3.1"
+    "vimeo/psalm": "^4.4.1"
   },
   "config": {
     "sort-packages": true
