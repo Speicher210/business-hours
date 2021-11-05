@@ -41,9 +41,16 @@
     }
   },
   "scripts": {
+    "check": [
+      "composer validate",
+      "@cs-check",
+      "@analyse",
+      "@test"
+    ],
+    "test": "phpunit --testdox --color=always",
     "cs-check": "phpcs -p",
     "cs-fix": "phpcbf -p",
-    "phpstan": [
+    "analyse": [
       "phpstan analyse src/ --level 6",
       "phpstan analyse tests/ --level 4"
     ]
