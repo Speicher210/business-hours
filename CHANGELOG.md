@@ -4,6 +4,13 @@ All Notable changes to `speicher210/business-hours` will be documented in this f
 
 Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
 
+
+## [2.1.0] - 2021-XX-XX
+
+### Changed
+- Bring support for PHP 8
+- Minimum version for PHP 7 bumped to 7.4
+
 ## [2.0.1] - 2017-12-13
 
 ### Changed
