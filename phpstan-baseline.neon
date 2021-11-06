@@ -1,0 +1,427 @@
+parameters:
+	ignoreErrors:
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\BusinessHoursBuilder\\:\\:flattenDaysIntervals\\(\\) has parameter \\$days with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/BusinessHoursBuilder.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\BusinessHoursBuilder\\:\\:fromAssociativeArray\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/BusinessHoursBuilder.php
+
+		-
+			message: "#^Constant Speicher210\\\\BusinessHours\\\\Day\\\\AbstractDay\\:\\:DAYS_OF_WEEK type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Day/AbstractDay.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Day\\\\DayBuilder\\:\\:fromArray\\(\\) has parameter \\$openingIntervals with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Day/DayBuilder.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Day\\\\DayBuilder\\:\\:fromAssociativeArray\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Day/DayBuilder.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Day\\\\Time\\\\TimeBuilder\\:\\:fromArray\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: src/Day/Time/TimeBuilder.php
+
+		-
+			message: "#^Unsafe usage of new static\\(\\)\\.$#"
+			count: 1
+			path: src/Day/Time/TimeInterval.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\BusinessHoursBuilderTest\\:\\:dataProviderTestFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/BusinessHoursBuilderTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\BusinessHoursBuilderTest\\:\\:testFromArrayReturnsDay\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/BusinessHoursBuilderTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\BusinessHoursBuilderTest\\:\\:testFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/BusinessHoursBuilderTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\BusinessHoursBuilderTest\\:\\:testFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/BusinessHoursBuilderTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\BusinessHoursBuilderTest\\:\\:testShiftToTimezoneWhenNewTimezoneIsTheSame\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/BusinessHoursBuilderTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\BusinessHoursBuilderTest\\:\\:testShiftToTimezoneWhenTimezoneShiftIsBackwards\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/BusinessHoursBuilderTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\BusinessHoursBuilderTest\\:\\:testShiftToTimezoneWhenTimezoneShiftIsForward\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/BusinessHoursBuilderTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\BusinessHoursTest\\:\\:dataProviderTestGetNextChangeDateTime\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/BusinessHoursTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\BusinessHoursTest\\:\\:dataProviderTestGetPreviousChangeDateTime\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/BusinessHoursTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\BusinessHoursTest\\:\\:testCloning\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/BusinessHoursTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\BusinessHoursTest\\:\\:testExceptionIsThrownIfNoDaysAreSet\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/BusinessHoursTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\BusinessHoursTest\\:\\:testGetNextChangeDateTime\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/BusinessHoursTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\BusinessHoursTest\\:\\:testGetPreviousChangeDateTime\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/BusinessHoursTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\BusinessHoursTest\\:\\:testJsonSerialize\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/BusinessHoursTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\BusinessHoursTest\\:\\:testWithin\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/BusinessHoursTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\BusinessHoursTest\\:\\:testWithinCustomTimezone\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/BusinessHoursTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\DateTimeIntervalTest\\:\\:testConstructorOpeningAfterClosing\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/DateTimeIntervalTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\DateTimeIntervalTest\\:\\:testConstructorOpeningEqualClosing\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/DateTimeIntervalTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\DateTimeIntervalTest\\:\\:testJsonSerialize\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/DateTimeIntervalTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\DayBuilderTest\\:\\:dataProviderTestFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/DayBuilderTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\DayBuilderTest\\:\\:testFromAssociativeArrayReturnsAllDay\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/DayBuilderTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\DayBuilderTest\\:\\:testFromAssociativeArrayReturnsDay\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/DayBuilderTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\DayBuilderTest\\:\\:testFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/DayBuilderTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\DayBuilderTest\\:\\:testFromAssociativeArrayThrowsExceptionIfArrayStructureIsNotValid\\(\\) has parameter \\$data with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Day/DayBuilderTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\DayTest\\:\\:dataProviderTestIsWithinOpeningHours\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/DayTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\DayTest\\:\\:testCloning\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/DayTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\DayTest\\:\\:testConstructorOverlappingIntervals\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/DayTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\DayTest\\:\\:testExceptionInvalidDayOfWeek\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/DayTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\DayTest\\:\\:testExceptionIsThrownIfOpeningHoursIntervalsArrayDoesNotContainTimeIntervals\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/DayTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\DayTest\\:\\:testExceptionIsThrownIfOpeningHoursIntervalsIsEmpty\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/DayTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\DayTest\\:\\:testGetClosestNextOpeningHoursIntervalWhileBeingAfterAllIntervals\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/DayTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\DayTest\\:\\:testGetClosestNextOpeningHoursIntervalWhileBetweenIntervals\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/DayTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\DayTest\\:\\:testGetClosestNextOpeningHoursIntervalWhileInsideInterval\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/DayTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\DayTest\\:\\:testGetClosestPreviousOpeningHoursIntervalWhileBeingBeforeAllIntervals\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/DayTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\DayTest\\:\\:testGetClosestPreviousOpeningHoursIntervalWhileBetweenIntervals\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/DayTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\DayTest\\:\\:testGetClosestPreviousOpeningHoursIntervalWhileInsideInterval\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/DayTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\DayTest\\:\\:testGetClosingTime\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/DayTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\DayTest\\:\\:testGetDayOfWeekName\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/DayTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\DayTest\\:\\:testGetNextOpeningHoursIntervalWhileBetweenIntervals\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/DayTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\DayTest\\:\\:testGetNextOpeningHoursIntervalWhileInsideInterval\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/DayTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\DayTest\\:\\:testGetNextOpeningHoursIntervalWhileOutsideIntervals\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/DayTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\DayTest\\:\\:testGetOpeningTime\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/DayTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\DayTest\\:\\:testGetPreviousOpeningHoursIntervalWhileBetweenIntervals\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/DayTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\DayTest\\:\\:testGetPreviousOpeningHoursIntervalWhileInsideInterval\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/DayTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\DayTest\\:\\:testGetPreviousOpeningHoursIntervalWhileOutsideIntervals\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/DayTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\DayTest\\:\\:testIsWithinOpeningHours\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/DayTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\DayTest\\:\\:testJsonSerialize\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/DayTest.php
+
+		-
+			message: "#^Parameter \\#2 \\$openingHoursIntervals of class Speicher210\\\\BusinessHours\\\\Day\\\\Day constructor expects array\\<Speicher210\\\\BusinessHours\\\\Day\\\\Time\\\\TimeIntervalInterface\\>, array\\<int, string\\> given\\.$#"
+			count: 1
+			path: tests/Day/DayTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\AllDayTimeIntervalTest\\:\\:testCreateAllDayTimeInterval\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/Time/AllDayTimeIntervalTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\TimeBuilderTest\\:\\:dataProviderTestFromDate\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Day/Time/TimeBuilderTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\TimeBuilderTest\\:\\:dataProviderTestFromSeconds\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Day/Time/TimeBuilderTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\TimeBuilderTest\\:\\:dataProviderTestFromSecondsInvalid\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/Time/TimeBuilderTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\TimeBuilderTest\\:\\:dataProviderTestFromString\\(\\) return type has no value type specified in iterable type array\\.$#"
+			count: 1
+			path: tests/Day/Time/TimeBuilderTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\TimeBuilderTest\\:\\:dataProviderTestFromStringInvalid\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/Time/TimeBuilderTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\TimeBuilderTest\\:\\:testFromArrayThrowsExceptionIfArrayStructureIsNotValid\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/Time/TimeBuilderTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\TimeBuilderTest\\:\\:testFromDate\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/Time/TimeBuilderTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\TimeBuilderTest\\:\\:testFromSeconds\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/Time/TimeBuilderTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\TimeBuilderTest\\:\\:testFromSecondsInvalid\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/Time/TimeBuilderTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\TimeBuilderTest\\:\\:testFromString\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/Time/TimeBuilderTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\TimeBuilderTest\\:\\:testFromStringInvalid\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/Time/TimeBuilderTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\TimeIntervalTest\\:\\:dataProviderTestContains\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/Time/TimeIntervalTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\TimeIntervalTest\\:\\:testCloning\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/Time/TimeIntervalTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\TimeIntervalTest\\:\\:testConstructorOpeningAfterClosing\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/Time/TimeIntervalTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\TimeIntervalTest\\:\\:testConstructorOpeningEqualClosing\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/Time/TimeIntervalTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\TimeIntervalTest\\:\\:testContains\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/Time/TimeIntervalTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\TimeIntervalTest\\:\\:testFromString\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/Time/TimeIntervalTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\TimeIntervalTest\\:\\:testJsonSerialize\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/Time/TimeIntervalTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\TimeTest\\:\\:dataProviderTestCreateTimeWithInvalidData\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/Time/TimeTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\TimeTest\\:\\:dataProviderTestIsAfterOrEqual\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/Time/TimeTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\TimeTest\\:\\:dataProviderTestIsBeforeOrEqual\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/Time/TimeTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\TimeTest\\:\\:dataProviderTestIsEqual\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/Time/TimeTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\TimeTest\\:\\:dataProviderTestToSeconds\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/Time/TimeTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\TimeTest\\:\\:testCreateTimeWithInvalidData\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/Time/TimeTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\TimeTest\\:\\:testIsAfterOrEqual\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/Time/TimeTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\TimeTest\\:\\:testIsBeforeOrEqual\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/Time/TimeTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\TimeTest\\:\\:testIsEqual\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/Time/TimeTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\TimeTest\\:\\:testJsonSerialize\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/Time/TimeTest.php
+
+		-
+			message: "#^Method Speicher210\\\\BusinessHours\\\\Test\\\\Day\\\\Time\\\\TimeTest\\:\\:testToSeconds\\(\\) has no return typehint specified\\.$#"
+			count: 1
+			path: tests/Day/Time/TimeTest.php
+

@@ -50,9 +50,9 @@
     "test": "phpunit --testdox --color=always",
     "cs-check": "phpcs -p",
     "cs-fix": "phpcbf -p",
+    "analyse-update-baseline": "phpstan analyse --generate-baseline",
     "analyse": [
-      "phpstan analyse src/ --level 6",
-      "phpstan analyse tests/ --level 4"
+      "phpstan analyse"
     ]
   }
 }
