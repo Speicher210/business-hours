@@ -29,6 +29,7 @@ parameters:
                     - system
                     - var_dump
         use_from_tests: true
+    treatPhpDocTypesAsCertain: false
 
 includes:
     - phpstan-baseline.neon
@@ -37,5 +38,3 @@ includes:
     - vendor/phpstan/phpstan-phpunit/extension.neon
     - vendor/phpstan/phpstan-strict-rules/rules.neon
     - vendor/phpstan/phpstan-webmozart-assert/extension.neon
-    - vendor/thecodingmachine/phpstan-strict-rules/phpstan-strict-rules.neon
-    - vendor/thecodingmachine/phpstan-safe-rule/phpstan-safe-rule.neon

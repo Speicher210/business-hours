@@ -7,13 +7,12 @@ namespace Speicher210\BusinessHours\Test\Day;
 use InvalidArgumentException;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
+use Psl\Json;
 use Speicher210\BusinessHours\Day\Day;
 use Speicher210\BusinessHours\Day\DayBuilder;
 use Speicher210\BusinessHours\Day\DayInterface;
 use Speicher210\BusinessHours\Day\Time\Time;
 use Speicher210\BusinessHours\Day\Time\TimeInterval;
-
-use function Safe\json_encode;
 
 class DayTest extends TestCase
 {
@@ -244,7 +243,7 @@ class DayTest extends TestCase
 
         self::assertJsonStringEqualsJsonFile(
             __DIR__ . '/Expected/Day/testJsonSerialize.json',
-            json_encode($day)
+            Json\encode($day)
         );
     }
 

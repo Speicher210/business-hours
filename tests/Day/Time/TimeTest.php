@@ -7,10 +7,9 @@ namespace Speicher210\BusinessHours\Test\Day\Time;
 use DateTime;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use Psl\Json;
+use Psl\Str;
 use Speicher210\BusinessHours\Day\Time\Time;
-
-use function Safe\json_encode;
-use function Safe\sprintf;
 
 class TimeTest extends TestCase
 {
@@ -55,14 +54,12 @@ class TimeTest extends TestCase
     }
 
     /**
-     * @param mixed $string The string to test.
-     *
      * @dataProvider dataProviderTestFromStringInvalid
      */
-    public function testFromStringInvalid($string): void
+    public function testFromStringInvalid(string $string): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage(sprintf('Invalid time "%s".', $string));
+        $this->expectExceptionMessage(Str\format('Invalid time "%s".', $string));
 
         Time::fromString($string);
     }
@@ -630,7 +627,7 @@ class TimeTest extends TestCase
 
         self::assertJsonStringEqualsJsonFile(
             __DIR__ . '/Expected/Time/testJsonSerialize.json',
-            json_encode($time)
+            Json\encode($time)
         );
     }
 }

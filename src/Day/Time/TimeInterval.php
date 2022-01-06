@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace Speicher210\BusinessHours\Day\Time;
 
 use InvalidArgumentException;
-
-use function Safe\sprintf;
+use Psl\Str;
 
 class TimeInterval implements TimeIntervalInterface
 {
@@ -19,14 +18,14 @@ class TimeInterval implements TimeIntervalInterface
      */
     public function __construct(Time $start, Time $end)
     {
-        $this->start = $start;
-        $this->end   = $end;
-
         if ($start->isAfterOrEqual($end)) {
             throw new InvalidArgumentException(
-                sprintf('The opening time "%s" must be before the closing time "%s".', $start, $end)
+                Str\format('The opening time "%s" must be before the closing time "%s".', $start->asString(), $end->asString())
             );
         }
+
+        $this->start = $start;
+        $this->end   = $end;
     }
 
     /**

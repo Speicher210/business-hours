@@ -7,6 +7,8 @@ namespace Speicher210\BusinessHours;
 use DateTimeInterface;
 use DateTimeZone;
 use InvalidArgumentException;
+use Psl\Dict;
+use Psl\Vec;
 use Speicher210\BusinessHours\Day\Day;
 use Speicher210\BusinessHours\Day\DayBuilder;
 use Speicher210\BusinessHours\Day\DayInterface;
@@ -14,11 +16,9 @@ use Speicher210\BusinessHours\Day\Time\Time;
 use Speicher210\BusinessHours\Day\Time\TimeInterval;
 
 use function array_fill_keys;
-use function array_filter;
 use function is_array;
 use function max;
 use function min;
-use function Safe\ksort;
 
 final class BusinessHoursBuilder
 {
@@ -110,27 +110,14 @@ final class BusinessHoursBuilder
             }
         }
 
-        $tmpDays = array_filter($tmpDays);
-        $days    = self::flattenDaysIntervals($tmpDays);
+        $days = Vec\map_with_key(
+            Dict\sort_by_key(
+                Dict\filter($tmpDays, static fn (array $intervals): bool => $intervals !== [])
+            ),
+            static fn (int $dayOfWeek, array $intervals): Day => DayBuilder::fromArray($dayOfWeek, $intervals)
+        );
 
         return new BusinessHours($days, $newTimezone);
-    }
-
-    /**
-     * @param mixed[] $days The days to flatten.
-     *
-     * @return DayInterface[]
-     */
-    private static function flattenDaysIntervals(array $days): array
-    {
-        ksort($days);
-
-        $flattenDays = [];
-        foreach ($days as $dayOfWeek => $intervals) {
-            $flattenDays[] = DayBuilder::fromArray($dayOfWeek, $intervals);
-        }
-
-        return $flattenDays;
     }
 
     /**
