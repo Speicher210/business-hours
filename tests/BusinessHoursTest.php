@@ -10,13 +10,13 @@ use DateTimeInterface;
 use DateTimeZone;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use Psl\Json;
 use Speicher210\BusinessHours\BusinessHours;
 use Speicher210\BusinessHours\Day\DayBuilder;
 use Speicher210\BusinessHours\Day\DayInterface;
 
 use function date_default_timezone_get;
 use function date_default_timezone_set;
-use function Safe\json_encode;
 
 class BusinessHoursTest extends TestCase
 {
@@ -198,7 +198,7 @@ class BusinessHoursTest extends TestCase
 
         self::assertJsonStringEqualsJsonFile(
             __DIR__ . '/Expected/Business/testJsonSerialize.json',
-            json_encode($business)
+            Json\encode($business)
         );
     }
 

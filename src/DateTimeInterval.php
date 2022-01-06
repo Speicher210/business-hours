@@ -7,8 +7,7 @@ namespace Speicher210\BusinessHours;
 use DateTimeInterface;
 use InvalidArgumentException;
 use JsonSerializable;
-
-use function Safe\sprintf;
+use Psl\Str;
 
 class DateTimeInterval implements JsonSerializable
 {
@@ -29,7 +28,7 @@ class DateTimeInterval implements JsonSerializable
 
         if ($end <= $start) {
             throw new InvalidArgumentException(
-                sprintf(
+                Str\format(
                     'The opening date and time "%s" must be before the closing date and time "%s".',
                     $start->format('Y-m-d H:i:s'),
                     $end->format('Y-m-d H:i:s')

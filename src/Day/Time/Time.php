@@ -8,15 +8,14 @@ use DateTime;
 use DateTimeInterface;
 use InvalidArgumentException;
 use JsonSerializable;
+use Psl\Math;
+use Psl\Str;
+use Psl\Type;
 use Throwable;
 use Webmozart\Assert\Assert;
 
-use function abs;
-use function ceil;
-use function floor;
 use function round;
-use function Safe\sprintf;
-use function strpos;
+use function str_starts_with;
 
 use const PHP_ROUND_HALF_DOWN;
 use const PHP_ROUND_HALF_UP;
@@ -48,7 +47,11 @@ class Time implements JsonSerializable
 
     public static function fromDate(DateTimeInterface $date): self
     {
-        return new self((int) $date->format('H'), (int) $date->format('i'), (int) $date->format('s'));
+        return new self(
+            Type\int()->coerce($date->format('H')),
+            Type\int()->coerce($date->format('i')),
+            Type\int()->coerce($date->format('s'))
+        );
     }
 
     /**
@@ -61,11 +64,11 @@ class Time implements JsonSerializable
         try {
             $date = new DateTime($time);
         } catch (Throwable $e) {
-            throw new InvalidArgumentException(sprintf('Invalid time "%s".', $time), 0, $e);
+            throw new InvalidArgumentException(Str\format('Invalid time "%s".', $time), 0, $e);
         }
 
         $return = static::fromDate($date);
-        if (strpos($time, '24') === 0) {
+        if (str_starts_with($time, '24')) {
             return $return->withHours(24);
         }
 
@@ -76,19 +79,19 @@ class Time implements JsonSerializable
     {
         if ($seconds < 0 || $seconds > 86400) {
             throw new InvalidArgumentException(
-                sprintf(
+                Str\format(
                     'Invalid time "%s%02d:%02d:%02d".',
                     $seconds < 0 ? '-' : '',
-                    abs((int) ($seconds / 3600)),
-                    abs(($seconds / 60) % 60),
-                    abs($seconds % 60)
+                    Math\abs(Math\div($seconds, 3600)),
+                    Math\abs(Math\div($seconds, 60) % 60),
+                    Math\abs($seconds % 60)
                 )
             );
         }
 
         $data = [
-            'hours' => (int) ($seconds / 3600),
-            'minutes' => ($seconds / 60) % 60,
+            'hours' => Math\div($seconds, 3600),
+            'minutes' => Math\div($seconds, 60) % 60,
             'seconds' => $seconds % 60,
         ];
 
@@ -96,15 +99,11 @@ class Time implements JsonSerializable
     }
 
     /**
-     * @param int[] $data
-     *
-     * @psalm-param array{hours: int, minutes?: int, seconds?: int} $data
+     * @param array{hours: int, minutes?: int, seconds?: int} $data
      */
     public static function fromArray(array $data): Time
     {
-        if (! isset($data['hours'])) {
-            throw new InvalidArgumentException('Array is not valid.');
-        }
+        Assert::keyExists($data, 'hours', 'Array is not valid.');
 
         return new Time(
             $data['hours'],
@@ -265,10 +264,10 @@ class Time implements JsonSerializable
     private function assertTimeElementsAreValid(int $hours, int $minutes, int $seconds): bool
     {
         $exception = new InvalidArgumentException(
-            sprintf('Invalid time "%02d:%02d:%02d".', $hours, $minutes, $seconds)
+            Str\format('Invalid time "%02d:%02d:%02d".', $hours, $minutes, $seconds)
         );
 
-        if ((int) sprintf('%d%02d%02d', $hours, $minutes, $seconds) > 240000) {
+        if ((int) Str\format('%d%02d%02d', $hours, $minutes, $seconds) > 240000) {
             throw $exception;
         }
 
@@ -307,13 +306,13 @@ class Time implements JsonSerializable
         $roundingSeconds = $precision * 60;
 
         if ($roundingMode === self::ROUND_UP) {
-            $newSeconds = ceil($this->toSeconds() / $roundingSeconds) * $roundingSeconds;
+            $newSeconds = Math\ceil($this->toSeconds() / $roundingSeconds) * $roundingSeconds;
 
             return self::fromSeconds((int) $newSeconds);
         }
 
         if ($roundingMode === self::ROUND_DOWN) {
-            $newSeconds = floor($this->toSeconds() / $roundingSeconds) * $roundingSeconds;
+            $newSeconds = Math\floor($this->toSeconds() / $roundingSeconds) * $roundingSeconds;
 
             return self::fromSeconds((int) $newSeconds);
         }
@@ -402,7 +401,7 @@ class Time implements JsonSerializable
 
     public function asString(): string
     {
-        return sprintf('%02d:%02d:%02d', $this->hours, $this->minutes, $this->seconds);
+        return Str\format('%02d:%02d:%02d', $this->hours, $this->minutes, $this->seconds);
     }
 
     public function __toString(): string

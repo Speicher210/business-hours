@@ -1,10 +1,8 @@
 name: Build
 
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  - push
+  - pull_request
 
 jobs:
   build:
@@ -13,8 +11,8 @@ jobs:
       matrix:
         dependencies: [lowest, highest]
         php-versions:
-          - 7.4
-#          - 8.0
+          - 8.0
+          - 8.1
     name: PHP ${{ matrix.php-versions }} checks with ${{ matrix.dependencies }} dependencies
     steps:
       - name: Checkout code

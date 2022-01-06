@@ -7,9 +7,8 @@ namespace Speicher210\BusinessHours\Test;
 use DateTime;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use Psl\Json;
 use Speicher210\BusinessHours\DateTimeInterval;
-
-use function Safe\json_encode;
 
 class DateTimeIntervalTest extends TestCase
 {
@@ -35,7 +34,7 @@ class DateTimeIntervalTest extends TestCase
 
         self::assertJsonStringEqualsJsonFile(
             __DIR__ . '/Expected/DateTimeInterval/testJsonSerialize.json',
-            json_encode($interval)
+            Json\encode($interval)
         );
     }
 }
