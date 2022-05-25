@@ -1,14 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.17.0@6f4707aa41c9174353a6434bba3fc8840f981d9c">
-  <file src="src/BusinessHours.php">
-    <UndefinedInterfaceMethod occurrences="7">
-      <code>modify</code>
-      <code>modify</code>
-      <code>setTime</code>
-      <code>setTime</code>
-      <code>setTimezone</code>
-      <code>setTimezone</code>
-      <code>setTimezone</code>
-    </UndefinedInterfaceMethod>
-  </file>
-</files>
+<files psalm-version="4.23.0@f1fe6ff483bf325c803df9f510d09a03fd796f88"/>

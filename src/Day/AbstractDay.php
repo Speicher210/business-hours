@@ -223,7 +223,7 @@ abstract class AbstractDay implements DayInterface
 
         $intervals = [];
 
-        $tmpInterval = Type\object(TimeIntervalInterface::class)->coerce(Iter\first($sortedOpeningHoursIntervals));
+        $tmpInterval = Type\instance_of(TimeIntervalInterface::class)->coerce(Iter\first($sortedOpeningHoursIntervals));
         foreach ($sortedOpeningHoursIntervals as $interval) {
             if ($interval->getStart()->lessThanOrEqual($tmpInterval->getEnd())) {
                 $tmpInterval = new TimeInterval(

@@ -296,8 +296,8 @@ class Time implements JsonSerializable
     }
 
     /**
-     * @param int $precision    Number of minutes to round.
-     * @param int $roundingMode The rounding mode. One of the ROUND_* constants.
+     * @param int           $precision    Number of minutes to round.
+     * @param self::ROUND_* $roundingMode The rounding mode. One of the ROUND_* constants.
      */
     public function roundToMinutes(int $precision, int $roundingMode = self::ROUND_HALF_UP): self
     {
@@ -322,6 +322,9 @@ class Time implements JsonSerializable
         return self::fromSeconds((int) $newSeconds);
     }
 
+    /**
+     * @param self::ROUND_* $roundingMode
+     */
     public function roundToHour(int $roundingMode = self::ROUND_HALF_UP): self
     {
         return $this->roundToMinutes(60, $roundingMode);

@@ -500,6 +500,8 @@ class TimeTest extends TestCase
     }
 
     /**
+     * @param Time::ROUND_* $roundingMode
+     *
      * @dataProvider dataProviderTestRoundToMinutes
      */
     public function testRoundToMinutes(Time $time, int $precision, int $roundingMode, Time $expected): void
@@ -531,6 +533,8 @@ class TimeTest extends TestCase
     }
 
     /**
+     * @param Time::ROUND_* $roundingMode
+     *
      * @dataProvider dataProviderTestRoundToHour
      */
     public function testRoundToHour(Time $time, int $roundingMode, Time $expected): void
