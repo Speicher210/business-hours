@@ -23,23 +23,23 @@
   ],
   "homepage": "https://github.com/Speicher210/business-hours",
   "require": {
-    "php": "^8.1",
+    "php": "^8.1 || ^8.2",
     "ext-json": "*",
     "azjezz/psl": "^2.0.1",
     "webmozart/assert": "^1.9"
   },
   "require-dev": {
-    "doctrine/coding-standard": "^9.0",
+    "doctrine/coding-standard": "^9.0.2",
     "ekino/phpstan-banned-code": "^1.0",
-    "ergebnis/composer-normalize": "^2.26",
-    "phpstan/phpstan": "^1.7.1",
+    "ergebnis/composer-normalize": "^2.29",
+    "phpstan/phpstan": "^1.9.2",
     "phpstan/phpstan-deprecation-rules": "^1.0",
-    "phpstan/phpstan-phpunit": "^1.1",
-    "phpstan/phpstan-strict-rules": "^1.2",
-    "phpstan/phpstan-webmozart-assert": "^1.1",
-    "phpunit/phpunit": "^9.5.20",
-    "psalm/plugin-phpunit": "^0.16",
-    "vimeo/psalm": "^4.23.0"
+    "phpstan/phpstan-phpunit": "^1.2.2",
+    "phpstan/phpstan-strict-rules": "^1.4.4",
+    "phpstan/phpstan-webmozart-assert": "^1.2.2",
+    "phpunit/phpunit": "^9.5.26",
+    "psalm/plugin-phpunit": "^0.18.4",
+    "vimeo/psalm": "^5.1"
   },
   "conflict": {
     "nikic/php-parser": "<4.13.2"
@@ -93,6 +93,6 @@
     ],
     "cs-check": "phpcs -p",
     "cs-fix": "phpcbf -p",
-    "test": "phpunit --testdox --color=always"
+    "test": "phpunit --testdox"
   }
 }
