@@ -74,7 +74,7 @@ class TimeIntervalTest extends TestCase
 
         self::assertJsonStringEqualsJsonFile(
             __DIR__ . '/Expected/TimeInterval/testJsonSerialize.json',
-            Json\encode($interval)
+            Json\encode($interval),
         );
     }
 

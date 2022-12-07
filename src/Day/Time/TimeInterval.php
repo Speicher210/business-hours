@@ -20,7 +20,7 @@ class TimeInterval implements TimeIntervalInterface
     {
         if ($start->isAfterOrEqual($end)) {
             throw new InvalidArgumentException(
-                Str\format('The opening time "%s" must be before the closing time "%s".', $start->asString(), $end->asString())
+                Str\format('The opening time "%s" must be before the closing time "%s".', $start->asString(), $end->asString()),
             );
         }
 

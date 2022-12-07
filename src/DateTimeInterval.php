@@ -31,8 +31,8 @@ class DateTimeInterval implements JsonSerializable
                 Str\format(
                     'The opening date and time "%s" must be before the closing date and time "%s".',
                     $start->format('Y-m-d H:i:s'),
-                    $end->format('Y-m-d H:i:s')
-                )
+                    $end->format('Y-m-d H:i:s'),
+                ),
             );
         }
     }

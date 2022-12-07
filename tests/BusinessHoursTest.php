@@ -32,7 +32,7 @@ class BusinessHoursTest extends TestCase
         $business = new BusinessHours(
             [
                 DayBuilder::fromArray(DayInterface::WEEK_DAY_MONDAY, [['09:00', '13:00'], ['14:00', '17:00']]),
-            ]
+            ],
         );
 
         self::assertTrue($business->within(new DateTime('2015-05-11 10:00'))); // Monday
@@ -41,7 +41,7 @@ class BusinessHoursTest extends TestCase
         self::assertFalse($business->within(new DateTime('2015-05-11 18:00'))); // Monday
         self::assertFalse($business->within(new DateTime('2015-05-12 10:00'))); // Tuesday
         self::assertFalse(
-            $business->within(new DateTime('2015-05-11 13:00:25'))
+            $business->within(new DateTime('2015-05-11 13:00:25')),
         ); // Monday, seconds outside business hours
     }
 
@@ -68,7 +68,7 @@ class BusinessHoursTest extends TestCase
         $business = new BusinessHours(
             [
                 DayBuilder::fromArray(DayInterface::WEEK_DAY_MONDAY, [['10:00', '13:00'], ['14:00', '17:00']]),
-            ]
+            ],
         );
 
         self::assertFalse($business->within($date));
@@ -88,7 +88,7 @@ class BusinessHoursTest extends TestCase
                 DayBuilder::fromArray(DayInterface::WEEK_DAY_WEDNESDAY, [['09:00', '12:00'], ['12:30', '13:30'], ['14:00', '17:00']]),
                 DayBuilder::fromArray(DayInterface::WEEK_DAY_FRIDAY, [['10:00', '13:00'], ['14:00', '17:00']]),
             ],
-            $utcTimeZone
+            $utcTimeZone,
         );
 
         return [
@@ -143,7 +143,7 @@ class BusinessHoursTest extends TestCase
                 DayBuilder::fromArray(DayInterface::WEEK_DAY_WEDNESDAY, [['09:00', '12:00'], ['12:30', '13:30'], ['14:00', '17:00']]),
                 DayBuilder::fromArray(DayInterface::WEEK_DAY_FRIDAY, [['10:00', '13:00'], ['14:00', '17:00']]),
             ],
-            $utcTimeZone
+            $utcTimeZone,
         );
 
         return [
@@ -193,12 +193,12 @@ class BusinessHoursTest extends TestCase
                 DayBuilder::fromArray(DayInterface::WEEK_DAY_MONDAY, [['09:00', '13:00'], ['14:00', '17:00']]),
                 DayBuilder::fromArray(DayInterface::WEEK_DAY_FRIDAY, [['10:00', '13:00'], ['14:00', '17:00']]),
             ],
-            new DateTimeZone('Europe/London')
+            new DateTimeZone('Europe/London'),
         );
 
         self::assertJsonStringEqualsJsonFile(
             __DIR__ . '/Expected/Business/testJsonSerialize.json',
-            Json\encode($business)
+            Json\encode($business),
         );
     }
 
@@ -209,7 +209,7 @@ class BusinessHoursTest extends TestCase
                 DayBuilder::fromArray(DayInterface::WEEK_DAY_MONDAY, [['09:00', '13:00'], ['14:00', '17:00']]),
                 DayBuilder::fromArray(DayInterface::WEEK_DAY_FRIDAY, [['10:00', '13:00'], ['14:00', '17:00']]),
             ],
-            new DateTimeZone('Europe/London')
+            new DateTimeZone('Europe/London'),
         );
 
         $clone = clone $original;

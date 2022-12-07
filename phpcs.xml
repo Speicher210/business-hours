@@ -5,7 +5,7 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd">
 
-    <arg name="basepath" value="."/>
+    <arg name="basepath" value="../"/>
     <arg name="extensions" value="php"/>
     <arg name="parallel" value="80"/>
     <arg name="cache" value=".phpcs-cache"/>
@@ -14,21 +14,24 @@
     <arg value="np"/>
 
     <!-- inherit rules from: -->
-    <rule ref="Doctrine"/>
+    <rule ref="Doctrine">
+        <exclude name="Generic.NamingConventions.ConstructorName"/>
+        <exclude name="SlevomatCodingStandard.Commenting.RequireOneLineDocComment.MultiLineDocComment"/>
+        <exclude name="SlevomatCodingStandard.Classes.RequireConstructorPropertyPromotion.RequiredConstructorPropertyPromotion"/>
+        <exclude name="SlevomatCodingStandard.Classes.SuperfluousInterfaceNaming.SuperfluousSuffix"/>
+        <exclude name="SlevomatCodingStandard.Classes.SuperfluousAbstractClassNaming.SuperfluousPrefix"/>
+    </rule>
+    <!-- Project rules -->
     <rule ref="Generic.Files.LineLength">
         <severity>0</severity>
     </rule>
-    <!-- Forbid prefix and suffix "Abstract" for abstract classes -->
-    <rule ref="SlevomatCodingStandard.Classes.SuperfluousAbstractClassNaming">
-        <severity>0</severity>
-    </rule>
-    <!-- Forbid prefix and suffix "Interface" for interfaces -->
-    <rule ref="SlevomatCodingStandard.Classes.SuperfluousInterfaceNaming">
-        <severity>0</severity>
-    </rule>
-    <!-- Require /* @var type $foo */ and similar simple inline annotations to be replaced by assert() -->
-    <rule ref="SlevomatCodingStandard.PHP.RequireExplicitAssertion">
-        <severity>0</severity>
+    <rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">
+        <properties>
+            <property name="rootNamespaces" type="array">
+                <element key="src" value="Speicher210\BusinessHours"/>
+                <element key="tests" value="Speicher210\BusinessHours\Test"/>
+            </property>
+        </properties>
     </rule>
 
     <!-- Paths to check -->

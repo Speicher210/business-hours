@@ -71,7 +71,7 @@ abstract class AbstractDay implements DayInterface
         return $this->openingHoursIntervals;
     }
 
-    public function getClosestPreviousOpeningHoursInterval(Time $time): ?TimeIntervalInterface
+    public function getClosestPreviousOpeningHoursInterval(Time $time): TimeIntervalInterface|null
     {
         foreach ($this->openingHoursIntervals as $openingHoursInterval) {
             if ($openingHoursInterval->contains($time)) {
@@ -82,7 +82,7 @@ abstract class AbstractDay implements DayInterface
         return $this->getPreviousOpeningHoursInterval($time);
     }
 
-    public function getClosestNextOpeningHoursInterval(Time $time): ?TimeIntervalInterface
+    public function getClosestNextOpeningHoursInterval(Time $time): TimeIntervalInterface|null
     {
         foreach ($this->openingHoursIntervals as $openingHoursInterval) {
             if ($openingHoursInterval->contains($time)) {
@@ -93,7 +93,7 @@ abstract class AbstractDay implements DayInterface
         return $this->getNextOpeningHoursInterval($time);
     }
 
-    public function getPreviousOpeningHoursInterval(Time $time): ?TimeIntervalInterface
+    public function getPreviousOpeningHoursInterval(Time $time): TimeIntervalInterface|null
     {
         $closestTime     = null;
         $closestInterval = null;
@@ -121,7 +121,7 @@ abstract class AbstractDay implements DayInterface
         return $closestInterval;
     }
 
-    public function getNextOpeningHoursInterval(Time $time): ?TimeIntervalInterface
+    public function getNextOpeningHoursInterval(Time $time): TimeIntervalInterface|null
     {
         $closestTime     = null;
         $closestInterval = null;
@@ -228,7 +228,7 @@ abstract class AbstractDay implements DayInterface
             if ($interval->getStart()->lessThanOrEqual($tmpInterval->getEnd())) {
                 $tmpInterval = new TimeInterval(
                     $tmpInterval->getStart(),
-                    max($tmpInterval->getEnd(), $interval->getEnd())
+                    max($tmpInterval->getEnd(), $interval->getEnd()),
                 );
             } else {
                 $intervals[] = $tmpInterval;

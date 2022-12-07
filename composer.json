@@ -29,7 +29,7 @@
     "webmozart/assert": "^1.9"
   },
   "require-dev": {
-    "doctrine/coding-standard": "^9.0.2",
+    "doctrine/coding-standard": "^10.0",
     "ekino/phpstan-banned-code": "^1.0",
     "ergebnis/composer-normalize": "^2.29",
     "phpstan/phpstan": "^1.9.2",

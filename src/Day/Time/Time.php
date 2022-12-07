@@ -50,7 +50,7 @@ class Time implements JsonSerializable
         return new self(
             Type\int()->coerce($date->format('H')),
             Type\int()->coerce($date->format('i')),
-            Type\int()->coerce($date->format('s'))
+            Type\int()->coerce($date->format('s')),
         );
     }
 
@@ -84,8 +84,8 @@ class Time implements JsonSerializable
                     $seconds < 0 ? '-' : '',
                     Math\abs(Math\div($seconds, 3600)),
                     Math\abs(Math\div($seconds, 60) % 60),
-                    Math\abs($seconds % 60)
-                )
+                    Math\abs($seconds % 60),
+                ),
             );
         }
 
@@ -108,7 +108,7 @@ class Time implements JsonSerializable
         return new Time(
             $data['hours'],
             $data['minutes'] ?? 0,
-            $data['seconds'] ?? 0
+            $data['seconds'] ?? 0,
         );
     }
 
@@ -264,7 +264,7 @@ class Time implements JsonSerializable
     private function assertTimeElementsAreValid(int $hours, int $minutes, int $seconds): bool
     {
         $exception = new InvalidArgumentException(
-            Str\format('Invalid time "%02d:%02d:%02d".', $hours, $minutes, $seconds)
+            Str\format('Invalid time "%02d:%02d:%02d".', $hours, $minutes, $seconds),
         );
 
         if ((int) Str\format('%d%02d%02d', $hours, $minutes, $seconds) > 240000) {
@@ -291,7 +291,7 @@ class Time implements JsonSerializable
                 self::ROUND_HALF_DOWN,
                 self::ROUND_UP,
                 self::ROUND_DOWN,
-            ]
+            ],
         );
     }
 

@@ -28,7 +28,7 @@ final class DayBuilder
             } elseif (is_array($interval)) {
                 $intervals[] = new TimeInterval(
                     Time::fromString($interval[0]),
-                    Time::fromString($interval[1])
+                    Time::fromString($interval[1]),
                 );
             }
         }

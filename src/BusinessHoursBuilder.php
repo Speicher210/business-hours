@@ -75,7 +75,7 @@ final class BusinessHoursBuilder
                     $dayOfWeek             = $day->getDayOfWeek();
                     $interval              = new TimeInterval(
                         Time::fromSeconds($startForCurrentDay),
-                        Time::fromSeconds($endForCurrentDay)
+                        Time::fromSeconds($endForCurrentDay),
                     );
                     $tmpDays[$dayOfWeek][] = $interval;
                 }
@@ -88,7 +88,7 @@ final class BusinessHoursBuilder
                     $dayOfWeek             = self::getPreviousDayOfWeek($day->getDayOfWeek());
                     $interval              = new TimeInterval(
                         Time::fromSeconds($startForPreviousDay),
-                        Time::fromSeconds($endForPreviousDay)
+                        Time::fromSeconds($endForPreviousDay),
                     );
                     $tmpDays[$dayOfWeek][] = $interval;
                 }
@@ -104,7 +104,7 @@ final class BusinessHoursBuilder
                 $dayOfWeek             = self::getNextDayOfWeek($day->getDayOfWeek());
                 $interval              = new TimeInterval(
                     Time::fromSeconds($startForNextDay),
-                    Time::fromSeconds($endForNextDay)
+                    Time::fromSeconds($endForNextDay),
                 );
                 $tmpDays[$dayOfWeek][] = $interval;
             }
@@ -112,7 +112,7 @@ final class BusinessHoursBuilder
 
         $days = Vec\map_with_key(
             Dict\sort_by_key(
-                Dict\filter($tmpDays, static fn (array $intervals): bool => $intervals !== [])
+                Dict\filter($tmpDays, static fn (array $intervals): bool => $intervals !== []),
             ),
             static fn (int $dayOfWeek, array $intervals): Day => DayBuilder::fromArray($dayOfWeek, $intervals)
         );

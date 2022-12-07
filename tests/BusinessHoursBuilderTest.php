@@ -80,7 +80,7 @@ final class BusinessHoursBuilderTest extends TestCase
                 [
                     TimeInterval::fromString('10:10', '18:00:30'),
                     TimeInterval::fromString('18:30', '19:00'),
-                ]
+                ],
             ),
             new AllDay(Day::WEEK_DAY_FRIDAY),
         ];
@@ -111,11 +111,11 @@ final class BusinessHoursBuilderTest extends TestCase
                     [
                         TimeInterval::fromString('10:10', '18:00:30'),
                         TimeInterval::fromString('18:30', '19:00'),
-                    ]
+                    ],
                 ),
                 new AllDay(Day::WEEK_DAY_FRIDAY),
             ],
-            new DateTimeZone('Europe/Bucharest')
+            new DateTimeZone('Europe/Bucharest'),
         );
 
         $actual = BusinessHoursBuilder::shiftToTimezone($original, $shiftDateTime);
@@ -138,18 +138,18 @@ final class BusinessHoursBuilderTest extends TestCase
                         [
                             TimeInterval::fromString('00:00', '09:00:30'),
                             TimeInterval::fromString('17:30', '23:00'),
-                        ]
+                        ],
                     ),
                     new AllDay(
-                        Day::WEEK_DAY_TUESDAY
+                        Day::WEEK_DAY_TUESDAY,
                     ),
                     new Day(
                         Day::WEEK_DAY_WEDNESDAY,
-                        [TimeInterval::fromString('00:00', '02:00')]
+                        [TimeInterval::fromString('00:00', '02:00')],
                     ),
                     new Day(
                         Day::WEEK_DAY_THURSDAY,
-                        [TimeInterval::fromString('23:00', '24:00')]
+                        [TimeInterval::fromString('23:00', '24:00')],
                     ),
                     new Day(
                         Day::WEEK_DAY_FRIDAY,
@@ -157,14 +157,14 @@ final class BusinessHoursBuilderTest extends TestCase
                             TimeInterval::fromString('00:00', '23:00'),
                             TimeInterval::fromString('23:30', '23:45'),
                             TimeInterval::fromString('23:50', '23:55'),
-                        ]
+                        ],
                     ),
                     new Day(
                         Day::WEEK_DAY_SUNDAY,
-                        [TimeInterval::fromString('23:00', '24:00')]
+                        [TimeInterval::fromString('23:00', '24:00')],
                     ),
                 ],
-                new DateTimeZone('Europe/Berlin')
+                new DateTimeZone('Europe/Berlin'),
             ),
         ];
 
@@ -178,18 +178,18 @@ final class BusinessHoursBuilderTest extends TestCase
                         [
                             TimeInterval::fromString('00:00', '09:00:30'),
                             TimeInterval::fromString('17:30', '23:00'),
-                        ]
+                        ],
                     ),
                     new AllDay(
-                        Day::WEEK_DAY_TUESDAY
+                        Day::WEEK_DAY_TUESDAY,
                     ),
                     new Day(
                         Day::WEEK_DAY_WEDNESDAY,
-                        [TimeInterval::fromString('00:00', '02:00')]
+                        [TimeInterval::fromString('00:00', '02:00')],
                     ),
                     new Day(
                         Day::WEEK_DAY_THURSDAY,
-                        [TimeInterval::fromString('23:00', '24:00')]
+                        [TimeInterval::fromString('23:00', '24:00')],
                     ),
                     new Day(
                         Day::WEEK_DAY_FRIDAY,
@@ -197,14 +197,14 @@ final class BusinessHoursBuilderTest extends TestCase
                             TimeInterval::fromString('00:00', '23:00'),
                             TimeInterval::fromString('23:30', '23:45'),
                             TimeInterval::fromString('23:50', '23:55'),
-                        ]
+                        ],
                     ),
                     new Day(
                         Day::WEEK_DAY_SUNDAY,
-                        [TimeInterval::fromString('23:00', '24:00')]
+                        [TimeInterval::fromString('23:00', '24:00')],
                     ),
                 ],
-                new DateTimeZone('Europe/Berlin')
+                new DateTimeZone('Europe/Berlin'),
             ),
         ];
 
@@ -219,14 +219,14 @@ final class BusinessHoursBuilderTest extends TestCase
                             TimeInterval::fromString('00:00', '07:00:30'),
                             TimeInterval::fromString('15:30', '21:00'),
                             TimeInterval::fromString('22:00', '24:00'),
-                        ]
+                        ],
                     ),
                     new AllDay(
-                        Day::WEEK_DAY_TUESDAY
+                        Day::WEEK_DAY_TUESDAY,
                     ),
                     new Day(
                         Day::WEEK_DAY_THURSDAY,
-                        [TimeInterval::fromString('21:00', '24:00')]
+                        [TimeInterval::fromString('21:00', '24:00')],
                     ),
                     new Day(
                         Day::WEEK_DAY_FRIDAY,
@@ -234,14 +234,14 @@ final class BusinessHoursBuilderTest extends TestCase
                             TimeInterval::fromString('00:00', '21:00'),
                             TimeInterval::fromString('21:30', '21:45'),
                             TimeInterval::fromString('21:50', '21:55'),
-                        ]
+                        ],
                     ),
                     new Day(
                         Day::WEEK_DAY_SUNDAY,
-                        [TimeInterval::fromString('21:00', '24:00')]
+                        [TimeInterval::fromString('21:00', '24:00')],
                     ),
                 ],
-                new DateTimeZone('UTC')
+                new DateTimeZone('UTC'),
             ),
         ];
 
@@ -256,18 +256,18 @@ final class BusinessHoursBuilderTest extends TestCase
                             TimeInterval::fromString('00:00', '08:00:30'),
                             TimeInterval::fromString('16:30', '22:00'),
                             TimeInterval::fromString('23:00', '24:00'),
-                        ]
+                        ],
                     ),
                     new AllDay(
-                        Day::WEEK_DAY_TUESDAY
+                        Day::WEEK_DAY_TUESDAY,
                     ),
                     new Day(
                         Day::WEEK_DAY_WEDNESDAY,
-                        [TimeInterval::fromString('00:00', '01:00')]
+                        [TimeInterval::fromString('00:00', '01:00')],
                     ),
                     new Day(
                         Day::WEEK_DAY_THURSDAY,
-                        [TimeInterval::fromString('22:00', '24:00')]
+                        [TimeInterval::fromString('22:00', '24:00')],
                     ),
                     new Day(
                         Day::WEEK_DAY_FRIDAY,
@@ -275,14 +275,14 @@ final class BusinessHoursBuilderTest extends TestCase
                             TimeInterval::fromString('00:00', '22:00'),
                             TimeInterval::fromString('22:30', '22:45'),
                             TimeInterval::fromString('22:50', '22:55'),
-                        ]
+                        ],
                     ),
                     new Day(
                         Day::WEEK_DAY_SUNDAY,
-                        [TimeInterval::fromString('22:00', '24:00')]
+                        [TimeInterval::fromString('22:00', '24:00')],
                     ),
                 ],
-                new DateTimeZone('UTC')
+                new DateTimeZone('UTC'),
             ),
         ];
     }
@@ -293,7 +293,7 @@ final class BusinessHoursBuilderTest extends TestCase
     public function testShiftToTimezoneWhenTimezoneShiftIsBackwards(
         DateTimeZone $originalTimezone,
         DateTimeImmutable $shiftDateTime,
-        BusinessHours $expected
+        BusinessHours $expected,
     ): void {
         $original = new BusinessHours(
             [
@@ -302,15 +302,15 @@ final class BusinessHoursBuilderTest extends TestCase
                     [
                         TimeInterval::fromString('00:00', '10:00:30'),
                         TimeInterval::fromString('18:30', '24:00'),
-                    ]
+                    ],
                 ),
                 new Day(
                     Day::WEEK_DAY_TUESDAY,
-                    [TimeInterval::fromString('01:00', '24:00')]
+                    [TimeInterval::fromString('01:00', '24:00')],
                 ),
                 new Day(
                     Day::WEEK_DAY_WEDNESDAY,
-                    [TimeInterval::fromString('00:00', '03:00')]
+                    [TimeInterval::fromString('00:00', '03:00')],
                 ),
                 new AllDay(Day::WEEK_DAY_FRIDAY),
                 new Day(
@@ -318,15 +318,15 @@ final class BusinessHoursBuilderTest extends TestCase
                     [
                         TimeInterval::fromString('00:30', '00:45'),
                         TimeInterval::fromString('00:50', '00:55'),
-                    ]
+                    ],
                 ),
             ],
-            $originalTimezone
+            $originalTimezone,
         );
 
         $actual = BusinessHoursBuilder::shiftToTimezone(
             $original,
-            $shiftDateTime
+            $shiftDateTime,
         );
         self::assertEquals($expected, $actual);
     }
@@ -346,15 +346,15 @@ final class BusinessHoursBuilderTest extends TestCase
                         [
                             TimeInterval::fromString('00:00', '10:00:30'),
                             TimeInterval::fromString('18:30', '24:00'),
-                        ]
+                        ],
                     ),
                     new Day(
                         Day::WEEK_DAY_TUESDAY,
-                        [TimeInterval::fromString('01:00', '24:00')]
+                        [TimeInterval::fromString('01:00', '24:00')],
                     ),
                     new Day(
                         Day::WEEK_DAY_WEDNESDAY,
-                        [TimeInterval::fromString('00:00', '03:00')]
+                        [TimeInterval::fromString('00:00', '03:00')],
                     ),
                     new AllDay(Day::WEEK_DAY_FRIDAY),
                     new Day(
@@ -362,10 +362,10 @@ final class BusinessHoursBuilderTest extends TestCase
                         [
                             TimeInterval::fromString('00:30', '00:45'),
                             TimeInterval::fromString('00:50', '00:55'),
-                        ]
+                        ],
                     ),
                 ],
-                new DateTimeZone('Europe/Bucharest')
+                new DateTimeZone('Europe/Bucharest'),
             ),
         ];
 
@@ -379,15 +379,15 @@ final class BusinessHoursBuilderTest extends TestCase
                         [
                             TimeInterval::fromString('00:00', '10:00:30'),
                             TimeInterval::fromString('18:30', '24:00'),
-                        ]
+                        ],
                     ),
                     new Day(
                         Day::WEEK_DAY_TUESDAY,
-                        [TimeInterval::fromString('01:00', '24:00')]
+                        [TimeInterval::fromString('01:00', '24:00')],
                     ),
                     new Day(
                         Day::WEEK_DAY_WEDNESDAY,
-                        [TimeInterval::fromString('00:00', '03:00')]
+                        [TimeInterval::fromString('00:00', '03:00')],
                     ),
                     new AllDay(Day::WEEK_DAY_FRIDAY),
                     new Day(
@@ -395,10 +395,10 @@ final class BusinessHoursBuilderTest extends TestCase
                         [
                             TimeInterval::fromString('00:30', '00:45'),
                             TimeInterval::fromString('00:50', '00:55'),
-                        ]
+                        ],
                     ),
                 ],
-                new DateTimeZone('Europe/Bucharest')
+                new DateTimeZone('Europe/Bucharest'),
             ),
         ];
 
@@ -412,24 +412,24 @@ final class BusinessHoursBuilderTest extends TestCase
                         [
                             TimeInterval::fromString('01:00', '11:00:30'),
                             TimeInterval::fromString('19:30', '24:00'),
-                        ]
+                        ],
                     ),
                     new Day(
                         Day::WEEK_DAY_TUESDAY,
                         [
                             TimeInterval::fromString('00:00', '01:00'),
                             TimeInterval::fromString('02:00', '24:00'),
-                        ]
+                        ],
                     ),
                     new Day(
                         Day::WEEK_DAY_WEDNESDAY,
-                        [TimeInterval::fromString('00:00', '04:00')]
+                        [TimeInterval::fromString('00:00', '04:00')],
                     ),
                     new Day(
                         Day::WEEK_DAY_FRIDAY,
                         [
                             TimeInterval::fromString('01:00', '24:00'),
-                        ]
+                        ],
                     ),
                     new Day(
                         Day::WEEK_DAY_SATURDAY,
@@ -437,10 +437,10 @@ final class BusinessHoursBuilderTest extends TestCase
                             TimeInterval::fromString('00:00', '01:00'),
                             TimeInterval::fromString('01:30', '01:45'),
                             TimeInterval::fromString('01:50', '01:55'),
-                        ]
+                        ],
                     ),
                 ],
-                new DateTimeZone('Europe/Berlin')
+                new DateTimeZone('Europe/Berlin'),
             ),
         ];
 
@@ -454,17 +454,17 @@ final class BusinessHoursBuilderTest extends TestCase
                         [
                             TimeInterval::fromString('00:00', '10:00:30'),
                             TimeInterval::fromString('18:30', '24:00'),
-                        ]
+                        ],
                     ),
                     new Day(
                         Day::WEEK_DAY_TUESDAY,
                         [
                             TimeInterval::fromString('01:00', '24:00'),
-                        ]
+                        ],
                     ),
                     new Day(
                         Day::WEEK_DAY_WEDNESDAY,
-                        [TimeInterval::fromString('00:00', '03:00')]
+                        [TimeInterval::fromString('00:00', '03:00')],
                     ),
                     new AllDay(Day::WEEK_DAY_FRIDAY),
                     new Day(
@@ -472,10 +472,10 @@ final class BusinessHoursBuilderTest extends TestCase
                         [
                             TimeInterval::fromString('00:30', '00:45'),
                             TimeInterval::fromString('00:50', '00:55'),
-                        ]
+                        ],
                     ),
                 ],
-                new DateTimeZone('Europe/Berlin')
+                new DateTimeZone('Europe/Berlin'),
             ),
         ];
     }
@@ -486,7 +486,7 @@ final class BusinessHoursBuilderTest extends TestCase
     public function testShiftToTimezoneWhenTimezoneShiftIsForward(
         DateTimeZone $originalTimezone,
         DateTimeImmutable $shiftDateTime,
-        BusinessHours $expected
+        BusinessHours $expected,
     ): void {
         $actual = BusinessHoursBuilder::shiftToTimezone(
             new BusinessHours(
@@ -496,18 +496,18 @@ final class BusinessHoursBuilderTest extends TestCase
                         [
                             TimeInterval::fromString('00:00', '09:00:30'),
                             TimeInterval::fromString('17:30', '23:00'),
-                        ]
+                        ],
                     ),
                     new AllDay(
-                        Day::WEEK_DAY_TUESDAY
+                        Day::WEEK_DAY_TUESDAY,
                     ),
                     new Day(
                         Day::WEEK_DAY_WEDNESDAY,
-                        [TimeInterval::fromString('00:00', '02:00')]
+                        [TimeInterval::fromString('00:00', '02:00')],
                     ),
                     new Day(
                         Day::WEEK_DAY_THURSDAY,
-                        [TimeInterval::fromString('23:00', '24:00')]
+                        [TimeInterval::fromString('23:00', '24:00')],
                     ),
                     new Day(
                         Day::WEEK_DAY_FRIDAY,
@@ -515,16 +515,16 @@ final class BusinessHoursBuilderTest extends TestCase
                             TimeInterval::fromString('00:00', '23:00'),
                             TimeInterval::fromString('23:30', '23:45'),
                             TimeInterval::fromString('23:50', '23:55'),
-                        ]
+                        ],
                     ),
                     new Day(
                         Day::WEEK_DAY_SUNDAY,
-                        [TimeInterval::fromString('23:00', '24:00')]
+                        [TimeInterval::fromString('23:00', '24:00')],
                     ),
                 ],
-                $originalTimezone
+                $originalTimezone,
             ),
-            $shiftDateTime
+            $shiftDateTime,
         );
 
         self::assertEquals($expected, $actual);

@@ -85,7 +85,7 @@ class TimeTest extends TestCase
         string $string,
         int $expectedHours,
         int $expectedMinutes,
-        int $expectedSeconds
+        int $expectedSeconds,
     ): void {
         $time = Time::fromString($string);
         self::assertEquals($expectedHours, $time->hours());
@@ -248,7 +248,7 @@ class TimeTest extends TestCase
         int $expectedTimeRepresentationInSeconds,
         int $hours,
         int $minutes,
-        int $seconds
+        int $seconds,
     ): void {
         $time = new Time($hours, $minutes, $seconds);
         self::assertEquals($expectedTimeRepresentationInSeconds, $time->toSeconds());
@@ -423,7 +423,7 @@ class TimeTest extends TestCase
     {
         self::assertEquals(
             $expected,
-            $startingTime->addTime($timeToAdd)
+            $startingTime->addTime($timeToAdd),
         );
     }
 
@@ -454,7 +454,7 @@ class TimeTest extends TestCase
     {
         self::assertEquals(
             $expected,
-            $startingTime->subtractTime($timeToSubtract)
+            $startingTime->subtractTime($timeToSubtract),
         );
     }
 
@@ -631,7 +631,7 @@ class TimeTest extends TestCase
 
         self::assertJsonStringEqualsJsonFile(
             __DIR__ . '/Expected/Time/testJsonSerialize.json',
-            Json\encode($time)
+            Json\encode($time),
         );
     }
 }
