@@ -218,7 +218,7 @@ abstract class AbstractDay implements DayInterface
     {
         $sortedOpeningHoursIntervals = Vec\sort(
             $openingHoursIntervals,
-            static fn (TimeIntervalInterface $a, TimeIntervalInterface $b): int => $a->getStart()->compareTo($b->getStart())
+            static fn (TimeIntervalInterface $a, TimeIntervalInterface $b): int => $a->getStart()->compareTo($b->getStart()),
         );
 
         $intervals = [];
