@@ -114,7 +114,7 @@ final class BusinessHoursBuilder
             Dict\sort_by_key(
                 Dict\filter($tmpDays, static fn (array $intervals): bool => $intervals !== []),
             ),
-            static fn (int $dayOfWeek, array $intervals): Day => DayBuilder::fromArray($dayOfWeek, $intervals)
+            static fn (int $dayOfWeek, array $intervals): Day => DayBuilder::fromArray($dayOfWeek, $intervals),
         );
 
         return new BusinessHours($days, $newTimezone);

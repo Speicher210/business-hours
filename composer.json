@@ -23,9 +23,9 @@
   ],
   "homepage": "https://github.com/Speicher210/business-hours",
   "require": {
-    "php": "^8.1 || ^8.2",
+    "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
     "ext-json": "*",
-    "azjezz/psl": "^2.0.1",
+    "azjezz/psl": "^3.0.0",
     "webmozart/assert": "^1.9"
   },
   "require-dev": {
@@ -56,8 +56,8 @@
   },
   "config": {
     "allow-plugins": {
-      "dealerdirect/phpcodesniffer-composer-installer": true,
       "composer/package-versions-deprecated": true,
+      "dealerdirect/phpcodesniffer-composer-installer": true,
       "ergebnis/composer-normalize": true
     },
     "sort-packages": true
