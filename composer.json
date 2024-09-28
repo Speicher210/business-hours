@@ -23,7 +23,7 @@
   ],
   "homepage": "https://github.com/Speicher210/business-hours",
   "require": {
-    "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
+    "php": "~8.2.0 || ~8.3.0",
     "ext-json": "*",
     "azjezz/psl": "^3.0.0",
     "webmozart/assert": "^1.9"
